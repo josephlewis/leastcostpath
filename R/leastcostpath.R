@@ -1,4 +1,4 @@
-leastcostpath <- function(dem, origin, destination, cost_function = "all", neighbours = 16, crit_slope = 15) {
+leastcostpath <- function(dem, origin, destination, cost_function = "all", direction = FALSE, neighbours = 16, crit_slope = 15) {
 
     altDiff <- function(x) {
         x[2] - x[1]
@@ -30,14 +30,32 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", neigh
         return("Origin or Destination is not a SpatialPoints")
     }
 
-    sPath[[1]] <- gdistance::shortestPath(Conductance[[1]], origin, destination, output = "SpatialLines")
+    if (direction == "TRUE") {
 
-    sPath[[2]] <- gdistance::shortestPath(Conductance[[2]], origin, destination, output = "SpatialLines")
+        sPath[[1]] <- gdistance::shortestPath(Conductance[[1]], origin, destination, output = "SpatialLines")
 
-    sPath[[3]] <- gdistance::shortestPath(Conductance[[3]], origin, destination, output = "SpatialLines")
+        sPath[[2]] <- gdistance::shortestPath(Conductance[[2]], origin, destination, output = "SpatialLines")
 
+        sPath[[3]] <- gdistance::shortestPath(Conductance[[3]], origin, destination, output = "SpatialLines")
 
-    names(sPath) <- c("Toblers Hiking Function", "Marquezs Hiking Function", "Lloberas Hiking Function")
+        names(sPath) <- c("Toblers A to B", "Marquez-Perez A to B", "Lloberas A to B")
+
+    } else {
+
+        sPath[[1]] <- gdistance::shortestPath(Conductance[[1]], origin, destination, output = "SpatialLines")
+
+        sPath[[2]] <- gdistance::shortestPath(Conductance[[1]], destination, origin, output = "SpatialLines")
+
+        sPath[[3]] <- gdistance::shortestPath(Conductance[[2]], origin, destination, output = "SpatialLines")
+
+        sPath[[4]] <- gdistance::shortestPath(Conductance[[2]], destination, origin, output = "SpatialLines")
+
+        sPath[[5]] <- gdistance::shortestPath(Conductance[[3]], origin, destination, output = "SpatialLines")
+
+        names(sPath) <- c("Toblers A to B", "Toblers B to A", "Marquez-Perez A to B", "Marquez-Perez B to A", "Lloberas A to B")
+
+    }
+
 
     lcp_lengths <- unlist(lapply(sPath, function(x) {
         FUN = rgeos::gLength(x, byid = TRUE)
