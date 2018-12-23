@@ -1,4 +1,4 @@
-# leastcostpath - Version 0.1
+# leastcostpath - Version 0.1.1
 
 R Implementation of Least Cost Path Analysis Functions
 
@@ -22,9 +22,7 @@ R Implementation of Least Cost Path Analysis Functions
 * Implement validation method based on the distance from the optimal route (ie. straight line) and the LCP. 20% complete
 * Incorporation of flow maps as method to visualise Least Cost Path accuracy
 
-# History
-
-<b>Installation:</b>
+# Installation
 
 <code>#install.packages("devtools")</code><br />
 <code>library(devtools)</code><br />
@@ -33,5 +31,5 @@ R Implementation of Least Cost Path Analysis Functions
 
 # History
 
-<code>Version 0.1</code> First Release to Github
-
+<code>Version 0.1.0</code> First Release to Github
+<code>Version 0.1.1</code> Implemented choice of directionality
