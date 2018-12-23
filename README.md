@@ -19,6 +19,7 @@ R Implementation of Least Cost Path Analysis Functions
 
 #### Future functions
 * Incorporate 24 neighbours within LCP calculation. 60% complete.
+* Include Herzog's Sixth-Degree Polynomial function 
 * Implement validation method based on the distance from the optimal route (ie. straight line) and the LCP. 20% complete
 * Incorporation of flow maps as method to visualise Least Cost Path accuracy
 
