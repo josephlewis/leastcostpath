@@ -10,7 +10,7 @@ The function computes the Least Cost Path from an origin location to a destinati
 }
 
 \usage{
-leastcostpath(dem, origin, destination, cost_function = "all", neighbours = 16, crit_slope = 15)
+leastcostpath(dem, origin, destination, cost_function = "all", direction = FALSE, neighbours = 16, crit_slope = 15)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,7 +24,10 @@ Location from which the Least Cost Path is calculated. Object of class SpatialPo
 Location to which the Least Cost Path is calculated. Object of class SpatialPoints
 }
   \item{cost_function}{
-Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking Function, Marquez-Perez et al. Modified Hiking function and Llobera and Sluckin's Fourth-degree polynomial function.
+Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking Function, Marquez-Perez et al. Modified Hiking function and Llobera and Sluckin's Fourth-degree polynomial function. Default is "all".
+}
+  \item{direction}{
+If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the anistropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination. see Details for more.
 }
   \item{neighbours}{
 Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when choosing number of neighbours. Default is 16.
@@ -35,7 +38,7 @@ Critical Slope (in percent) is "the transition where switchbacks become more eff
 }
 \details{
 
-The function calculates the Least COst Path from the origin location ('SpatialPoints' class) to the destination location ('SpatialPoints' class) using functions provided in \link[gdistance]{gdistance}.
+The function calculates the Least Cost Path from the origin location ('SpatialPoints' class) to the destination location ('SpatialPoints' class) using functions provided in \link[gdistance]{gdistance}.
 
 Due to the accuracy of Least Cost Paths being sensitive to the algorithm used (Mlekuz, 2014), the function exports Least Cost paths using three cost functions.
 
@@ -52,14 +55,20 @@ The following Cost Functions are implemented within the function:
 \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Llobera and Sluckin (2007) 'Fourth-degree polynomial function'}
 
 1/(1 + abs(slope/crit_slope)^2)
+
+Furthermore, the default direction of movement if FALSE, meaning that the Least Cost Path will be calculated from Origin to Destination and Destination and Origin. This is to reflect the view that it is incorrect to assume that round-trips along the same cost paths were made (Kantner, 2012). If direction is TRUE then only Least Cost Path from Origin to Destination is calculated.
+
 }
+
 \value{
 
-The function exports three computed Least Cost Paths ('SpatialLinesDataFrame' class) using the three aforementioned cost functions with data on the length of each Least Cost Path (unit dependent on input DEM units)
+The function exports three computed Least Cost Paths ('SpatialLinesDataFrame' class) using the three aforementioned cost functions with data on the cost function name and length of each Least Cost Path (unit dependent on input DEM units)
 }
 \references{
 
 Huber, D.L. Church, R.L. (1985) "Transmission corridor location modelling", Journal of Transportation Engineering, 111, pp. 114-130.
+
+Kantner, J. (2012) 'Realism, Reality, and Routes: Evaluating Cost-Surface and CostPath Algorithms', in White, D.A. Surface-Evans, S. (eds.) Least Cost Analysis of Social Landscapes: Archaeological Case Studies. Salt Lake City: University of Utah Press, pp.225-238.
 
 Llobera, M. Sluckin, T.J. (2007) 'Zigzagging: Theoretical insights on clumbing strategies'. Journal of Theoretical Biology, 249, 206-217.
 
@@ -70,7 +79,6 @@ Mlekuz, D. (2014) "Exploring the topography of movement"", in Polla, S. Verhagen
 Tobler, W. (1993) "Three Presentations on Geographical Analysis and Modeling: Non- Isotropic Geographic Modeling; Speculations on the Geometry of Geography; and Global Spatial Analysis, Technical Report (93-1)‟. National Center for Geographic Information and Analysis. Available at: http://escholarship.org/uc/item/05r820mz [Accessed 22 December 2018].
 
 Verhagen, P. Jeneson, K. (2012) 'A Roman Puzzle: Trying to find the Via Belgica with GIS', in Chrysanthi, A. Flores, P.M. Papadopoulos, C. (eds.). Thinking beyond the Tool: Archaeological Computing and the Interpretative Process. Oxford: British Archaeological Reports International Series 2344, pp.123-130.
-
 
 }
 \author{
