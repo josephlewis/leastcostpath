@@ -12,5 +12,13 @@ R Implementation of Least Cost Path Analysis Functions
 
 # History
 
+<b>Installation:</b>
+
+<code>#install.packages("devtools")
+#library(devtools)
+install_github("josephlewis/leastcostpath")</code>
+
+# History
+
 <code>Version 0.1</code> First Release to Github
 
