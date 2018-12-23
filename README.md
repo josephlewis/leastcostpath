@@ -4,6 +4,10 @@ R Implementation of Least Cost Path Analysis Functions
 
 <b>current functions</b>
 * <code>leastcostpath</code> - computes Least Cost Paths using multiple cost functions.
+** Cost Functions Implemented
+*** Tobler's Hiking Function (1993) 
+<code>6 * exp(-3.5 * abs(slope[adj] + 0.05))</code>
+
 * <code>validation_buffer</code> - computes the accurracy of the Least Cost Path relative to another SpatialLine* object based on method proposed by Goodchild and Hunter (1997).
 
 <b> Future functions</b>
