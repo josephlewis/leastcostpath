@@ -31,5 +31,5 @@ R Implementation of Least Cost Path Analysis Functions
 
 # History
 
-<code>Version 0.1.0</code> First Release to Github
+<code>Version 0.1.0</code> First Release to Github<br />
 <code>Version 0.1.1</code> Implemented choice of directionality
