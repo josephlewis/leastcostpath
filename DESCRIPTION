@@ -1,0 +1,22 @@
+Package: leastcostpath
+Type: Package
+Title: Implemention of Least Cost Path Analysis Functions
+Version: 0.1.0
+Date: 2018-12-23
+Authors@R: person("Joseph", "Lewis", email = "josephlewis1992@gmail.com",
+                  role = c("aut", "cre"))
+Maintainer: Joseph Lewis <josephlewis1992@gmail.com>
+URL: josephlewis.github.io
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+Depends: R (>= 3.1.0)
+Imports:
+  rgdal,
+  rgeos,
+  sp,
+  raster,
+  gdistance
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
