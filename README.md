@@ -1,4 +1,4 @@
-# leastcostpath
+# leastcostpath - Version 0.1
 
 R Implementation of Least Cost Path Analysis Functions
 
