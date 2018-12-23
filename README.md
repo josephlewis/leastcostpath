@@ -10,3 +10,7 @@ R Implementation of Least Cost Path Analysis Functions
 * Incorporate 24 neighbours within LCP calculation. 60% complete.
 * Implement validation method based on the distance from the optimal route (ie. straight line) and the LCP. 20% complete
 
+# History
+
+<code>Version 0.1</code> First Release to Github
+
