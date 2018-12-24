@@ -4,15 +4,13 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
         x[2] - x[1]
     }
     
-    hd <- gdistance::transition(dem, altDiff, 8, symm = FALSE)
-    hd_iso <- gdistance::transition(dem, altDiff, 8, symm = TRUE)
+    hd <- gdistance::transition(dem, altDiff, 8)
     
     slope <- gdistance::geoCorrection(hd)
-    slope_iso <- gdistance::geoCorrection(hd_iso)
     
     if (cost_function == "all") {
         adj <- raster::adjacent(dem, cells = 1:ncell(dem), pairs = TRUE, directions = neighbours)
-        slope_stack <- raster::stack(slope, slope, slope_iso)
+        slope_stack <- raster::stack(slope, slope, slope)
         
         slope_stack[[1]][adj] <- 6 * exp(-3.5 * abs(slope[adj] + 0.05))
         slope_stack[[2]][adj] <- 4.8 * exp(-5.3 * abs(slope[adj] * 0.7) + 0.03)
@@ -21,9 +19,9 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
         Conductance <- stack(gdistance::geoCorrection(slope_stack[[1]]), gdistance::geoCorrection(slope_stack[[2]]), gdistance::geoCorrection(slope_stack[[3]]))
     }
     
-    sPath <- list()
     
     if (inherits(origin, "SpatialPoints") & inherits(destination, "SpatialPoints")) {
+        sPath <- list()
         origin <- sp::coordinates(origin)
         destination <- sp::coordinates(destination)
     } else {
