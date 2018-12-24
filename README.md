@@ -18,9 +18,11 @@ R Implementation of Least Cost Path Analysis Functions
 ##### <code>validation_buffer</code> - computes the accurracy of the Least Cost Path relative to another SpatialLine* object based on method proposed by Goodchild and Hunter (1997).
 
 #### Future functions
-* Incorporate 24 neighbours within LCP calculation. 60% complete.
+* Incorporate 24/28/32/48 neighbours within LCP calculation. 30% complete.
 * Include Herzog's Sixth-Degree Polynomial function 
 * Implement validation method based on the distance from the optimal route (ie. straight line) and the LCP. 20% complete
+* Implement Fréchet distance validation method. 
+* Implement horizontal factors within Least Cost Path calculation.
 * Incorporation of flow maps as method to visualise Least Cost Path accuracy
 
 # Installation
