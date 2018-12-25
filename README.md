@@ -36,3 +36,9 @@ R Implementation of Least Cost Path Analysis Functions
 
 <code>Version 0.1.0</code> First Release to Github<br />
 <code>Version 0.1.1</code> Implemented choice of directionality
+
+# Citation
+
+Please cite as:
+
+<code> Lewis, J. (2016) leastcostpath: R Implementation of Least Cost Path Analysis Functions (Version 0.1.1)</code>
