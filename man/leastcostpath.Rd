@@ -6,11 +6,11 @@
 }
 \description{
 
-The function computes the Least Cost Path from an origin location to a destination location. It implements multiple cost functions that estimate human movement across a landscape. The function takes a Digital Elevation Model ('RasterLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
+The function computes the Least Cost Path from an origin location to a destination location. It implements multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. The function takes a Digital Elevation Model ('RasterLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
 }
 
 \usage{
-leastcostpath(dem, origin, destination, cost_function = "all", direction = FALSE, neighbours = 16, crit_slope = 15)
+leastcostpath(dem, origin, destination, cost_function = "all", direction = FALSE, neighbours = 16, crit_slope = 15, hf = "linear", linear_values = c(-2/180, 2), binary_values = c(45, 999, 1), forward_values = c(999, 1, 0.5))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,6 +34,18 @@ Number of directions used in the Least Cost Path calculation. \href{https://www.
 }
   \item{crit_slope}{
 Critical Slope (in percent) is "the transition where switchbacks become more effective than direct uphill or downhill paths". Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Critical slope defaulted is 15 degrees, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012).
+}
+  \item{hf}{
+  The horizontal factors (hf) influence the difficulty of moving from one cell to another by accounting for any horizontal frictional elements encountered. In this case, the horizontal frictional element is the change in aspect degree from one cell to another. Default horizontal factor values are calculated using a linear equation. Binary and Forward also available. See details for more. 
+}
+  \item{linear_values}{
+If hf == "linear" then inverse linear horizontal factor values used. Inverse linear equation calculated by providing slope and intercept. Default values are C(-2/180, 2). See details for more. 
+}
+  \item{binary_values}{
+If hf == "binary" then binary horizontal factor values used. See details for more. 
+}
+  \item{forward_values}{
+If hf == "forward" then forward horizontal factor values used. See details for more.
 }
 }
 \details{
