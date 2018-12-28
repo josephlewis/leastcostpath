@@ -26,7 +26,7 @@ Location from which the Least Cost Path is calculated. Object of class SpatialPo
 Location to which the Least Cost Path is calculated. Object of class SpatialPoints
 }
   \item{cost_function}{
-Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking Function, Marquez-Perez et al. Modified Hiking function and Llobera and Sluckin's Fourth-degree polynomial function. Default is "all".
+Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking Function, Marquez-Perez et al. Modified Hiking function, Llobera and Sluckin's Fourth-degree polynomial function and Herzog's Sixth Degree Polynomial. Default is "all".
 }
   \item{direction}{
 If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the anistropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination only. see Details for more.
@@ -71,6 +71,9 @@ The following Cost Functions are implemented within the function:
 
 1/(1 + abs(slope/crit_slope)^2)
 
+\href{https://publikationen.uni-tuebingen.de/xmlui/bitstream/handle/10900/60793/59_Herzog_CAA_2010.pdf?sequence=2}{Herzog's (2010) 'Sixth-degree polynomial function'}
+
+
 The default direction of movement is FALSE, meaning that the Least Cost Path will be calculated from Origin to Destination and Destination and Origin. This is to reflect the view that it is incorrect to assume that round-trips along the same cost paths were made (Kantner, 2012). If direction is TRUE then only Least Cost Path from Origin to Destination is calculated.
 
 The default number of directions used in the Least Cost Path calculation is 16. Although 4 and 8 number of directions can be specified, it is recommended that the default value is used (ie. 16). This is due to a lower number of directions resulting in incorrect accumulated costs, caused by what Harris (2000) called 'elongation error' (ie. the difference in length between the LCP and the optimal straight line route). This error is caused by the conversion from raster cells to a vector graph, in which Dijkstra's algorithm is designed for (Herzog, 2014).
@@ -81,6 +84,8 @@ The default number of directions used in the Least Cost Path calculation is 16. 
 The function exports three computed Least Cost Paths ('SpatialLinesDataFrame' class) using the three aforementioned cost functions with data on the cost function name and length of each Least Cost Path (unit dependent on input DEM units)
 }
 \references{
+
+Herzog, I. (2010) "Theory and practice of cost functions". 38th annual conference on computer applications and quantitative methods in archaeology CAA2010, Granada, 6-10 April.
 
 Huber, D.L. Church, R.L. (1985) "Transmission corridor location modelling", Journal of Transportation Engineering, 111, pp. 114-130.
 
