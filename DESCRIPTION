@@ -6,7 +6,7 @@ Date: 2018-12-27
 Authors@R: person("Joseph", "Lewis", email = "josephlewis1992@gmail.com", role = c("aut", "cre"))
 Maintainer: Joseph Lewis <josephlewis1992@gmail.com>
 URL: josephlewis.github.io
-Description:
+Description: R Implementation of Least Cost Path (LCP) Analysis. Provides functionality to create multiple LCPs using different cost functions based on slope and aspect.
 Depends:R (>= 3.1.0)
 Imports:
   rgdal,
