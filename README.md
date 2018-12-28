@@ -28,15 +28,15 @@ Function requires a Digital Elevation Model (`RasterLayer` class) and and point 
 
 The following cost functions are implemented:
 
--   
+-   [Tobler's Hiking Function (1993)](http://escholarship.org/uc/item/05r820mz)
 
 `6 * exp(-3.5 * abs(slope + 0.05))`
 
--   
+-   [Marquez-Perez et al. (2017) 'Modified Hiking function')](https://www.tandfonline.com/doi/abs/10.1080/00167223.2017.1316212)
 
 `4.8 * exp(-5.3 * abs(slope * 0.7) + 0.03)`
 
--   
+-   [Llobera and Sluckin (2007) 'Fourth-degree polynomial function')](https://www.ncbi.nlm.nih.gov/pubmed/17892887)
 
 `1/(1 + abs(slope/crit_slope)^2)`
 
