@@ -1,12 +1,12 @@
 \name{leastcostpath}
 \alias{leastcostpath}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{ Computes Least Cost Paths using multiple cost functions
+\title{ Computes Least Cost Paths using isotropic and anisotropic cost functions
 %%  ~~function to do ... ~~
 }
 \description{
 
-The function computes the Least Cost Path from an origin location to a destination location. It implements multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. The function takes a Digital Elevation Model ('RasterLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
+The function computes the Least Cost Path from an origin location to a destination location. It implements multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. The function takes a Digital Elevation Model ('RasterLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location. 
 }
 
 \usage{
@@ -27,25 +27,26 @@ Location to which the Least Cost Path is calculated. Object of class SpatialPoin
 Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking Function, Marquez-Perez et al. Modified Hiking function and Llobera and Sluckin's Fourth-degree polynomial function. Default is "all".
 }
   \item{direction}{
-If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the anistropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination. see Details for more.
+If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the anistropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination only. see Details for more.
 }
   \item{neighbours}{
-Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when choosing number of neighbours. Default is 16.
+Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when choosing number of neighbours. Default is 16. 
 }
   \item{crit_slope}{
 Critical Slope (in percent) is "the transition where switchbacks become more effective than direct uphill or downhill paths". Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Critical slope defaulted is 15 degrees, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012).
 }
   \item{hf}{
-  The horizontal factors (hf) influence the difficulty of moving from one cell to another by accounting for any horizontal frictional elements encountered. In this case, the horizontal frictional element is the change in aspect degree from one cell to another. Default horizontal factor values are calculated using a linear equation. Binary and Forward also available. See details for more. 
+  The horizontal factors (hf) influence the difficulty of moving from one cell to another by accounting for any horizontal frictional elements encountered. In this case, the horizontal frictional element is the change in aspect degree from one cell to another. Once the change in aspect degree has been determined, a graph is used to identify the actual horizontal factor. Default horizontal factor values are calculated using a inverse linear equation. Binary and Forward horizontal factor graph also available. See details for more. 
 }
   \item{linear_values}{
-If hf == "linear" then inverse linear horizontal factor values used. Inverse linear equation calculated by providing slope and intercept. Default values are C(-2/180, 2). See details for more. 
+  If hf = "linear" then horizontal factors calculated using an inverse linear equation. Requires a vector of slope and intercept. Default values are c(-2/180, 2). See details for more. 
 }
   \item{binary_values}{
-If hf == "binary" then binary horizontal factor values used. See details for more. 
+  if hf = "binary" then a vector consisting of the cutting angle and two values need to be provided. If the change in aspect degree from one cell to another is greater than the provided cutting angle, the second value in the vector is used as the horizontal factor. If the change in aspect degree from one cell to another is less than the provided cutting angle, the third value in the vector is used as the horizontal factor. Default values are c(45, 999, 1). See details for more.
 }
   \item{forward_values}{
-If hf == "forward" then forward horizontal factor values used. See details for more.
+  
+If hf = "forward" then a vector of three values need to be provided. If the change in aspect degree from one cell to another is less than 45 degrees, the first value is used as the horizontal factor. If the change in aspect degree from one cell to another is equal to 45 degrees and less than 90 degrees, the second value is used as the horizontal factor. If the change in aspect degree from one cell to another is equal to or greater than 90 degrees, the third value is used as the horizontal factor. Default values are c(999, 1, 0.5). See details for more. 
 }
 }
 \details{
@@ -68,8 +69,9 @@ The following Cost Functions are implemented within the function:
 
 1/(1 + abs(slope/crit_slope)^2)
 
-Furthermore, the default direction of movement if FALSE, meaning that the Least Cost Path will be calculated from Origin to Destination and Destination and Origin. This is to reflect the view that it is incorrect to assume that round-trips along the same cost paths were made (Kantner, 2012). If direction is TRUE then only Least Cost Path from Origin to Destination is calculated.
+The default direction of movement is FALSE, meaning that the Least Cost Path will be calculated from Origin to Destination and Destination and Origin. This is to reflect the view that it is incorrect to assume that round-trips along the same cost paths were made (Kantner, 2012). If direction is TRUE then only Least Cost Path from Origin to Destination is calculated.
 
+The default number of directions used in the Least Cost Path calculation is 16. Although 4 and 8 number of directions can be specified, it is recommended that the default value is used (ie. 16). This is due to a lower number of directions resulting in incorrect accumulated costs, caused by what Harris (2000) called 'elongation error' (ie. the difference in length between the LCP and the optimal straight line route). This error is caused by the conversion from raster cells to a vector graph, in which Dijkstra's algorithm is designed for (Herzog, 2014). 
 }
 
 \value{
