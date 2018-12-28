@@ -73,6 +73,7 @@ The following Cost Functions are implemented within the function:
 
 \href{https://publikationen.uni-tuebingen.de/xmlui/bitstream/handle/10900/60793/59_Herzog_CAA_2010.pdf?sequence=2}{Herzog's (2010) 'Sixth-degree polynomial function'}
 
+1 / ((((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + (93.419 * slope[adj]^2) + (19.825 * slope[adj]) + 1.64)))
 
 The default direction of movement is FALSE, meaning that the Least Cost Path will be calculated from Origin to Destination and Destination and Origin. This is to reflect the view that it is incorrect to assume that round-trips along the same cost paths were made (Kantner, 2012). If direction is TRUE then only Least Cost Path from Origin to Destination is calculated.
 
