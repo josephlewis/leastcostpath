@@ -10,7 +10,8 @@ URL: josephlewis.github.io
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 Depends: 
-  R (>= 3.1.0),
+  R (>= 3.1.0)
+Imports:
   rgdal,
   rgeos,
   sp,
