@@ -11,13 +11,14 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
 
     if (cost_function == "all") {
         adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
-        slope_stack <- raster::stack(slope, slope, slope)
+        slope_stack <- raster::stack(slope, slope, slope, slope)
 
         slope_stack[[1]][adj] <- 6 * exp(-3.5 * abs(slope[adj] + 0.05))
         slope_stack[[2]][adj] <- 4.8 * exp(-5.3 * abs(slope[adj] * 0.7) + 0.03)
         slope_stack[[3]][adj] <- 1/(1 + abs(slope[adj]/crit_slope)^2)
+        slope_stack[[4]][adj] <-  1 / ((((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + (93.419 * slope[adj]^2) + (19.825 * slope[adj]) + 1.64)))
 
-        Conductance <- raster::stack(gdistance::geoCorrection(slope_stack[[1]]), gdistance::geoCorrection(slope_stack[[2]]), gdistance::geoCorrection(slope_stack[[3]]))
+        Conductance <- raster::stack(gdistance::geoCorrection(slope_stack[[1]]), gdistance::geoCorrection(slope_stack[[2]]), gdistance::geoCorrection(slope_stack[[3]]), gdistance::geoCorrection(slope_stack[[4]]))
     }
 
     aspect <- raster::terrain(dem, opt = "aspect", unit = "degrees", neighbors = 8)
@@ -68,6 +69,7 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
     Conductance[[1]] <- Conductance[[1]] * trans
     Conductance[[2]] <- Conductance[[2]] * trans
     Conductance[[3]] <- Conductance[[3]] * trans
+    Conductance[[4]] <- Conductance[[4]] * trans
 
     if (inherits(origin, "SpatialPoints") & inherits(destination, "SpatialPoints")) {
         sPath <- list()
@@ -85,7 +87,9 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
 
         sPath[[3]] <- gdistance::shortestPath(Conductance[[3]], origin, destination, output = "SpatialLines")
 
-        names(sPath) <- c("Toblers A to B", "Marquez-Perez A to B", "Lloberas A to B")
+        sPath[[4]] <- gdistance::shortestPath(Conductance[[4]], origin, destination, output = "SpatialLines")
+
+        names(sPath) <- c("Toblers A to B", "Marquez-Perez A to B", "Lloberas A to B", "Herzog A to B")
 
     } else {
 
@@ -99,7 +103,9 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
 
         sPath[[5]] <- gdistance::shortestPath(Conductance[[3]], origin, destination, output = "SpatialLines")
 
-        names(sPath) <- c("Toblers A to B", "Toblers B to A", "Marquez-Perez A to B", "Marquez-Perez B to A", "Lloberas A to B")
+        sPath[[6]] <- gdistance::shortestPath(Conductance[[4]], origin, destination, output = "SpatialLines")
+
+        names(sPath) <- c("Toblers A to B", "Toblers B to A", "Marquez-Perez A to B", "Marquez-Perez B to A", "Lloberas A to B", "Herzog A to B")
 
     }
 
