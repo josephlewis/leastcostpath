@@ -40,7 +40,7 @@ The following cost functions are implemented:
 
 `1/(1 + abs(slope/crit_slope)^2)`
 
-Horizontal factor incorporated either through: \* Inverse Linear function \* Binary \* Forward
+Horizontal factor incorporated either through: \* Inverse Linear function&lt;<br> \* Binary<br> \* Forward<br>
 
 see `leastcostpath` for more details on the calculation.
 
