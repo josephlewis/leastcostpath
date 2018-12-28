@@ -9,7 +9,7 @@ Computes the accuracy of a least cost path based on the method proposed by \href
 
 }
 \usage{
-validation(lcp, data, buffers)
+validation_buffer(lcp, data, buffers = c(50, 100, 250, 500, 1000), export = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,6 +21,9 @@ Object of class SpatialLines
 }
   \item{buffers}{
 vector. The buffer distances to be used in the validation method.
+}
+  \item{export}{
+SpatialPolygonsDataFrame. Exports buffers.
 }
 }
 \details{
