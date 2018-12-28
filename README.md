@@ -1,44 +1,73 @@
-# leastcostpath - Version 0.1.1
+leastcostpath - version 0.1.2
+=============================
 
-R Implementation of Least Cost Path Analysis Functions
+R Implementation of Least Cost Path (LCP) Analysis. Provides functionality to create multiple LCPs using different cost functions based on slope and aspect. See details for more.
 
-#### current functions
-##### <code>leastcostpath</code> - computes Least Cost Paths using multiple cost functions.</b>
+Getting Started
+---------------
 
-###### Anisotropic Cost Functions -  anisotropic cost functions are dependent on the direction of movement, with the cost of travelling from point A and B not being equal to the cost of travelling from B to A.
- * Tobler's Hiking Function (1993)</b><br /> 
-<code>6 * exp(-3.5 * abs(slope[adj] + 0.05))</code><br />
- * Marquez-Perez et al. (2017) Modified Hiking function<br />
-<code> 4.8 * exp(-5.3 * abs(slope[adj] * 0.7) + 0.03)</code><br />
+### Installing
 
-###### Isotropic Cost Functions - Isotropic cost functions assume that travel across a surface is neither benefitted nor hindered by the directionality of movement.
- * Llobera and Sluckin (2007) Fourth-degree polynomial function<br /> 
-<code>1/(1 + abs(slope[adj]/crit_slope)^2)</code><br /><br />
+    #install.packages("devtools")
+    library(devtools)
+    install_github("josephlewis/leastcostpath")
+    library(leastcostpath)
 
-##### <code>validation_buffer</code> - computes the accurracy of the Least Cost Path relative to another SpatialLine* object based on method proposed by Goodchild and Hunter (1997).
+### Key Features
 
-#### Future functions
-* Incorporate 24/28/32/48 neighbours within LCP calculation. 30% complete.
-* Include Herzog's Sixth-Degree Polynomial function 
-* Implement validation method based on the distance from the optimal route (ie. straight line) and the LCP. 20% complete
-* Implement Fréchet distance validation method. 
-* Implement horizontal factors within Least Cost Path calculation.
-* Incorporation of flow maps as method to visualise Least Cost Path accuracy
+-   Computes multiple LCPs using diferent cost functions allowing the user to assess which cost function produces the most accurate LCP (see `validation_buffer` for validation method).
 
-# Installation
+-   Implements cost of movement uphill and downhill, as well as across. This functionality provides a true anisotropic cost surface and more realistically represents the difficulty of moving through a landscape.
+-   LCP validation method implemented following Herzog (2013. 205), who stated that Without validation, LCP results are "mere guesswork".
 
-<code>#install.packages("devtools")</code><br />
-<code>library(devtools)</code><br />
-<code>install_github("josephlewis/leastcostpath")</code><br />
-<code>library(leastcostpath)</code>
+### Implemented functions
 
-# History
+`leastcostpath` provides the functionality to compute Least Cost Paths using multiple cost functions that approximate human movement across a landscape and user-defined horizontal factors (change in aspect degree).
 
-<code>Version 0.1.0</code> First Release to Github<br />
-<code>Version 0.1.1</code> Implemented choice of directionality
+Function requires a Digital Elevation Model (`RasterLayer` class) and and point features (`SpatialPoints` class) signifying the origin and destination of the LCP.
 
-# Citation
+The following cost functions are implemented:
+
+-   
+
+`6 * exp(-3.5 * abs(slope + 0.05))`
+
+-   
+
+`4.8 * exp(-5.3 * abs(slope * 0.7) + 0.03)`
+
+-   
+
+`1/(1 + abs(slope/crit_slope)^2)`
+
+Horizontal factor incorporated either through: \* Inverse Linear function \* Binary \* Forward
+
+see `leastcostpath` for more details on the calculation.
+
+`validation_buffer` computes the accuracy of the LCP based on the method proposed by Goodchild and Hunter (1997).
+
+-   Evaluates the similarity between two linear features by determining the percentage of a linear feature that lies within a buffer distance from the 'true' linear feature (ie. the percentage of the LCP within x buffer distance from a known road).
+
+Feedback
+--------
+
+Please email josephlewis1992\[at\]gmail.com for feedback or functionality that you would like implemented.
+
+Versioning
+----------
+
+-   version 0.1.0 - First release to Github
+-   version 0.1.1 - Implemented choice of directionality
+-   version 0.1.2 - Implemented horizontal factors that account for change in aspect in the landscape.
+
+Authors
+-------
+
+-   Joseph Lewis - *author / creator* - [Website](https://josephlewis.github.io)
+
+Citation
+--------
 
 Please cite as:
 
-<code> Lewis, J. (2016) leastcostpath: R Implementation of Least Cost Path Analysis Functions (Version 0.1.1)</code>
+    Lewis, J. (2016) leastcostpath: R Implementation of Least Cost Path Analysis (version 0.1.2)
