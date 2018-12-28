@@ -1,16 +1,13 @@
 Package: leastcostpath
 Type: Package
-Title: Implemention of Least Cost Path Analysis Functions
+Title: Implemention of Least Cost Path Analysis
 Version: 0.1.2
 Date: 2018-12-27
-Authors@R: person("Joseph", "Lewis", email = "josephlewis1992@gmail.com",
-                  role = c("aut", "cre"))
+Authors@R: person("Joseph", "Lewis", email = "josephlewis1992@gmail.com", role = c("aut", "cre"))
 Maintainer: Joseph Lewis <josephlewis1992@gmail.com>
 URL: josephlewis.github.io
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-Depends: 
-  R (>= 3.1.0)
+Description:
+Depends:R (>= 3.1.0)
 Imports:
   rgdal,
   rgeos,
@@ -20,4 +17,3 @@ Imports:
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
