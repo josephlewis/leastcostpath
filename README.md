@@ -51,7 +51,7 @@ see `leastcostpath` for more details on the calculation.
 Feedback
 --------
 
-Please email josephlewis1992\[at\]gmail.com for feedback or functionality that you would like implemented.
+Please email josephlewis1992\[at\]gmail.com to provide feedback or suggest functionality that you would like implemented.
 
 Versioning
 ----------
