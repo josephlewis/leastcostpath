@@ -41,7 +41,9 @@ The following cost functions are implemented:
 
 `1/(1 + abs(slope/crit_slope)^2)`
 
-Horizontal factor incorporated either through: <br> \* Inverse Linear function <br> \* Binary<br> \* Forward<br>
+-   [Herzog's (2010) 'Sixth-degree polynomial function')](https://publikationen.uni-tuebingen.de/xmlui/bitstream/handle/10900/60793/59_Herzog_CAA_2010.pdf?sequence=2)
+
+`1 / ((((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + (93.419 * slope[adj]^2) + (19.825 * slope[adj]) + 1.64)))`
 
 see `leastcostpath` for more details on the calculation.
 
