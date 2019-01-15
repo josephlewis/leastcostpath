@@ -1,4 +1,4 @@
-leastcostpath - version 0.1.2
+leastcostpath - version 0.1.3
 =============================
 
 R Implementation of Least Cost Path (LCP) Analysis. Provides functionality to create multiple LCPs using different cost functions based on slope and aspect. See details for more.
@@ -18,6 +18,7 @@ Getting Started
 -   Computes multiple LCPs using diferent cost functions allowing the user to assess which cost function produces the most accurate LCP (see `validation_buffer` for validation method).
 
 -   Implements cost of movement uphill and downhill, as well as across. This functionality provides a true anisotropic cost surface and more realistically represents the difficulty of moving through a landscape.
+
 -   LCP validation method implemented following Herzog (2013. 205), who stated that Without validation, LCP results are "mere guesswork".
 
 ### Implemented functions
@@ -82,4 +83,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2016) leastcostpath: R Implementation of Least Cost Path Analysis (version 0.1.2)
+    Lewis, J. (2018) leastcostpath: R Implementation of Least Cost Path Analysis (version 0.1.3)
