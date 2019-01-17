@@ -23,7 +23,6 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
     }
     
     if (aspect == "asymmetrical" | aspect == "symmetrical" | aspect == "none") {
-        print("First test")
         
         aspect_dem <- raster::terrain(dem, opt = "aspect", unit = "degrees", neighbors = 8)
         
@@ -48,7 +47,7 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
                     hrma <- abs(x[2] - x[1])
                     2 - (0.5/45) * hrma
                   } else {
-                    0
+                    1
                   }
                 } else if (x[2] < x[1]) {
                   if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
@@ -59,12 +58,12 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
                     (0.5/45) * hrma
                     
                   } else {
-                    0
+                    1
                   }
                 }
             }
             
-            trans <- gdistance::transition(aspect_dem, altDiff_aspect, 16, symm = FALSE)
+            trans <- gdistance::transition(aspect_dem, altDiff_aspect, neighbours, symm = FALSE)
             
             Conductance[[1]] <- Conductance[[1]] * trans
             Conductance[[2]] <- Conductance[[2]] * trans
@@ -84,7 +83,7 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
                     hrma <- abs(x[2] - x[1])
                     (0.5/45) * hrma
                   } else {
-                    0
+                    1
                   }
                 } else if (x[2] < x[1]) {
                   if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
@@ -95,12 +94,12 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
                     (0.5/45) * hrma
                     
                   } else {
-                    0
+                    1
                   }
                 }
             }
             
-            trans <- gdistance::transition(aspect_dem, altDiff_aspect, 16, symm = FALSE)
+            trans <- gdistance::transition(aspect_dem, altDiff_aspect, neighbours, symm = FALSE)
             
             Conductance[[1]] <- Conductance[[1]] * trans
             Conductance[[2]] <- Conductance[[2]] * trans
@@ -108,7 +107,6 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
             Conductance[[4]] <- Conductance[[4]] * trans
             
         } else if (aspect == "none") {
-            print("break")
             NULL
         }
     } else {
