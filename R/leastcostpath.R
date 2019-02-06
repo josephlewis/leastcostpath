@@ -175,7 +175,7 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
     }
     
     for (i in 1:length(sPath)) {
-        rgdal::writeOGR(sPath[[i]], ".", paste0(names(sPath)[i], suffix), driver = "ESRI Shapefile", overwrite_layer = TRUE)
+        rgdal::writeOGR(sPath[[i]], ".", paste0(names(sPath)[i], "_", suffix), driver = "ESRI Shapefile", overwrite_layer = TRUE)
         
     }
 }
