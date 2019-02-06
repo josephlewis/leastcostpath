@@ -21,119 +21,127 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
         
         Conductance <- raster::stack(gdistance::geoCorrection(slope_stack[[1]]), gdistance::geoCorrection(slope_stack[[2]]), gdistance::geoCorrection(slope_stack[[3]]), 
             gdistance::geoCorrection(slope_stack[[4]]))
-        
     }
     
-    if (traverse == "asymmetrical" | traverse == "symmetrical" | traverse == "none") {
-        
-        aspect_dem <- raster::terrain(dem, opt = "aspect", unit = "degrees", neighbors = 8)
-        
-        aspect_dem <- calc(aspect_dem, function(x) {
-            ifelse(x >= 180, x - 180, x)
-        })
-        
-        aspect_dem <- calc(aspect_dem, function(x) {
-            ifelse(x >= 0 & x <= 90, x + 90, x - 90)
-        })
-        
-        if (traverse == "asymmetrical") {
-            altDiff_traverse <- function(x) {
-                
-                if (abs(x[2] - x[1]) == 0) {
-                  1
-                } else if (x[2] > x[1]) {
-                  if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
-                    hrma <- abs(x[2] - x[1])
-                    1 + (0.5/45) * hrma
-                  } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
-                    hrma <- abs(x[2] - x[1])
-                    2 - (0.5/45) * hrma
-                  } else {
-                    1
-                  }
-                } else if (x[2] < x[1]) {
-                  if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
-                    hrma <- abs(x[2] - x[1])
-                    1 - (0.5/45) * hrma
-                  } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
-                    hrma <- abs(x[2] - x[1])
-                    (0.5/45) * hrma
-                    
-                  } else {
-                    1
-                  }
-                }
+    if (traverse == "asymmetrical" | traverse == "symmetrical") {
+      
+      aspect_dem <- raster::terrain(dem, opt = "aspect", unit = "degrees", neighbors = 8)
+      
+      aspect_dem <- calc(aspect_dem, function(x) {
+        ifelse(x >= 180, x - 180, x)
+      })
+      
+      aspect_dem <- calc(aspect_dem, function(x) {
+        ifelse(x >= 0 & x <= 90, x + 90, x - 90)
+      }) 
+      
+      if (traverse == "asymmetrical") {
+        altDiff_traverse <- function(x) {
+          
+          if (abs(x[2] - x[1]) == 0) {
+            1
+          } else if (x[2] > x[1]) {
+            if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
+              hrma <- abs(x[2] - x[1])
+              1 + (0.5/45) * hrma
+            } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
+              hrma <- abs(x[2] - x[1])
+              2 - (0.5/45) * hrma
+            } else {
+              1
             }
-            
-            trans <- gdistance::transition(aspect_dem, altDiff_traverse, neighbours, symm = FALSE)
-            
-        } else if (traverse == "symmetrical") {
-            altDiff_traverse <- function(x) {
-                
-                if (abs(x[2] - x[1]) == 0) {
-                  1
-                } else if (x[2] > x[1]) {
-                  if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
-                    hrma <- abs(x[2] - x[1])
-                    1 - (0.5/45) * hrma
-                  } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
-                    hrma <- abs(x[2] - x[1])
-                    (0.5/45) * hrma
-                  } else {
-                    1
-                  }
-                } else if (x[2] < x[1]) {
-                  if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
-                    hrma <- abs(x[2] - x[1])
-                    1 - (0.5/45) * hrma
-                  } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
-                    hrma <- abs(x[2] - x[1])
-                    (0.5/45) * hrma
-                    
-                  } else {
-                    1
-                  }
-                }
+          } else if (x[2] < x[1]) {
+            if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
+              hrma <- abs(x[2] - x[1])
+              1 - (0.5/45) * hrma
+            } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
+              hrma <- abs(x[2] - x[1])
+              (0.5/45) * hrma
+              
+            } else {
+              1
             }
-            trans <- gdistance::transition(aspect_dem, altDiff_traverse, neighbours, symm = FALSE)    
+          }
         }
         
-    } else {
-        stop("traverse only accepts input of asymmetrical (default), symmetrical or none")
-    }
-    
-    if ((inherits(other_costs, "list")) & (all(sapply(other_costs, class) == "RasterLayer"))) {
-        other_costs_stack <- raster::stack(other_costs)
+        trans <- gdistance::transition(aspect_dem, altDiff_traverse, neighbours, symm = FALSE)
+        trans <- gdistance::geoCorrection(trans)
         
-        other_costs_prod <- prod(other_costs_stack)
-        
-        cost_trans <- gdistance::transition(other_costs_prod, mean, 16)
-        cost_trans <- gdistance::geoCorrection(cost_trans)
-        
-        Conductance[[1]] <- Conductance[[1]] * trans * cost_trans
-        Conductance[[2]] <- Conductance[[2]] * trans * cost_trans
-        Conductance[[3]] <- Conductance[[3]] * trans * cost_trans
-        Conductance[[4]] <- Conductance[[4]] * trans * cost_trans
-        
-    } else if (inherits(other_costs, "RasterLayer")) {
-        other_costs_prod <- other_costs
-        
-        cost_trans <- gdistance::transition(other_costs_prod, mean, 16)
-        cost_trans <- gdistance::geoCorrection(cost_trans)
-        
-        Conductance[[1]] <- Conductance[[1]] * trans * cost_trans
-        Conductance[[2]] <- Conductance[[2]] * trans * cost_trans
-        Conductance[[3]] <- Conductance[[3]] * trans * cost_trans
-        Conductance[[4]] <- Conductance[[4]] * trans * cost_trans
-        
-    } else if (is.null(other_costs)) {
-        print("other cost is null")
         Conductance[[1]] <- Conductance[[1]] * trans
         Conductance[[2]] <- Conductance[[2]] * trans
         Conductance[[3]] <- Conductance[[3]] * trans
         Conductance[[4]] <- Conductance[[4]] * trans
+        
+      } else if (traverse == "symmetrical") {
+        
+        altDiff_traverse <- function(x) {
+          
+          if (abs(x[2] - x[1]) == 0) {
+            1
+          } else if (x[2] > x[1]) {
+            if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
+              hrma <- abs(x[2] - x[1])
+              1 - (0.5/45) * hrma
+            } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
+              hrma <- abs(x[2] - x[1])
+              (0.5/45) * hrma
+            } else {
+              1
+            }
+          } else if (x[2] < x[1]) {
+            if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
+              hrma <- abs(x[2] - x[1])
+              1 - (0.5/45) * hrma
+            } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
+              hrma <- abs(x[2] - x[1])
+              (0.5/45) * hrma
+              
+            } else {
+              1
+            }
+          }
+        }
+        
+        trans <- gdistance::transition(aspect_dem, altDiff_traverse, neighbours, symm = FALSE)
+        trans <- gdistance::geoCorrection(trans)
+        
+        Conductance[[1]] <- Conductance[[1]] * trans
+        Conductance[[2]] <- Conductance[[2]] * trans
+        Conductance[[3]] <- Conductance[[3]] * trans
+        Conductance[[4]] <- Conductance[[4]] * trans
+        
+      }
+      
+    } else if (traverse == "none") { 
+      next
     } else {
-        stop("Other costs only accepts list of RasterLayer elements or single Rasterlayer. See details for more. ")
+      stop("traverse only accepts input of asymmetrical (default), symmetrical or none")
+    }
+    
+    if (inherits(other_costs, "RasterStack")) {
+      
+      other_costs_prod <- prod(other_costs)
+      
+      cost_trans <- gdistance::transition(other_costs_prod, mean, 16)
+      cost_trans <- gdistance::geoCorrection(cost_trans)
+      
+      Conductance[[1]] <- Conductance[[1]] * cost_trans
+      Conductance[[2]] <- Conductance[[2]] * cost_trans
+      Conductance[[3]] <- Conductance[[3]] * cost_trans
+      Conductance[[4]] <- Conductance[[4]] * cost_trans
+      
+    } else if (inherits(other_costs, "RasterLayer")) {
+      other_costs_prod <- other_costs
+      
+      cost_trans <- gdistance::transition(other_costs_prod, mean, 16)
+      cost_trans <- gdistance::geoCorrection(cost_trans)
+      
+      Conductance[[1]] <- Conductance[[1]]  * cost_trans
+      Conductance[[2]] <- Conductance[[2]]  * cost_trans
+      Conductance[[3]] <- Conductance[[3]]  * cost_trans
+      Conductance[[4]] <- Conductance[[4]]  * cost_trans
+    } else {
+      stop("Other costs only accepts list of RasterLayer elements or single Rasterlayer. See details for more. ")
     }
     
     if (inherits(origin, "SpatialPoints") & inherits(destination, "SpatialPoints")) {
