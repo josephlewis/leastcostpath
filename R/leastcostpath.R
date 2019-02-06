@@ -95,10 +95,8 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
                   }
                 }
             }
-            
+            trans <- gdistance::transition(aspect_dem, altDiff_traverse, neighbours, symm = FALSE)    
         }
-        
-        trans <- gdistance::transition(aspect_dem, altDiff_traverse, neighbours, symm = FALSE)
         
     } else {
         stop("traverse only accepts input of asymmetrical (default), symmetrical or none")
