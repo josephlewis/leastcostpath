@@ -111,11 +111,6 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
         Conductance[[4]] <- Conductance[[4]] * trans
         
       }
-      
-    } else if (traverse == "none") { 
-      next
-    } else {
-      stop("traverse only accepts input of asymmetrical (default), symmetrical or none")
     }
     
     if (inherits(other_costs, "RasterStack")) {
@@ -140,8 +135,6 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
       Conductance[[2]] <- Conductance[[2]]  * cost_trans
       Conductance[[3]] <- Conductance[[3]]  * cost_trans
       Conductance[[4]] <- Conductance[[4]]  * cost_trans
-    } else {
-      stop("Other costs only accepts list of RasterLayer elements or single Rasterlayer. See details for more. ")
     }
     
     if (inherits(origin, "SpatialPoints") & inherits(destination, "SpatialPoints")) {
