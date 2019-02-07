@@ -1,6 +1,8 @@
 leastcostpath - version 0.1.3
 =============================
 
+![](https://raw.githubusercontent.com/josephlewis/leastcostpath/master/images/leastcostpath_logo.png)
+
 The R package <b>leastcostpath</b> provides functions to calculate Least Cost Paths (LCPs) for archaeological application. This package applies multiple cost functions when approximating the dififculty of moving across a landscape, as well as taking into account traversing across slope and other costs such as landscape feature attraction. This package also provides a function to validate the accuracy of the computed LCP relative to another path. This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
 Getting Started
