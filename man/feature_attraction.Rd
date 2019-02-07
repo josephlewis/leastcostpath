@@ -24,7 +24,7 @@ feature_attraction(dem, locations, viewshed = NULL, decay = "linear",
 Calculates landscape feature attraction cost RasterLayer
 }
 \details{
-The function computes a landscape feature attraction cost RasterLayer. It implements the method proposed by Llobera (2000) and uses the linear decay rate to decrease the attraction as distance increases from the feature. The function takes a Digital Elevation Model ('RasterLayer' class) and the linear decay rate.
+The function computes a landscape feature attraction cost RasterLayer. It implements the method proposed by Llobera (2000) and uses the linear decay rate to decrease the attraction as distance increases from the feature. The function takes a Digital Elevation Model ('RasterLayer' class), the location of the features and the linear decay rate.
 }
 \author{
 Joseph Lewis
