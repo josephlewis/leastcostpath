@@ -2,7 +2,7 @@
 #'
 #' Calculates landscape feature attraction cost RasterLayer
 #'
-#' The function computes a landscape feature attraction cost RasterLayer. It implements the method proposed by Llobera (xx) and uses the linear decay rate to decrease the attraction as distance increases from the feature. The function takes a Digital Elevation Model ('RasterLayer' class) and the linear decay rate.
+#' The function computes a landscape feature attraction cost RasterLayer. It implements the method proposed by Llobera (2000) and uses the linear decay rate to decrease the attraction as distance increases from the feature. The function takes a Digital Elevation Model ('RasterLayer' class) and the linear decay rate.
 #'
 #' @param dem Digital Elevation Model. Expects Object of class RasterLayer
 #'
