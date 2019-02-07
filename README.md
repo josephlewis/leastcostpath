@@ -1,7 +1,7 @@
 leastcostpath - version 0.1.3
 =============================
 
-R Implementation of Least Cost Path (LCP) Analysis. Provides functionality to create multiple LCPs using different cost functions based on slope and aspect. See details for more.
+The R package <b>leastcostpath</b> provides functions to calculate Least Cost Paths (LCPs) for archaeological application. This package applies multiple cost functions when approximating the dififculty of moving across a landscape, as well as taking into account traversing across slope and other costs such as landscape feature attraction. This package also provides a function to validate the accuracy of the computed LCP relative to another path. This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
 Getting Started
 ---------------
@@ -13,55 +13,6 @@ Getting Started
     install_github("josephlewis/leastcostpath")
     library(leastcostpath)
 
-### Key Features
-
--   Computes multiple LCPs using diferent cost functions allowing the user to assess which cost function produces the most accurate LCP (see `validation_buffer` for validation method).
-
--   Implements cost of movement uphill and downhill, as well as across. This functionality provides a true anisotropic cost surface and more realistically represents the difficulty of moving through a landscape.
-
--   LCP validation method implemented following Herzog (2013. 205), who stated that Without validation, LCP results are "mere guesswork".
-
-### Implemented functions
-
-`leastcostpath` provides the functionality to compute Least Cost Paths using multiple cost functions that approximate human movement across a landscape and user-defined horizontal factors (change in aspect degree).
-
-Function requires a Digital Elevation Model (`RasterLayer` class) and and point features (`SpatialPoints` class) signifying the origin and destination of the LCP.
-
-The following cost functions are implemented:
-
--   [Tobler's Hiking Function (1993)](http://escholarship.org/uc/item/05r820mz)
-
-`6 * exp(-3.5 * abs(slope + 0.05))`
-
--   [Marquez-Perez et al. (2017) 'Modified Hiking function')](https://www.tandfonline.com/doi/abs/10.1080/00167223.2017.1316212)
-
-`4.8 * exp(-5.3 * abs(slope * 0.7) + 0.03)`
-
--   [Llobera and Sluckin (2007) 'Fourth-degree polynomial function')](https://www.ncbi.nlm.nih.gov/pubmed/17892887)
-
-`1/(1 + abs(slope/crit_slope)^2)`
-
--   [Herzog's (2010) 'Sixth-degree polynomial function')](https://publikationen.uni-tuebingen.de/xmlui/bitstream/handle/10900/60793/59_Herzog_CAA_2010.pdf?sequence=2)
-
-`1 / ((((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + (93.419 * slope[adj]^2) + (19.825 * slope[adj]) + 1.64)))`
-
-see `leastcostpath` for more details on the calculation.
-
-`validation_buffer` computes the accuracy of the LCP based on the method proposed by Goodchild and Hunter (1997).
-
--   Evaluates the similarity between two linear features by determining the percentage of a linear feature that lies within a buffer distance from the 'true' linear feature (ie. the percentage of the LCP within x buffer distance from a known road).
-
-### Future Developments
-
--   ~~Implement horizontal factors (based on aspect) within LCP calculation. This will create a true anisotropic LCP calculation~~
-
--   ~~Implement Herzog's Sixth Degree Polynomial function~~
-
--   Incorporate 24/28/32/48 neighbours within LCP calculation.
-
--   Implement validation method based on the distance from the optimal route (ie. straight line) and the LCP.
-
--   Implement Fréchet distance validation method.
 
 Feedback
 --------
@@ -73,7 +24,8 @@ Versioning
 
 -   version 0.1.0 - First release to Github
 -   version 0.1.1 - Implemented choice of directionality
--   version 0.1.2 - Implemented horizontal factors that account for change in aspect in the landscape.
+-   version 0.1.2 - Implemented cost when traversing across slope. 
+-   version 0.1.3 - Implemented landscape feature attractions - linear decay rate
 
 Authors
 -------

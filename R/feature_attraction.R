@@ -1,8 +1,36 @@
-feature_attraction <- function(dem, locations, viewshed = NULL, decay = "linear", decay_rate = c(5, 500), export_name = "feature attraction") {
-  
+#' feature_attraction
+#'
+#' Calculates landscape feature attraction cost RasterLayer
+#'
+#' The function computes a landscape feature attraction cost RasterLayer. It implements the method proposed by Llobera (xx) and uses the linear decay rate to decrease the attraction as distance increases from the feature. The function takes a Digital Elevation Model ('RasterLayer' class) and the linear decay rate.
+#'
+#' @param dem Digital Elevation Model. Expects Object of class RasterLayer
+#'
+#' @param locations Location from which the Least Cost Path is calculated. Expects Object of class SpatialPoints or data.frame
+#'
+#' @param viewshed Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking function, Marquez-Perez et al. Modified Hiking function, Herzog's wheeled transport function, and Herzog's sixth degree polynomial function. Default parameter value is is 'all'. See Details for more.
+#'
+#'@param decay If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the ansitropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination only. see Details for more.
+#'
+#' @param decay_rate Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected input values are 4, 8, 16. Default is 16.
+#'
+#' @param suffix Text to add to end of file name. Useful when calculating least cost paths with different parameters.
+#'
+#' @author Joseph Lewis
+#'
+#' @import rgdal
+#' @import rgeos
+#' @import sp
+#' @import raster
+#' @import gdistance
+#'
+#' @export
+
+feature_attraction <- function(dem, locations, viewshed = NULL, decay = "linear", decay_rate = c(5, 500), suffix = "") {
+
     if (inherits(locations, "SpatialPoints")) {
-    locations <- data.frame(locations)
-  }
+        locations <- data.frame(locations)
+    }
 
     decay_invert_stack <- stack()
 
@@ -55,6 +83,6 @@ feature_attraction <- function(dem, locations, viewshed = NULL, decay = "linear"
         print("Input RasterLayer")
     }
 
-    writeRaster(attraction_raster, paste0(export_name, ".tif"), overwrite = TRUE)
+    writeRaster(attraction_raster, paste0("feature_attraction", "_", suffix, ".tif"), overwrite = TRUE)
 
 }
