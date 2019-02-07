@@ -6,13 +6,13 @@
 #'
 #' @param dem Digital Elevation Model. Expects Object of class RasterLayer
 #'
-#' @param locations Location from which the Least Cost Path is calculated. Expects Object of class SpatialPoints or data.frame
+#' @param locations Locations of landscape features. Expects Object of class SpatialPoints or data.frame
 #'
-#' @param viewshed Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking function, Marquez-Perez et al. Modified Hiking function, Herzog's wheeled transport function, and Herzog's sixth degree polynomial function. Default parameter value is is 'all'. See Details for more.
+#' @param viewshed if viewshed is supplied with a RasterLayer then landscape feature attraction values are limited to only visible areas.
 #'
-#'@param decay If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the ansitropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination only. see Details for more.
+#'@param decay Default is "linear". Exponential to be implemented soon.
 #'
-#' @param decay_rate Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected input values are 4, 8, 16. Default is 16.
+#' @param decay_rate Expects vector of two values denoting the Rank of the landscape feature and the maximum attraction value. Default is c(5, 500). scale in metres (m).
 #'
 #' @param suffix Text to add to end of file name. Useful when calculating least cost paths with different parameters.
 #'
