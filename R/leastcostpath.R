@@ -69,7 +69,7 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
             gdistance::geoCorrection(slope_stack[[4]]))
     }
 
-    if (traverse == "asymmetrical" | traverse == "symmetrical") {
+    if (traverse == "asymmetrical" | traverse == "symmetrical" | traverse == "none") {
 
         aspect_dem <- raster::terrain(dem, opt = "aspect", unit = "degrees", neighbors = 8)
 
@@ -156,8 +156,15 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
             Conductance[[3]] <- Conductance[[3]] * trans
             Conductance[[4]] <- Conductance[[4]] * trans
 
-        }
-    }
+        } else if (traverse == "none") { 
+          Conductance[[1]] <- Conductance[[1]] 
+          Conductance[[2]] <- Conductance[[2]] 
+          Conductance[[3]] <- Conductance[[3]] 
+          Conductance[[4]] <- Conductance[[4]] 
+          }
+    } else { 
+      stop("traverse expecting 'asymmertrical', 'symmetrical' or 'none'. See ?leastcostpath for more details.")
+      }
 
     if (inherits(other_costs, "RasterStack")) {
 
@@ -221,7 +228,7 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
     }
 
     for (i in 1:length(sPath)) {
-        rgdal::writeOGR(sPath[[i]], ".", paste0(names(sPath)[i], "_", suffix), driver = "ESRI Shapefile", overwrite_layer = TRUE)
+        rgdal::writeOGR(sPath[[i]], ".", paste0(names(sPath)[i], suffix), driver = "ESRI Shapefile", overwrite_layer = TRUE)
 
     }
 }

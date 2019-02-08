@@ -66,7 +66,7 @@ validation_buffer <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 10
 
     lcp_df <- data.frame(seq(1, length(buffers)), buffers, format(accuracy, digits = 3))
     names(lcp_df) <- c("ID", "Buffer Applied from data (m)", "Percent of LCP within Buffer Distance (%)")
-    utils::write.csv(lcp_df, file = paste0("Least Cost Path Accuracy - Buffer Method", "_", suffix, ".csv"), row.names = FALSE)
+    utils::write.csv(lcp_df, file = paste0("Least Cost Path Accuracy - Buffer Method", suffix, ".csv"), row.names = FALSE)
     return(lcp_df)
 }
 

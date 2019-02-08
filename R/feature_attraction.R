@@ -83,6 +83,6 @@ feature_attraction <- function(dem, locations, viewshed = NULL, decay = "linear"
         print("Input RasterLayer")
     }
 
-    writeRaster(attraction_raster, paste0("feature_attraction", "_", suffix, ".tif"), overwrite = TRUE)
+    writeRaster(attraction_raster, paste0("feature_attraction", suffix, ".tif"), overwrite = TRUE)
 
 }
