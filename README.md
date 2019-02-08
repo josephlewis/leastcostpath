@@ -8,18 +8,51 @@ The R package <b>leastcostpath</b> provides functions to calculate Least Cost Pa
 Getting Started
 ---------------
 
-### Installing
+Installing
+--------
 
-    #install.packages("devtools")
+    # install.packages("devtools")
     library(devtools)
     install_github("josephlewis/leastcostpath")
     library(leastcostpath)
 
+Usage
+--------
 
+#### Computation of Least Cost Path
+
+    library(leastcostpath)
+    
+    r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
+    
+    loc1 = sp::SpatialPoints(cbind(2667670, 6479000))
+    
+    loc2 =  sp::SpatialPoints(cbind(2667800, 6479400))
+    
+    leastcostpath(dem = r, origin = loc1, destination = loc2, traverse = "asymmetrical")
+    
+#### Creation of Landacape Feature Attraction
+
+    landscape_features <- sp::SpatialPoints(cbind(c(2667775, 2667652), c(6479191, 6479237)))
+    
+    lfa <- feature_attraction(r, landscape_features, viewshed = NULL, decay = "linear", decay_rate = c(5, 500), suffix = "")
+    
+#### Least Cost Path validation against another SpatialLines object
+    
+    x1 <- c(1,5,4,8)
+    y1 <- c(1,3,4,7)
+    line1 <- sp::SpatialLines(list(sp::Lines(sp::Line(cbind(x1,y1)), ID='a')))
+
+    x2 <- c(1,5,5,8)
+    y2 <- c(1,4,6,7)
+    line2 <- sp::SpatialLines(list(sp::Lines(sp::Line(cbind(x2,y2)), ID='b')))
+
+    validation_buffer(lcp = line1, comparison = line2, buffers = c(0.1, 0.2, 0.5, 1))
+  
 Feedback
 --------
 
-Please email josephlewis1992\[at\]gmail.com to provide your feedback or suggest functionality that you would like implemented.
+Please email josephlewis1992[at]gmail.com to provide your feedback or suggest functionality that you would like implemented.
 
 Versioning
 ----------
