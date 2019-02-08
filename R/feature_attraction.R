@@ -44,11 +44,7 @@ feature_attraction <- function(dem, locations, viewshed = NULL, decay = "linear"
             (-abs(decay_rate[1])/abs(decay_rate[2])) * (x[1]) + abs(decay_rate[1])
         })
 
-        plot(decay_invert)
-
         decay_invert_stack <- raster::stack(decay_invert_stack, decay_invert)
-
-        plot(decay_invert_stack[[i]])
 
     }
 
@@ -69,15 +65,11 @@ feature_attraction <- function(dem, locations, viewshed = NULL, decay = "linear"
 
         attraction_raster[is.na(attraction_raster) | attraction_raster < 1] <- 1
 
-        plot(attraction_raster, main = "test")
-
     } else if (inherits(viewshed, "NULL")) {
 
         decay_invert_sum[is.na(decay_invert_sum) | decay_invert_sum < 1] <- 1
 
         attraction_raster <- decay_invert_sum
-
-        plot(attraction_raster, main = "test")
 
     } else {
         print("Input RasterLayer")

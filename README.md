@@ -35,7 +35,12 @@ Usage
 
     landscape_features <- sp::SpatialPoints(cbind(c(2667775, 2667652), c(6479191, 6479237)))
     
-    lfa <- feature_attraction(r, landscape_features, viewshed = NULL, decay = "linear", decay_rate = c(5, 500), suffix = "")
+    lfa <- feature_attraction(r, landscape_features, viewshed = NULL, 
+              decay = "linear", decay_rate = c(5, 500), suffix = "")
+    
+#### Incorporating Landscape Feature Attractions into Least Cost Path calculation
+
+    leastcostpath(dem = r, origin = loc1, destination = loc2, traverse = "asymmetrical", other_costs = lfa)
     
 #### Least Cost Path validation against another SpatialLines object
     
