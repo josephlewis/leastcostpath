@@ -5,7 +5,7 @@
 \title{validation_buffer}
 \usage{
 validation_buffer(lcp, comparison, buffers = c(50, 100, 250, 500, 1000),
-  export_buffers = FALSE, suffix = "")
+  suffix = "", export = FALSE)
 }
 \arguments{
 \item{lcp}{Least Cost Path to assess the accuracy of. Expects object of class SpatialLines}
@@ -14,12 +14,12 @@ validation_buffer(lcp, comparison, buffers = c(50, 100, 250, 500, 1000),
 
 \item{buffers}{Expects vector of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).}
 
-\item{export_buffers}{If TRUE then SpatialPolygons of the created buffers are exported. Default is FALSE.}
-
 \item{suffix}{Text to add to end of file name. Useful when assessing least cost paths with different buffer distances.}
+
+\item{export}{Exports csv with calculated percentage within chosen buffers to current directory.}
 }
 \description{
-Calculates the accuracy of the Least Cost Path by reporting the percentage of Least Cost Path within certain distance(s) from another line.
+Calculates the accuracy of the Least Cost Path by calculating the percentage of Least Cost Path within certain distance(s) from another line.
 }
 \details{
 The function computes the accuracy of the Least Cost Path using the buffer method proposed by \href{https://www.tandfonline.com/doi/abs/10.1080/136588197242419}{Goodchild and Hunter (1997)}. Expects two SpatialLines objects and a vector of buffer distances. Returns buffer SpatialPolygons and data.frame with accuracy results.

@@ -1,29 +1,40 @@
 #' leastcostpath
 #'
-#' Calculates Least Cost Paths for archaeological application
+#' Calculates Least Cost Paths which are often, but not exclusively, used in archaeological research
 #'
 #' The function computes the Least Cost Path from an origin location to a destination location. It implements multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. It also implements symmetrical and assymetrical cost functions for moving across slope as well as allowing for the incorporation of other costs such as landscape feature attractions. The function takes a Digital Elevation Model ('RasterLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
 #'
+#' The most widely used cost function that approximates the difficulty of moving across a landscape is Waldo Tobler's 'Hiking Function' (Gorenflo and Gale, 1990; Wheatley and Gillings, 2001). This function allows for the assessment of time necessary to traverse a surface and takes into account up-slope and down-slope momentum (Kantner, 2004; Tobler, 1993).
+#'
+#' The Modified Hiking cost function combines MIDE (París Roche, 2002), a method to calculate walking hours for an average hiker with a light load (Márquez-Pérez et al., 2017), and Tobler's 'Hiking Function' (Tobler, 1993). The Modified Hiking Function benefits from the precision of the MIDE rule and the continuity of Tobler's Hiking Function (Márquez-Pérez et al., 2017).
+#'
+#' Herzog (xx), based on the cost function provided by Llobera and Sluckin (2007), has developed a cost function to approximate the cost for wheeled transport. The cost function is symmetric and is most applicable for use when the same route was taken in both directions.
+#'
+#' Herzog's Sixth-degree polynomial cost function approximates the energy expenditure values found in Minetti et al. (2002) but eliminates the problem of unrealistic negative energy expenditure values for steep downhill slopes.
+#'
 #' @param dem Digital Elevation Model. Expects Object of class RasterLayer
 #'
-#' @param origin Location from which the Least Cost Path is calculated. Expects Object of class SpatialPoints or data.frame
+#' @param origin Location from which the Least Cost Path is calculated. Expects Object of class SpatialPoints
 #'
-#' @param destination Location to which the Least Cost Path is calculated. Expects Object of class SpatialPoints or data.frame
+#' @param destination Location to which the Least Cost Path is calculated. Expects Object of class SpatialPoints
 #'
 #' @param cost_function Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking function, Marquez-Perez et al. Modified Hiking function, Herzog's wheeled transport function, and Herzog's sixth degree polynomial function. Default parameter value is is 'all'. See Details for more.
 #'
-#'@param directional If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the ansitropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination only. see Details for more.
+#'@param directional If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the ansitropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination only.
 #'
 #' @param neighbours Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected input values are 4, 8, 16. Default is 16.
 #'
 #' @param crit_slope Critical Slope (in percent) is 'the transition where switchbacks become more effective than direct uphill or downhill paths'. Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Critical slope defaulted is 15 degrees, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012).
 #'
-#' @param traverse Cost function to be used to quantify cost when moving across a slope. Input values are 'asymmetrical', 'symmetrical', 'none'. Default value is 'assymetrical'. See details for more.
+#' @param traverse Cost function to be used to quantify cost when moving across a slope. Input values are 'asymmetrical', 'symmetrical', 'none'. Default value is 'asymmetrical'. See details for more.
 #'
-#' @param other_costs Ability to add other costs such as landscape feature attractions, rivers, political boundaries. Expects Object of class RasterLayer or RasterStack. See Details for more.
+#' @param other_costs Ability to add other costs such as landscape feature attractions, rivers, political boundaries. Expects Object of class RasterLayer or RasterStack.
 #'
 #' @param suffix Text to add to end of file name. Useful when calculating least cost paths with different parameters.
 #'
+#' @param openness Incorporates the openness of a landscape as proposed by
+#'
+#' @param export Exports calculated least cost paths as Shapefiles to current directory.
 #' @author Joseph Lewis
 #'
 #' @import rgdal
@@ -42,10 +53,10 @@
 #' loc2 = cbind(2667800, 6479400)
 #' loc2 = sp::SpatialPoints(loc2)
 #'
-#' leastcostpath(dem = r, origin = loc1, destination = loc2, traverse = 'asymmetrical')
+#' leastcostpath(dem = r, origin = loc1, destination = loc2, traverse = 'asymmetrical', export = FALSE)
 
-leastcostpath <- function(dem, origin, destination, cost_function = "all", directional = FALSE, neighbours = 16, crit_slope = 12, traverse = "asymmetrical", other_costs = c(),
-    suffix = "") {
+leastcostpath <- function(dem, origin, destination, cost_function = "all", directional = FALSE, neighbours = 16, crit_slope = 12, traverse = "asymmetrical",
+    other_costs = c(), suffix = "", openness = FALSE, export = FALSE) {
 
     altDiff_slope <- function(x) {
         x[2] - x[1]
@@ -111,6 +122,7 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
             }
 
             trans <- gdistance::transition(aspect_dem, altDiff_traverse, neighbours, symm = FALSE)
+
             trans <- gdistance::geoCorrection(trans)
 
             Conductance[[1]] <- Conductance[[1]] * trans
@@ -156,21 +168,21 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
             Conductance[[3]] <- Conductance[[3]] * trans
             Conductance[[4]] <- Conductance[[4]] * trans
 
-        } else if (traverse == "none") { 
-          Conductance[[1]] <- Conductance[[1]] 
-          Conductance[[2]] <- Conductance[[2]] 
-          Conductance[[3]] <- Conductance[[3]] 
-          Conductance[[4]] <- Conductance[[4]] 
-          }
-    } else { 
-      stop("traverse expecting 'asymmertrical', 'symmetrical' or 'none'. See ?leastcostpath for more details.")
-      }
+        } else if (traverse == "none") {
+            Conductance[[1]] <- Conductance[[1]]
+            Conductance[[2]] <- Conductance[[2]]
+            Conductance[[3]] <- Conductance[[3]]
+            Conductance[[4]] <- Conductance[[4]]
+        }
+    } else {
+        stop("traverse expecting 'asymmertrical', 'symmetrical' or 'none'. See ?leastcostpath for more details.")
+    }
 
     if (inherits(other_costs, "RasterStack")) {
 
         other_costs_prod <- prod(other_costs)
 
-        cost_trans <- gdistance::transition(other_costs_prod, mean, 16)
+        cost_trans <- gdistance::transition(other_costs_prod, mean, neighbours)
         cost_trans <- gdistance::geoCorrection(cost_trans)
 
         Conductance[[1]] <- Conductance[[1]] * cost_trans
@@ -181,7 +193,7 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
     } else if (inherits(other_costs, "RasterLayer")) {
         other_costs_prod <- other_costs
 
-        cost_trans <- gdistance::transition(other_costs_prod, mean, 16)
+        cost_trans <- gdistance::transition(other_costs_prod, mean, neighbours)
         cost_trans <- gdistance::geoCorrection(cost_trans)
 
         Conductance[[1]] <- Conductance[[1]] * cost_trans
@@ -190,14 +202,39 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
         Conductance[[4]] <- Conductance[[4]] * cost_trans
     }
 
-    if (inherits(origin, "SpatialPoints") & inherits(destination, "SpatialPoints")) {
+    if (openness) {
 
-        sPath <- list()
+        open_Diff <- function(x) {
+            x[2] - x[1]
+        }
+
+        open_diff_trans <- transition(dem, open_Diff, 8, symm = FALSE)
+
+        open_diff_trans_gc <- geoCorrection(open_diff_trans)
+
+        open_adj <- adjacent(dem, cells = 1:ncell(dem), pairs = TRUE, directions = 8)
+
+        open_diff_trans_gc[open_adj] <- atan(open_diff_trans_gc[open_adj])
+
+        open_adj_trans <- adjacencyFromTransition(open_diff_trans_gc)
+
+        open_diff_trans_gc[open_adj_trans] <- 90 - open_diff_trans_gc[open_adj_trans]
+
+        Conductance[[1]] <- Conductance[[1]] * open_diff_trans_gc
+        Conductance[[2]] <- Conductance[[2]] * open_diff_trans_gc
+        Conductance[[3]] <- Conductance[[3]] * open_diff_trans_gc
+        Conductance[[4]] <- Conductance[[4]] * open_diff_trans_gc
+
+    }
+
+    if (inherits(origin, "SpatialPoints") & inherits(destination, "SpatialPoints")) {
         origin <- sp::coordinates(origin)
         destination <- sp::coordinates(destination)
     } else {
         return("Origin or Destination is not a SpatialPoints")
     }
+
+    sPath <- list()
 
     if (directional == "TRUE") {
 
@@ -227,8 +264,14 @@ leastcostpath <- function(dem, origin, destination, cost_function = "all", direc
         sPath[[i]]$length <- lcp_lengths[i]
     }
 
-    for (i in 1:length(sPath)) {
-        rgdal::writeOGR(sPath[[i]], ".", paste0(names(sPath)[i], suffix), driver = "ESRI Shapefile", overwrite_layer = TRUE)
+    if (export) {
 
+        for (i in 1:length(sPath)) {
+            rgdal::writeOGR(sPath[[i]], ".", paste0(names(sPath)[i], suffix), driver = "ESRI Shapefile", overwrite_layer = TRUE)
+        }
     }
+
+
+    return(sPath)
+
 }

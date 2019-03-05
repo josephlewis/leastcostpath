@@ -10,11 +10,13 @@
 #'
 #' @param viewshed if viewshed is supplied with a RasterLayer then landscape feature attraction values are limited to only visible areas.
 #'
-#'@param decay Default is "linear". Exponential to be implemented soon.
+#'@param decay Default is 'linear'. Exponential to be implemented soon.
 #'
 #' @param decay_rate Expects vector of two values denoting the Rank of the landscape feature and the maximum attraction value. Default is c(5, 500). scale in metres (m).
 #'
 #' @param suffix Text to add to end of file name. Useful when calculating least cost paths with different parameters.
+#'
+#' @param export Exports landscape feature attraction cost layer as .tif to current directory.
 #'
 #' @author Joseph Lewis
 #'
@@ -26,55 +28,59 @@
 #'
 #' @export
 
-feature_attraction <- function(dem, locations, viewshed = NULL, decay = "linear", decay_rate = c(5, 500), suffix = "") {
-
+feature_attraction <- function(dem, locations, viewshed = NULL, decay = "linear", decay_rate = c(5, 500), suffix = "", export = FALSE) {
+    
     if (inherits(locations, "SpatialPoints")) {
         locations <- data.frame(locations)
     }
-
+    
     decay_invert_stack <- stack()
-
+    
     for (i in 1:nrow(locations)) {
-
+        
         dem_locations <- rasterize(coordinates(locations[i, ]), dem)
-
+        
         location_distance <- distance(dem_locations)
-
+        
         decay_invert <- calc(location_distance, fun = function(x) {
             (-abs(decay_rate[1])/abs(decay_rate[2])) * (x[1]) + abs(decay_rate[1])
         })
-
+        
         decay_invert_stack <- raster::stack(decay_invert_stack, decay_invert)
-
+        
     }
-
+    
     if (nlayers(decay_invert_stack) > 1) {
         decay_invert_sum <- sum(decay_invert_stack)
     } else {
         decay_invert_sum <- decay_invert_stack
     }
-
-
+    
+    
     if (inherits(viewshed, "RasterLayer")) {
-
+        
         view <- viewshed
-
+        
         view[view == 0] <- NA
-
+        
         attraction_raster <- decay_invert_sum * view
-
+        
         attraction_raster[is.na(attraction_raster) | attraction_raster < 1] <- 1
-
+        
     } else if (inherits(viewshed, "NULL")) {
-
+        
         decay_invert_sum[is.na(decay_invert_sum) | decay_invert_sum < 1] <- 1
-
+        
         attraction_raster <- decay_invert_sum
-
+        
     } else {
         print("Input RasterLayer")
     }
-
-    writeRaster(attraction_raster, paste0("feature_attraction", suffix, ".tif"), overwrite = TRUE)
-
+    
+    if (export) {
+        
+        writeRaster(attraction_raster, paste0("feature_attraction", suffix, ".tif"), overwrite = TRUE)
+    }
+    return(attraction_raster)
+    
 }

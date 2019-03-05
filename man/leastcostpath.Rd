@@ -6,34 +6,47 @@
 \usage{
 leastcostpath(dem, origin, destination, cost_function = "all",
   directional = FALSE, neighbours = 16, crit_slope = 12,
-  traverse = "asymmetrical", other_costs = c(), suffix = "")
+  traverse = "asymmetrical", other_costs = c(), suffix = "",
+  openness = FALSE, export = FALSE)
 }
 \arguments{
 \item{dem}{Digital Elevation Model. Expects Object of class RasterLayer}
 
-\item{origin}{Location from which the Least Cost Path is calculated. Expects Object of class SpatialPoints or data.frame}
+\item{origin}{Location from which the Least Cost Path is calculated. Expects Object of class SpatialPoints}
 
-\item{destination}{Location to which the Least Cost Path is calculated. Expects Object of class SpatialPoints or data.frame}
+\item{destination}{Location to which the Least Cost Path is calculated. Expects Object of class SpatialPoints}
 
 \item{cost_function}{Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking function, Marquez-Perez et al. Modified Hiking function, Herzog's wheeled transport function, and Herzog's sixth degree polynomial function. Default parameter value is is 'all'. See Details for more.}
 
-\item{directional}{If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the ansitropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination only. see Details for more.}
+\item{directional}{If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin. This is to reflect the ansitropy of Tobler's and Marquez-Perez's cost functions. If TRUE then Least Cost Paths computed from origin to destination only.}
 
 \item{neighbours}{Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected input values are 4, 8, 16. Default is 16.}
 
 \item{crit_slope}{Critical Slope (in percent) is 'the transition where switchbacks become more effective than direct uphill or downhill paths'. Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Critical slope defaulted is 15 degrees, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012).}
 
-\item{traverse}{Cost function to be used to quantify cost when moving across a slope. Input values are 'asymmetrical', 'symmetrical', 'none'. Default value is 'assymetrical'. See details for more.}
+\item{traverse}{Cost function to be used to quantify cost when moving across a slope. Input values are 'asymmetrical', 'symmetrical', 'none'. Default value is 'asymmetrical'. See details for more.}
 
-\item{other_costs}{Ability to add other costs such as landscape feature attractions, rivers, political boundaries. Expects Object of class RasterLayer or RasterStack. See Details for more.}
+\item{other_costs}{Ability to add other costs such as landscape feature attractions, rivers, political boundaries. Expects Object of class RasterLayer or RasterStack.}
 
 \item{suffix}{Text to add to end of file name. Useful when calculating least cost paths with different parameters.}
+
+\item{openness}{Incorporates the openness of a landscape as proposed by}
+
+\item{export}{Exports calculated least cost paths as Shapefiles to current directory.}
 }
 \description{
-Calculates Least Cost Paths for archaeological application
+Calculates Least Cost Paths which are often, but not exclusively, used in archaeological research
 }
 \details{
 The function computes the Least Cost Path from an origin location to a destination location. It implements multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. It also implements symmetrical and assymetrical cost functions for moving across slope as well as allowing for the incorporation of other costs such as landscape feature attractions. The function takes a Digital Elevation Model ('RasterLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
+
+The most widely used cost function that approximates the difficulty of moving across a landscape is Waldo Tobler's 'Hiking Function' (Gorenflo and Gale, 1990; Wheatley and Gillings, 2001). This function allows for the assessment of time necessary to traverse a surface and takes into account up-slope and down-slope momentum (Kantner, 2004; Tobler, 1993).
+
+The Modified Hiking cost function combines MIDE (París Roche, 2002), a method to calculate walking hours for an average hiker with a light load (Márquez-Pérez et al., 2017), and Tobler's 'Hiking Function' (Tobler, 1993). The Modified Hiking Function benefits from the precision of the MIDE rule and the continuity of Tobler's Hiking Function (Márquez-Pérez et al., 2017).
+
+Herzog (xx), based on the cost function provided by Llobera and Sluckin (2007), has developed a cost function to approximate the cost for wheeled transport. The cost function is symmetric and is most applicable for use when the same route was taken in both directions.
+
+Herzog's Sixth-degree polynomial cost function approximates the energy expenditure values found in Minetti et al. (2002) but eliminates the problem of unrealistic negative energy expenditure values for steep downhill slopes.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
@@ -43,7 +56,7 @@ loc1 = sp::SpatialPoints(loc1)
 loc2 = cbind(2667800, 6479400)
 loc2 = sp::SpatialPoints(loc2)
 
-leastcostpath(dem = r, origin = loc1, destination = loc2, traverse = 'asymmetrical')
+leastcostpath(dem = r, origin = loc1, destination = loc2, traverse = 'asymmetrical', export = FALSE)
 }
 \author{
 Joseph Lewis

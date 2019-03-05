@@ -5,7 +5,7 @@
 \title{feature_attraction}
 \usage{
 feature_attraction(dem, locations, viewshed = NULL, decay = "linear",
-  decay_rate = c(5, 500), suffix = "")
+  decay_rate = c(5, 500), suffix = "", export = FALSE)
 }
 \arguments{
 \item{dem}{Digital Elevation Model. Expects Object of class RasterLayer}
@@ -14,11 +14,13 @@ feature_attraction(dem, locations, viewshed = NULL, decay = "linear",
 
 \item{viewshed}{if viewshed is supplied with a RasterLayer then landscape feature attraction values are limited to only visible areas.}
 
-\item{decay}{Default is "linear". Exponential to be implemented soon.}
+\item{decay}{Default is 'linear'. Exponential to be implemented soon.}
 
 \item{decay_rate}{Expects vector of two values denoting the Rank of the landscape feature and the maximum attraction value. Default is c(5, 500). scale in metres (m).}
 
 \item{suffix}{Text to add to end of file name. Useful when calculating least cost paths with different parameters.}
+
+\item{export}{Exports landscape feature attraction cost layer as .tif to current directory.}
 }
 \description{
 Calculates landscape feature attraction cost RasterLayer
