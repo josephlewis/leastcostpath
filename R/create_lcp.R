@@ -42,7 +42,7 @@
 #' plot(raster(final_cost_cs))
 #' plot(lcps[[1]], add = T)
 #' plot(lcps[[2]], add = T, col = 'red')
-#'
+
 create_lcp <- function(cost_surface, origin, destination, directional = FALSE) {
     
     if (!inherits(cost_surface, "TransitionLayer")) 
