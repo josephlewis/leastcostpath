@@ -1,63 +1,50 @@
-leastcostpath - version 0.1.3
+leastcostpath - version 0.1.4
 =============================
 
 ![](https://raw.githubusercontent.com/josephlewis/leastcostpath/master/images/leastcostpath_logo.png)
 
-The R package <b>leastcostpath</b> provides functions to calculate Least Cost Paths (LCPs) for archaeological application. This package applies multiple cost functions when approximating the dififculty of moving across a landscape, as well as taking into account traversing across slope and other costs such as landscape feature attraction. This package also provides a function to validate the accuracy of the computed LCP relative to another path. This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
+The R package <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) which are often, but not exclusively, used in archaeological research. This package can be used to apply multiple cost functions when approximating the dififculty of moving across a landscape, as well as taking into account traversing across slope and other costs such as openness. This package also provides functionality to validate the accuracy of the computed LCP relative to another path. This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
 Getting Started
 ---------------
 
-Installing
+Installation
 --------
 
-    # install.packages("devtools")
+    #install.packages("devtools")
     library(devtools)
     install_github("josephlewis/leastcostpath")
     library(leastcostpath)
 
+
 Usage
 --------
 
-#### Computation of Least Cost Path
+#### Creation of Cost Surfaces
 
     library(leastcostpath)
-    
-    r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-    
-    loc1 = sp::SpatialPoints(cbind(2667670, 6479000))
-    
-    loc2 =  sp::SpatialPoints(cbind(2667800, 6479400))
-    
-    leastcostpath(dem = r, origin = loc1, destination = loc2, traverse = "asymmetrical")
-    
-#### Creation of Landacape Feature Attraction
+    slope_cs <- create_slope_cs(r, cost_function = 'tobler')
+    traverse_cs <- create_traversal_cs(r, traversal = 'asymmetrical')
+    final_cost_cs <- slope_cs * traverse_cs
 
-    landscape_features <- sp::SpatialPoints(cbind(c(2667775, 2667652), c(6479191, 6479237)))
-    
-    lfa <- feature_attraction(r, landscape_features, viewshed = NULL, 
-              decay = "linear", decay_rate = c(5, 500), suffix = "")
-    
-#### Incorporating Landscape Feature Attractions into Least Cost Path calculation
+#### Least Cost Path computation using created Cost Surfaces
 
-    leastcostpath(dem = r, origin = loc1, destination = loc2, traverse = "asymmetrical", other_costs = lfa)
-    
-#### Least Cost Path validation against another SpatialLines object
-    
-    x1 <- c(1,5,4,8)
-    y1 <- c(1,3,4,7)
-    line1 <- sp::SpatialLines(list(sp::Lines(sp::Line(cbind(x1,y1)), ID='a')))
+    loc1 = cbind(2667670, 6479000)
+    loc1 = sp::SpatialPoints(loc1)
+ 
+    loc2 = cbind(2667800, 6479400)
+    loc2 = sp::SpatialPoints(loc2)
 
-    x2 <- c(1,5,5,8)
-    y2 <- c(1,4,6,7)
-    line2 <- sp::SpatialLines(list(sp::Lines(sp::Line(cbind(x2,y2)), ID='b')))
-
-    validation_buffer(lcp = line1, comparison = line2, buffers = c(0.1, 0.2, 0.5, 1))
+    lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1, destination = loc2, directional = TRUE)
   
+    plot(raster(final_cost_cs))
+    plot(lcps[[1]], add = T)
+
+
 Feedback
 --------
 
-Please email josephlewis1992[at]gmail.com to provide your feedback or suggest functionality that you would like implemented.
+Please email josephlewis1992\[at\]gmail.com to provide your feedback or suggest functionality that you would like implemented.
 
 Versioning
 ----------
@@ -66,6 +53,7 @@ Versioning
 -   version 0.1.1 - Implemented choice of directionality
 -   version 0.1.2 - Implemented cost when traversing across slope. 
 -   version 0.1.3 - Implemented landscape feature attractions - linear decay rate
+-   version 0.1.4 - Re-implemented functions so LCP process is broken down and more in line with traditional uses of LCP generation.
 
 Authors
 -------
@@ -77,4 +65,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2018) leastcostpath: R Implementation of Least Cost Path Analysis (version 0.1.3)
+    Lewis, J. (2019) leastcostpath: R Implementation of Least Cost Path Analysis (version 0.1.4)
