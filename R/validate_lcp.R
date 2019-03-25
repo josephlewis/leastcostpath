@@ -10,10 +10,6 @@
 #'
 #' @param buffers Expects vector of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).
 #'
-#' @param suffix Text to add to end of file name. Useful when assessing least cost paths with different buffer distances.
-#'
-#'@param export Exports csv with calculated percentage within chosen buffers to current directory.
-#'
 #' @author Joseph Lewis
 #'
 #' @import rgdal
@@ -34,7 +30,7 @@
 #'
 #' validate_lcp(lcp = line1, comparison = line2, buffers = c(0.1, 0.2, 0.5, 1))
 
-validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000), suffix = "", export = FALSE) {
+validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000)) {
     if (inherits(lcp, "SpatialLines") & inherits(comparison, "SpatialLines") | inherits(comparison, "SpatialPolygonsDataFrame")) {
         buffer_list <- list()
         n <- 0
@@ -60,9 +56,5 @@ validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000), 
     
     lcp_df <- data.frame(seq(1, length(buffers)), buffers, format(accuracy, digits = 3))
     names(lcp_df) <- c("ID", "Buffer Applied from data (m)", "Percent of LCP within Buffer Distance (%)")
-    
-    if (export_table == TRUE) {
-        utils::write.csv(lcp_df, file = paste0("Least Cost Path Accuracy - Buffer Method", suffix, ".csv"), row.names = FALSE)
-    }
     return(lcp_df)
 }

@@ -18,55 +18,20 @@
 #' @import rgeos
 #' @import sp
 #' @import raster
+#' @import spdep
 #' @import gdistance
 #'
 #' @export
 #'
-#'@examples
-#' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-#'
-#' slope_cs <- create_slope_cs(r, cost_function = 'tobler')
-#'
-#' traverse_cs <- create_traversal_cs(r, traversal = 'asymmetrical')
-#'
-#' final_cost_cs <- slope_cs * traverse_cs
-#'
-#' loc1 = cbind(2667670, 6479000)
-#' loc1 = sp::SpatialPoints(loc1)
-#'
-#' loc2 = cbind(2667800, 6479400)
-#' loc2 = sp::SpatialPoints(loc2)
-#'
-#' lcps <- create_lcp_network(cost_surface, vertices, graph = 'delauney', cost_distance = FALSE)
-#'
-#' plot(raster(final_cost_cs))
-#' plot(lcps, add = T)
-#' plot(lcps[1,], add = T, col = 'red')
 
-create_lcp_network <- function(cost_surface, vertices, graph = "delauney", cost_distance = FALSE) {
+create_lcp_network <- function(cost_surface, vertices, graph = "none", cost_distance = FALSE) {
     
     if (!inherits(cost_surface, "TransitionLayer") & !inherits(vertices, "SpatialPointsDataFrame") | !inherits(vertices, "SpatialPoints")) 
         stop("Invalid objects supplied. cost_surface expects TransitionLayer object and vertices expects SpatialPoints or SpatialPointsDataFrame object")
     
-    if (graph != "delauney" & graph != "none") 
-        stop("Invalid input supplied. graph expecting 'delauney' or 'none'.")
-    
-    if (graph == "delauney") {
+    if (graph == "none") {
         
-        print("delauney")
-        
-        vertices <- sp::remove.duplicates(vertices)
-        
-        co <- coordinates(vertices)
-        coords <- as.matrix(coordinates(vertices))
-        ids <- row.names(as.data.frame(vertices))
-        neighbours <- spdep::tri2nb(co, row.names = ids)
-        network <- spdep::nb2lines(neighbours, coords = coords, proj4string = crs(vertices))
-        network <- as(data.frame(network[1:2]), "matrix")
-        
-    } else if (graph == "none") {
-        
-        network <- as(expand.grid(seq_along(vertices), seq_along(vertices)), "matrix")
+        network <- expand.grid(seq_along(vertices), seq_along(vertices))
         
         network <- network[network[, 1] != network[, 2], ]
         

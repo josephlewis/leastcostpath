@@ -1,6 +1,5 @@
 #' create_slope_cs
 #'
-#'
 #' Creates Slope Cost Surface to be used in Least Cost Path calculation.
 #'
 #'The create_slope_cs function computes a cost surface based on the difficulty of traversing the slope. It implements multiple isotropic and anisotropic cost functions that estimate human movement across a landscape.The function requires a Digital Elevation Model (class 'RasterLayer'), the cost function to be used, and the critical slope - critical slope only used in 'wheeled transport' cost function.
@@ -23,7 +22,6 @@
 #'
 #' @param crit_slope Critical Slope (in percent) is 'the transition where switchbacks become more effective than direct uphill or downhill paths'. Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Critical slope defaulted is 15 degrees, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012).
 #'
-#' @param export Exports calculated least cost paths as Shapefiles to current directory.
 #' @author Joseph Lewis
 #'
 #' @import rgdal
@@ -36,8 +34,7 @@
 #'
 #' @examples
 #' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-#' slope_cs <- create_slope_cs(r, cost_function = 'tobler')
-#' plot(raster(slope_cs))
+#' create_slope_cs(r, cost_function = 'tobler')
 
 create_slope_cs <- function(dem, cost_function = "all", neighbours = 16, crit_slope = 12) {
     
@@ -67,8 +64,8 @@ create_slope_cs <- function(dem, cost_function = "all", neighbours = 16, crit_sl
     }
     
     if (cost_function == "herzog") {
-        slope[adj] <- 1/((((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + (93.419 * slope[adj]^2) + 
-            (19.825 * slope[adj]) + 1.64)))
+        slope[adj] <- 1/((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + (93.419 * slope[adj]^2) + (19.825 * 
+            slope[adj]) + 1.64)
         Conductance <- gdistance::geoCorrection(slope)
     }
     
