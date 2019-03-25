@@ -1,0 +1,458 @@
+---
+title: "Understanding how leastcostpath works"
+author: "Joseph Lewis"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+theme: united
+highlight: tango
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# 1. Introduction
+
+This vignette describes <b>leastcostpath</b>, a package written for use in the R environment (R Core Team, 2016). It provides functionality to calculate Least Cost Paths using multiple cost functions that approximate the difficulty of moving across a landscape, taking into account obstacles and local fricion (e.g. slope). Furthermore, this package allows for the incorporation of cost when traversing across slope, as well as other costs that may increase/decrease freedom of movement such as openness.  
+
+```{r libraries, echo = TRUE, message= FALSE, warning= FALSE}
+library(rgdal)
+library(rgeos)
+library(sp)
+library(raster)
+library(gdistance)
+library(leastcostpath)
+```
+
+# 2. Calculation of Slope cost surface
+
+```{r slope_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
+
+r <- crop(r, extent(2667600, 2667700, 6479100, 6479200))
+        
+slope_cs <- create_slope_cs(r, cost_function = 'tobler')
+
+plot(raster(slope_cs))
+text(raster(slope_cs), digits = 2)
+```
+
+## Understanding how the Slope cost surface is calculated
+
+For this purpose, we focus on the cells outlined in red.
+
+```{r slope_eg, echo = TRUE,  fig.height = 6, fig.width = 6}
+plot(r, main = "Elevation (metres)")
+text(r)
+
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+```
+
+In order to calculate the slope, we first need to calculate the altitudinal differences between neighbouring cells.
+
+```{r slope, echo = TRUE,  fig.height = 6, fig.width = 6, warning= FALSE}
+altDiff_slope <- function(x) {
+    x[2] - x[1]
+}
+    
+hd <- gdistance::transition(r, altDiff_slope, 8, symm = FALSE)
+
+class(hd)
+
+plot(raster(hd), main = "Altitudinal differences between neighbouring cells")
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(raster(hd), digits = 2)
+```
+
+### Understanding TransitionLayer
+
+The TransitionLayer class is a matrix which represents the transition from one cell to another in the grid. Row 1 and Column 1 in the TransitionLayer matrix correspond to cell 1 in the original raster, Row 2 and Column 2 to cell 2, and so on. Each column of the TransitionLayer represents the transition values that are connected to that cell. For example, Column 55 contains all the transition values that are connected to cell 55. 
+
+TransitionLayer class can be visualised using the Raster package. Each cell value is the average transition values from the neighbouring cells. 
+
+For example, Cell 45 (center of the red outline) has a value of -0.29. 
+
+```{r slope_2, echo = TRUE,  fig.height = 6, fig.width = 6}
+# This shows TransitionLayer values for column 45. 
+transitionMatrix(hd)[,45]
+
+# This shows the TransitionLayer value for row 44, column 45 - this will be the altitudinal difference between cell 45 (145 value) and cell 44 (142 value)
+transitionMatrix(hd)[44,45]
+
+cell_sum <- sum(transitionMatrix(hd)[,45])
+
+cell_neighbours <- sum(transitionMatrix(hd)[,45] != 0)
+
+round((cell_sum / cell_neighbours), digits = 2)
+```
+
+After calculating the altitudinal differences between cells, the <i>geoCorrection</i> function is used to divide by the distance between cells. This is needed as diagonal connections between grid cells are longer distance than vertical or horizontal connections. 
+
+We now have slope (rise over run) values!
+
+```{r slope_3, echo = TRUE,  fig.height = 6, fig.width = 6}
+slope <- gdistance::geoCorrection(hd)
+
+plot(raster(slope))
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(raster(slope), digits = 2)
+```
+
+Cell 45 (center of the red outline) now has a value of -0.02. 
+
+```{r slope_4, echo = TRUE,  fig.height = 6, fig.width = 6}
+# This shows the TransitionLayer non-distance-corrected values for all neighbours of cell 45
+transitionMatrix(hd)[,45][transitionMatrix(hd)[45,] != 0]
+
+# This shows the TransitionLayer distance-corrected values for all neighbours of cell 45
+transitionMatrix(slope)[,45][transitionMatrix(slope)[45,] != 0]
+
+# TransitionLayer non-distance-corrected altitudinal difference value between cell 45 (center of red outline) and cell 34 (top left of red outline)
+transitionMatrix(hd)[34,45]
+
+# TransitionLayer distance-corrected altitudinal difference value between cell 45 (center of red outline) and cell 34 (top left of red outline)
+transitionMatrix(slope)[34,45]
+
+# TransitionLayer distance-corrected altitudinal difference values are calculated by square rooting the non-distance-corrected altitudinal difference value 
+(transitionMatrix(hd)[34,45]) * (1 / res(r)[1]) / sqrt(2)
+
+cell_sum <- sum(transitionMatrix(slope)[,45])
+
+cell_neighbours <- sum(transitionMatrix(slope)[,45] != 0)
+
+round((cell_sum / cell_neighbours), digits = 2)
+```
+
+### Applying a Cost Function to Slope
+
+To ensure the cost functions are only applied to adjacent cells, the calculation is restricted to adjacent cells only. The adjacent function create an index that is used to replace the adjacent cells, without touching the non-adjacent cells.
+
+```{r slope_5, echo = TRUE,  fig.height = 6, fig.width = 6}
+adj <- raster::adjacent(r, cells = 1:raster::ncell(r), pairs = TRUE, directions = 16)
+
+# cells that are adjacent to cell 45 (center of red outline)
+sort(unique(adj[adj[,1] == 45]))
+
+# transitionLayer values for adjacent cells to cell 45
+transitionMatrix(slope)[sort(unique(adj[adj[,1] == 45])),45]
+```
+
+* Tobler's Hiking Function
+
+The most widely used cost factor that approximates the difficulty of moving across a landscape is Waldo Tobler's 'Hiking Function' (Gorenflo and Gale, 1990; Wheatley and Gillings, 2001). This function allows for the assessment of time necessary to traverse a surface and takes into account up-slope and down-slope momentum (Kantner, 2004; Tobler, 1993).The Hiking Function requires the mathematical slope (metres) as input. The function is offset negatively from zero with the walking speed increasing as the slope approaches zero. The highest speed (km/h) of movement occurs on a slight downhill slope (-0.05). 
+
+```{r tob, echo = TRUE,  fig.height = 6, fig.width = 6}
+sequence <- seq(-1, 1, 0.0001)
+
+cs <- function(x) {  
+  6 * exp(-3.5 * abs(x + 0.05))
+}
+
+df <- data.frame(sequence, cs(sequence))
+
+plot(df$sequence, df$cs.sequence., main = "Tobler's Hiking Function", xlab = "Slope (m)", ylab = "Speed (km/h)")
+```
+
+
+```{r tob_1, echo = TRUE}
+# Slope pre-cost function transitionLayer values for adjacent cells to cell 45
+transitionMatrix(slope)[sort(unique(adj[adj[,1] == 45])),45]
+
+slope[adj] <- 6 * exp(-3.5 * abs(slope[adj] + 0.05))
+
+# Slope post-cost function transitionLayer values for adjacent cells to cell 45
+transitionMatrix(slope)[sort(unique(adj[adj[,1] == 45])),45]
+```
+
+Having calculated the cost of movement between adjacent cells, the longer distances for diagonal connections needs to be accounted for. 
+
+```{r slope_6, echo = TRUE,  fig.height = 6, fig.width = 6}
+Conductance <- geoCorrection(slope)
+
+plot(raster(Conductance))
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(raster(Conductance), digits = 2)
+```
+
+* Modified Hiking Function
+
+The Modified Hiking Function combines MIDE (París Roche, 2002), a method to calculate walking hours for an average hiker with a light load (Márquez-Pérez et al., 2017), and Tobler's 'Hiking Function' (Tobler, 1993). The Modified Hiking Function requires the mathematical slope (metres) as input. The Modified Hiking Function benefits from the precision of the MIDE rule and the continuity of Tobler's Hiking Function (Márquez-Pérez et al., 2017).
+
+```{r mod_tob, echo = FALSE,  fig.height = 6, fig.width = 6}
+sequence <- seq(-1, 1, 0.0001)
+
+cs <- function(x) {  
+  4.8 * exp(-5.3 * abs((x * 0.7) + 0.03))
+}
+
+df <- data.frame(sequence, cs(sequence))
+
+plot(df$sequence, df$cs.sequence., main = "Modified  Hiking Function", xlab = "Slope (m)", ylab = "Speed (km/h)")
+```
+
+* Wheeled Transport Cost Function
+
+Herzog (xx), based on the cost function provided by Llobera and Sluckin (2007), has developed a cost function to approximate the cost for wheeled transport.  
+
+The wheeled transport cost function also requires a critical slope, which is the value that the cost of climbing is twice as high as moving on flat terrain. Herzog (xx) suggests a critical slope value of between 8 and 15% when modelling the cost of using wheeled vehicles. The cost function requires percent slope (mathematical slope * 100) as input. The cost function is symmetric and is most applicable for use when the same route was taken in both directions.
+
+```{r wheeled, echo = FALSE,  fig.height = 6, fig.width = 6}
+sequence <- seq(-1, 1, 0.0001)
+
+cs <- function(x) {  
+  1/(1 + (x * 100/12)^2)
+}
+
+df <- data.frame(sequence, cs(sequence))
+
+plot(df$sequence, df$cs.sequence., main = "Wheeled Transport", xlab = "Slope (m)", ylab = "Speed (km/h)")
+```
+
+* Sixth-degree polynomial function
+
+Herzog's Sixth-degree polynomial function approximates the energy expenditure values found in Minetti et al. (2002) but eliminates the problem of unrealistic negative energy expenditure values for steep downhill slopes. The sixth-degree polynomial function requires the mathematical slope (metres) as input.
+
+```{r polynomial, echo = FALSE,  fig.height = 6, fig.width = 6}
+sequence <- seq(-1, 1, 0.0001)
+
+cs <- function(x) {  
+  ((1337.8 * x^6) + (278.19 * x^5) - (517.39 * x^4) - (78.199 * x^3) + (93.419 * x^2) + (19.825 * x) + 1.64)
+}
+
+df <- data.frame(sequence, cs(sequence))
+
+plot(df$sequence, df$cs.sequence., main = "Sixth-Degree Polynomial Function", xlab = "Slope (m)", ylab = "kJ / kg*m")
+```
+
+# 3. Creation of traversal cost surface
+
+Slope does not exert a force uniformally in all directions. 100% of force is exerted when moving downhill, whilst there will be little impedance to movement when walking perpendicular to the slope. To account for this, the 's-curve' is utilised, as expressed in Bell and Lock (2000). 
+
+By using the s-curve, the relative friction will be dependent on the direction of travel from a cell to its neighbouring cells. This is in contrast to only using the previously calculated Slope cost surface which does not account for traversal across slope.
+
+In order to calculate the direction of travel from a cell to its neighbouring cell, the aspect is first calculated. Aspect is the direction of maximum slope of any location (de Smith et al. 2013). The aspect map geneated shows slope directions from 0° to 360° degrees. 
+
+```{r tra, echo = TRUE,  fig.height = 6, fig.width = 6}
+aspect_dem <- raster::terrain(r, opt = "aspect", unit = "degrees", neighbors = 8)
+```
+
+```{r tra_1, echo = TRUE,  fig.height = 6, fig.width = 6}
+plot(aspect_dem)
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(aspect_dem)
+```
+
+As we are interested in the direction perpendicular to slope direction, and not the aspect, values above 180° can be transformed to be within 0° to 180°.
+
+```{r traverse2, echo = TRUE,  fig.height = 6, fig.width = 6}
+aspect_dem <- raster::calc(aspect_dem, function(x) {
+  ifelse(x >= 180, x - 180, x)
+  })
+
+plot(aspect_dem)
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(aspect_dem)
+```
+
+The direction perpendicular to the slope direction can be calculated by adding/subtracting 90. The values will now express the direction perpendicular to the slope direction. As interest is in the difference between a cell and its neighbouring cells, the x-axis reflection does not matter.
+
+```{r traverse3, echo = TRUE,  fig.height = 6, fig.width = 6}
+aspect_dem <- raster::calc(aspect_dem, function(x) {
+  ifelse(x >= 0 & x <= 90, x + 90, x - 90)
+  })
+
+plot(aspect_dem)
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(aspect_dem)
+```
+
+Once the direction perpendicular to the slope direction has been calculated, the friction cost function must be specificed. The cost function can be asymmetrical (cost of traveling downhill is less than uphill) or symmetrical (cost of traveling downhill is equal to uphill).
+
+The force to apply based on the direction of travel aligns with that used in Bell and Lock (2000).  
+
+* Asymmetrical friction cost function
+
+```{r traverse4, echo = TRUE,  fig.height = 6, fig.width = 6}
+altDiff_traversal <- function(x) {
+            if (abs(x[2] - x[1]) == 0) {
+                1
+            } else if (x[2] > x[1]) {
+                if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
+                  hrma <- abs(x[2] - x[1])
+                  1 + (0.5/45) * hrma
+                } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
+                  hrma <- abs(x[2] - x[1])
+                  2 - (0.5/45) * hrma
+                } else {
+                  1
+                }
+            } else if (x[2] < x[1]) {
+                if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
+                  hrma <- abs(x[2] - x[1])
+                  1 - (0.5/45) * hrma
+                } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
+                  hrma <- abs(x[2] - x[1])
+                  (0.5/45) * hrma
+                  
+                } else {
+                  1
+                }
+            }
+}
+
+trans <- gdistance::transition(aspect_dem, altDiff_traversal, 16, symm = FALSE)
+
+plot(aspect_dem)
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(aspect_dem)
+
+plot(raster(trans))
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(raster(trans), digits = 2)
+```
+
+From the direction perpendicular to the slope values, we expect the conductivity to be greater when moving downhill. For example, the center cell in the red outline (value of 10) to the center-left cell (value of 7) should have a value greater than 1 (which means no friction applied) and more than the conductivity value when moving from the center cell to the center-right cell (value of 14).
+
+```{r traverse5, echo = TRUE}
+# conductivity value when moving from cell 45 to cell 44 - i.e. the direction perpendicular to the slope is 3 degrees downhill. 
+transitionMatrix(trans)[44,45]
+
+# conductivity value when moving from cell 45 to cell 46 - i.e. the direction perpendicular to the slope is 4 degrees uphill 
+transitionMatrix(trans)[46,45]
+```
+
+# 4. Creation of openness cost surface
+
+As an alternative to total viewshed, Vergahen and Jeneson (2012) implemented the measure of openness within their study on predicting of a Roman road in the Netherlands.
+
+Openness measures the degree in which a location is sheltered or open to vision (Yokoyama et al. 2002). The measure, as demonstated in the aforementioned papers, has been formulated and applied to a raster. Due to this, there was a need to take the mean of the openness for each cell. However, as <i>gdistance</i> and <i>leastcostpath</i> use the matrix class, this need has been eliminated. 
+
+Instead, openness can be calculated from each cell to all cells within a pre-selected kernel size. The kernel is an n by n matrix.
+
+```{r open_raw, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+plot(r)
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(r)
+```
+
+```{r open, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+open_Diff <- function(x) {
+    x[2] - x[1]
+  }
+
+kernel <- 7
+
+kernel_m <- matrix(c(rep(1, kernel^2)), ncol = kernel, nrow = kernel, byrow = TRUE)
+
+kernel_m
+    
+center <- ((kernel + 1) / 2)
+
+kernel_m[center, center] <- 0
+
+kernel_m
+
+open_diff_ts <- gdistance::transition(r, open_Diff, kernel_m, symm = FALSE)
+    
+open_diff_ts <- gdistance::geoCorrection(open_diff_ts)
+
+plot(raster(open_diff_ts))
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(raster(open_diff_ts), digits = 2)
+```
+
+To ensure the cost functions are only applied to adjacent cells, the calculation is restricted to adjacent cells only. The adjacent function create an index that is used to replace the adjacent cells, without touching the non-adjacent cells.
+
+```{r open_1, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+# adjacencyFromTransition ensures that the calculations are restricted to adjacent cells only.
+open_adj <- gdistance::adjacencyFromTransition(open_diff_ts)
+
+transitionMatrix(open_diff_ts)[,45]
+
+# Index of adjacent cells to cell 45
+open_adj[,1][open_adj[,2] == 45]
+
+# Elevation values difference from cell 45 to each neighbouring cell. 
+transitionMatrix(open_diff_ts)[open_adj[,1][open_adj[,2] == 45], 45]
+```
+
+```{r open_2, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+open_diff_ts[open_adj] <- 90 - atan(open_diff_ts[open_adj])
+
+# Openness values from cell 45 to each neighbouring cell. 
+transitionMatrix(open_diff_ts)[open_adj[,1][open_adj[,2] == 45], 45]
+```
+
+```{r open_3, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+plot(raster(open_diff_ts))
+plot(extent(rasterFromCells(r, c(34,35,36,44,45,46,54,55,56), values= FALSE)), add = T,  col = "red")
+text(raster(open_diff_ts), digits = 1)
+```
+
+## Combining cost surfaces
+
+As long as the resolution and extent of the cost surfaces are the same, then traditional Raster algebra works.
+
+```{r combine, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+plot(raster(slope_cs * trans))
+text(raster(slope_cs * trans), digits = 2)
+
+plot(raster(slope_cs * trans + open_diff_ts))
+text(raster(slope_cs * trans + open_diff_ts), digits = 1)
+
+plot(raster(open_diff_ts - slope_cs))
+text(raster(open_diff_ts - slope_cs), digits = 1)
+
+final_cost <- slope_cs * trans * open_diff_ts
+```
+
+## Computation of Least Cost Path
+
+```{r lcp, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+loc1 = cbind(2667624, 6479176)
+loc1 = sp::SpatialPoints(loc1)
+
+loc2 = cbind(2667634, 6479175)
+loc2 = sp::SpatialPoints(loc2)
+
+sPath <- gdistance::shortestPath(final_cost, loc1, loc2, output = "SpatialLines")
+
+plot(raster(final_cost))
+plot(sPath, add = T, col = "red")
+text(coordinates(loc1)[,1] - 1, coordinates(loc1)[,2] - 1, "A")
+text(coordinates(loc2)[,1] + 1, coordinates(loc2)[,2]  -4, "B")
+
+# costDistance is calculated by taking the reciprocal of the values in the transition matrix.
+costDistance(final_cost, loc1, loc2)
+
+transitionMatrix(final_cost)[,23]
+
+1 / transitionMatrix(final_cost)[23, 24]
+```
+
+## Computation of Least Cost Path network
+
+```{r lcp_net, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+sp_random <- spsample(as(extent(raster(final_cost)), "SpatialPolygons"), 5, "random")
+
+plot(raster(final_cost))
+plot(sp_random, add = T)
+
+# In order to compute a network the SpatialPoints to join need to be determined
+network <- expand.grid(seq_along(sp_random), seq_along(sp_random))
+
+# Since SpatialPoints cannot be joined to itself, identical point indexes need to be removed
+network <- network[network[,1] != network[,2], ]
+
+head(network)
+
+# The least cost path is generated for all connections, using the point indexes
+lcp_network <- apply(network, MARGIN = 1, function(x) {
+        gdistance::shortestPath(final_cost, sp_random[x[1], ], sp_random[x[2], ], output = "SpatialLines")
+    })
+
+lcp_network <- do.call(rbind, lcp_network)
+
+plot(lcp_network, add = T, col = "red")
+```
+
