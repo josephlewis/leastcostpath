@@ -46,7 +46,7 @@ Usage
     random_pts <- rbind(c(2667447, 6478911), c(2667524, 6479199), c(2667809, 6478992), c(2667869, 6479355), c(2667597, 6479146))
     random_pts = sp::SpatialPoints(random_pts)
     
-    lcps <- create_lcp_network(cost_surface = final_cost_cs, vertices = random_points, graph = 'delauney', cost_distance = FALSE)
+    lcps <- create_lcp_network(cost_surface = final_cost_cs, vertices = random_points, graph = 'none', cost_distance = FALSE)
 
     plot(raster(final_cost_cs))
     plot(lcps, add = T)
