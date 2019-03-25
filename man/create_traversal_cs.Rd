@@ -12,8 +12,6 @@ create_traversal_cs(dem, traversal = "asymmetrical", neighbours = 16)
 \item{traversal}{Difficulty of traversal is based on the figure given in Bell and Lock (2000). Based on symmetrical or asymmetrical difficulty. Asymmetrical accounts for downhill being easier than uphill.}
 
 \item{neighbours}{Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected input values are 4, 8, 16. Default is 16.}
-
-\item{export}{Exports calculated least cost paths as Shapefiles to current directory.}
 }
 \description{
 Creates Traversal Cost Surface to be used in Least Cost Path calculation.
@@ -25,8 +23,7 @@ traversal input include 'symmetrical', 'asymmetrical'. Default is 'asymmetrical'
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-traverse_cs <- create_traversal_cs(r, traversal = 'asymmetrical')
-plot(raster(traverse_cs))
+create_traversal_cs(r, traversal = 'asymmetrical')
 }
 \author{
 Joseph Lewis

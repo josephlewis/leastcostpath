@@ -4,7 +4,7 @@
 \alias{create_lcp_network}
 \title{create_lcp_network}
 \usage{
-create_lcp_network(cost_surface, vertices, graph = "delauney",
+create_lcp_network(cost_surface, vertices, graph = "none",
   cost_distance = FALSE)
 }
 \arguments{
@@ -21,27 +21,6 @@ Calculates a Least Cost Path network which are often, but not exclusively, used 
 }
 \details{
 The function computes the Least Cost Path network. It uses the cost surface(s) generated using the create_slope_cs, create_traversal_cs and or create_openness_cs functions. The function takes a Cost Surface ('TransitionLayer' class) and vertices features ('SpatialPoints' class) for the locations.
-}
-\examples{
-r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-
-slope_cs <- create_slope_cs(r, cost_function = 'tobler')
-
-traverse_cs <- create_traversal_cs(r, traversal = 'asymmetrical')
-
-final_cost_cs <- slope_cs * traverse_cs
-
-loc1 = cbind(2667670, 6479000)
-loc1 = sp::SpatialPoints(loc1)
-
-loc2 = cbind(2667800, 6479400)
-loc2 = sp::SpatialPoints(loc2)
-
-lcps <- create_lcp_network(cost_surface, vertices, graph = 'delauney', cost_distance = FALSE)
-
-plot(raster(final_cost_cs))
-plot(lcps, add = T)
-plot(lcps[1,], add = T, col = 'red')
 }
 \author{
 Joseph Lewis

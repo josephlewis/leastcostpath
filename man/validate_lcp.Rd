@@ -4,8 +4,7 @@
 \alias{validate_lcp}
 \title{validate_lcp}
 \usage{
-validate_lcp(lcp, comparison, buffers = c(50, 100, 250, 500, 1000),
-  suffix = "", export = FALSE)
+validate_lcp(lcp, comparison, buffers = c(50, 100, 250, 500, 1000))
 }
 \arguments{
 \item{lcp}{Least Cost Path to assess the accuracy of. Expects object of class SpatialLines}
@@ -13,10 +12,6 @@ validate_lcp(lcp, comparison, buffers = c(50, 100, 250, 500, 1000),
 \item{comparison}{SpatialLines to validate the Least Cost Path against. Expects object of class SpatialLines}
 
 \item{buffers}{Expects vector of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).}
-
-\item{suffix}{Text to add to end of file name. Useful when assessing least cost paths with different buffer distances.}
-
-\item{export}{Exports csv with calculated percentage within chosen buffers to current directory.}
 }
 \description{
 Calculates the accuracy of the Least Cost Path by calculating the percentage of Least Cost Path within certain distance(s) from another SpatialLine.

@@ -15,8 +15,6 @@ create_slope_cs(dem, cost_function = "all", neighbours = 16,
 \item{neighbours}{Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected input values are 4, 8, 16. Default is 16.}
 
 \item{crit_slope}{Critical Slope (in percent) is 'the transition where switchbacks become more effective than direct uphill or downhill paths'. Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Critical slope defaulted is 15 degrees, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012).}
-
-\item{export}{Exports calculated least cost paths as Shapefiles to current directory.}
 }
 \description{
 Creates Slope Cost Surface to be used in Least Cost Path calculation.
@@ -35,8 +33,7 @@ Herzog's (2014) Sixth-degree polynomial cost function approximates the energy ex
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-slope_cs <- create_slope_cs(r, cost_function = 'tobler')
-plot(raster(slope_cs))
+create_slope_cs(r, cost_function = 'tobler')
 }
 \author{
 Joseph Lewis
