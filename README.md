@@ -23,13 +23,14 @@ Usage
 #### Creation of Cost Surfaces
 
     library(leastcostpath)
+    r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
+        
     slope_cs <- create_slope_cs(r, cost_function = 'tobler')
     traverse_cs <- create_traversal_cs(r, traversal = 'asymmetrical')
+    open_cs <- create_openness_cs(r, kernel = 3)
     final_cost_cs <- slope_cs * traverse_cs
 
 #### Least Cost Path computation using created Cost Surfaces
-
-    r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
     loc1 = cbind(2667670, 6479000)
     loc1 = sp::SpatialPoints(loc1)
