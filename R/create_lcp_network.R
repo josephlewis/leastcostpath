@@ -28,6 +28,9 @@ create_lcp_network <- function(cost_surface, vertices, graph = "none", cost_dist
     
     if (!inherits(cost_surface, "TransitionLayer") & !inherits(vertices, "SpatialPointsDataFrame") | !inherits(vertices, "SpatialPoints")) 
         stop("Invalid objects supplied. cost_surface expects TransitionLayer object and vertices expects SpatialPoints or SpatialPointsDataFrame object")
+  
+    if ( nrow(vertices) <= 1)
+      stop("Vertices must contain more than 1 point.")
     
     if (graph == "none") {
         
