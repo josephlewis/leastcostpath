@@ -37,6 +37,10 @@
 #' create_slope_cs(r, cost_function = 'tobler')
 
 create_slope_cs <- function(dem, cost_function = "all", neighbours = 16, crit_slope = 12) {
+  
+  if (cost_function != "tobler" & cost_function != "modified tobler" & cost_function != "wheeled transport" & cost_function != "herzog" & cost_function != "all") {
+    stop("Incorrect cost_function. Expecting 'tobler', 'modified tobler', 'wheeled transport' 'herzog', or 'all'.")
+  }
     
     altDiff_slope <- function(x) {
         x[2] - x[1]
