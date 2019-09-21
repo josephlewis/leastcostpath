@@ -2,7 +2,7 @@
 #'
 #' Calculates Least Cost Paths which are often, but not exclusively, used in archaeological research
 #'
-#' The function computes the Least Cost Path from an origin location to a destination location. It uses the cost surface(s) generated using the create_slope_cs, create_traversal_cs and or create_openness_cs functions. The function takes a Cost Surface ('TransitionLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
+#' The function computes the Least Cost Path from an origin location to a destination location. It uses the cost surface generated using the create_slope_cs and/or create_traversal_cs functions. The function takes a Cost Surface ('TransitionLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
 #'
 #' @param cost_surface Cost Surface. Expects Object of class TransitionLayer.
 #'
@@ -43,10 +43,10 @@
 create_lcp <- function(cost_surface, origin, destination, directional = FALSE) {
     
     if (!inherits(cost_surface, "TransitionLayer")) 
-        stop("Invalid objects supplied. cost_surface expects TransitionLayer object")
+        stop("cost_surface expects TransitionLayer object")
     
     if (!inherits(origin, "SpatialPoints") & !inherits(destination, "SpatialPoints")) 
-        stop("Invalid object(s) supplied. origin and destination expects SpatialPoints object")
+        stop("Origin and Destination expects SpatialPoints objects")
     
     sPath <- list()
     
@@ -59,10 +59,6 @@ create_lcp <- function(cost_surface, origin, destination, directional = FALSE) {
         sPath[[1]] <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
         sPath[[2]] <- gdistance::shortestPath(cost_surface, destination, origin, output = "SpatialLines")
     }
-    
-    # lcp_lengths <- unlist(lapply(sPath, function(x) { FUN = rgeos::gLength(x, byid = TRUE) }))
-    
-    # for (i in 1:length(sPath)) { sPath[[i]]$length <- lcp_lengths[i] }
     
     return(sPath)
 }
