@@ -4,26 +4,22 @@
 \alias{create_traversal_cs}
 \title{create_traversal_cs}
 \usage{
-create_traversal_cs(dem, traversal = "asymmetrical", neighbours = 16)
+create_traversal_cs(dem, neighbours = 16)
 }
 \arguments{
 \item{dem}{Digital Elevation Model. Expects Object of class RasterLayer}
 
-\item{traversal}{Difficulty of traversal is based on the figure given in Bell and Lock (2000). Based on symmetrical or asymmetrical difficulty. Asymmetrical accounts for downhill being easier than uphill.}
-
 \item{neighbours}{Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected input values are 4, 8, 16. Default is 16.}
 }
 \description{
-Creates Traversal Cost Surface to be used in Least Cost Path calculation.
+Creates Traversal across slope Cost Surface to be used in Least Cost Path calculation.
 }
 \details{
-The create_traversal_cs function computes a cost surface based on the difficulty of traversing across the slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Based on symmetrical or asymmetrical difficulty. Asymmetrical accounts for downhill being easier than uphill. The function requires a Digital Elevation Model (class 'RasterLayer') and the whether the traversal function is symmetrical.
-
-traversal input include 'symmetrical', 'asymmetrical'. Default is 'asymmetrical'.
+The create_traversal_cs function computes a cost surface based on the difficulty of traversing across the slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Traversal across slope accounts for downhill being easier than uphill. The function requires a Digital Elevation Model (class 'RasterLayer').
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-create_traversal_cs(r, traversal = 'asymmetrical')
+create_traversal_cs(r, neighbours = 16)
 }
 \author{
 Joseph Lewis

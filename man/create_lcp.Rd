@@ -19,7 +19,7 @@ create_lcp(cost_surface, origin, destination, directional = FALSE)
 Calculates Least Cost Paths which are often, but not exclusively, used in archaeological research
 }
 \details{
-The function computes the Least Cost Path from an origin location to a destination location. It uses the cost surface(s) generated using the create_slope_cs, create_traversal_cs and or create_openness_cs functions. The function takes a Cost Surface ('TransitionLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
+The function computes the Least Cost Path from an origin location to a destination location. It uses the cost surface generated using the create_slope_cs and/or create_traversal_cs functions. The function takes a Cost Surface ('TransitionLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
