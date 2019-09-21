@@ -26,8 +26,7 @@ Usage
     r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
         
     slope_cs <- create_slope_cs(r, cost_function = 'tobler')
-    traverse_cs <- create_traversal_cs(r, traversal = 'asymmetrical')
-    open_cs <- create_openness_cs(r, kernel = 3)
+    traverse_cs <- create_traversal_cs(r)
     final_cost_cs <- slope_cs * traverse_cs
 
 #### Least Cost Path computation using created Cost Surfaces
@@ -42,15 +41,14 @@ Usage
   
     plot(raster(final_cost_cs))
     plot(lcps[[1]], add = T)
-
-    random_pts <- rbind(c(2667447, 6478911), c(2667524, 6479199), c(2667809, 6478992), c(2667869, 6479355), c(2667597, 6479146))
-    random_pts = sp::SpatialPoints(random_pts)
     
-    lcps <- create_lcp_network(cost_surface = final_cost_cs, vertices = random_points, graph = 'none', cost_distance = FALSE)
+#### Cost Corridors
 
-    plot(raster(final_cost_cs))
-    plot(lcps, add = T)
-    plot(lcps[1,], add = T, col = 'red')
+  cc <- create_cost_corridor(final_cost_cs, loc1, loc2)
+  
+  plot(cc)
+  plot(loc1, add = T)
+  plot(loc2, add = T)
 
 
 Feedback
@@ -66,6 +64,9 @@ Versioning
 -   version 0.1.2 - Implemented cost when traversing across slope. 
 -   version 0.1.3 - Implemented landscape feature attractions - linear decay rate
 -   version 0.1.4 - Re-implemented functions so LCP process is broken down and more in line with traditional logic of LCP generation.
+                  - Removal of landscape feature attraction function - this will be re-added at a later date. 
+-   version 0.1.5 - Addition of create_cost_corridor function. 
+                  - Removal of validate_lcp, create_openness, and create_lcp_network - these will be re-added at a later date.
 
 Authors
 -------

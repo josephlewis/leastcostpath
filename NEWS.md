@@ -1,3 +1,7 @@
+# 0.1.5 (21 September 2019)
+* Addition of create_cost_corridor function
+* Removal of validate_lcp, create_openness, and create_lcp_network - these will be re-added at a later date.
+
 # Version 0.1.4 (19 March 2019)
 * Split `leastcostpath` function into separate functions - allows for the building up of cost surfaces before computating least cost path.
   * `create_slope_cs`
