@@ -1,4 +1,4 @@
-leastcostpath - version 0.1.5
+leastcostpath - version 0.1.6
 =============================
 
 ![](https://raw.githubusercontent.com/josephlewis/leastcostpath/master/images/leastcostpath_logo.png)
@@ -49,6 +49,16 @@ Usage
     plot(cc)
     plot(loc1, add = T)
     plot(loc2, add = T)
+    
+#### Pipes!
+
+    cost_surface <- create_slope_cs(r, cost_function = 'tobler') %>%
+    "*" (create_traversal_cs(r)) %>%
+    "*" (create_feature_attraction(r,  sp_locs, max_attraction = 50, distance = 800))
+    
+    lcp <- cost surface %>% create_lcp(cost_surface = . loc1, loc2)
+    
+    cost_corridor <- create_cost_corridor(., loc1, loc2)
     
 Feedback
 --------
