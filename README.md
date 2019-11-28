@@ -82,6 +82,9 @@ Versioning
 -   version 0.1.5 
       * Addition of create_cost_corridor function. 
       * Removal of validate_lcp, create_openness, and create_lcp_network - these will be re-added at a later date.
+-   version 0.1.6
+      * Addition of create_feature_attraction
+      * Improved readability of create_traversal_slope function 
 
 Authors
 -------
