@@ -11,12 +11,14 @@ create_cost_corridor(cost_surface, origin, destination)
 
 \item{origin}{origin Location from which the Accumulated Cost is calculated. Expects Object of class SpatialPoints}
 
-\item{destination}{origin Location from which the Accumulated Cost is calculated. Expects Object of class SpatialPoints}
+\item{destination}{Destination Location from which the Accumulated Cost is calculated. Expects Object of class SpatialPoints}
 }
 \description{
 Creates a Cost Corridor using a previously created Cost Surface
 }
 \details{
+Creates a Cost Corridor from a Cost Surface
+
 The create_cost_corridor function combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both diretions of movement.
 }
 \examples{
