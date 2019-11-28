@@ -26,7 +26,7 @@ r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'
 
 slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
-traverse_cs <- create_traversal_cs(r, traversal = 'asymmetrical')
+traverse_cs <- create_traversal_cs(r, neighbours = 16)
 
 final_cost_cs <- slope_cs * traverse_cs
 

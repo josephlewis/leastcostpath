@@ -23,6 +23,7 @@ Creates Slope Cost Surface to be used in Least Cost Path calculation.
 The create_slope_cs function computes a cost surface based on the difficulty of traversing the slope. It implements multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. The function requires a Digital Elevation Model (class 'RasterLayer'), the cost function to be used, and the critical slope - critical slope only used in 'wheeled transport' cost function.
 
 isotropic cost functions include 'tobler', 'modified tobler', 'wheeled transport', 'herzog', and 'all'. Default is 'tobler'.
+
 The most widely used cost function that approximates the difficulty of moving across a landscape is Waldo Tobler's 'Hiking Function' (Gorenflo and Gale, 1990; Wheatley and Gillings, 2001). This function allows for the assessment of time necessary to traverse a surface and takes into account up-slope and down-slope momentum (Kantner, 2004; Tobler, 1993).
 
 The Modified Hiking cost function combines MIDE (París Roche, 2002), a method to calculate walking hours for an average hiker with a light load (Márquez-Pérez et al., 2017), and Tobler's 'Hiking Function' (Tobler, 1993). The Modified Hiking Function benefits from the precision of the MIDE rule and the continuity of Tobler's Hiking Function (Márquez-Pérez et al., 2017).
