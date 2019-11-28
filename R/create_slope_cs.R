@@ -5,7 +5,7 @@
 #'The create_slope_cs function computes a cost surface based on the difficulty of traversing the slope. It implements multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. The function requires a Digital Elevation Model (class 'RasterLayer'), the cost function to be used, and the critical slope - critical slope only used in 'wheeled transport' cost function.
 #'
 #'isotropic cost functions include 'tobler', 'modified tobler', 'wheeled transport', 'herzog', and 'all'. Default is 'tobler'.
-
+#'
 #' The most widely used cost function that approximates the difficulty of moving across a landscape is Waldo Tobler's 'Hiking Function' (Gorenflo and Gale, 1990; Wheatley and Gillings, 2001). This function allows for the assessment of time necessary to traverse a surface and takes into account up-slope and down-slope momentum (Kantner, 2004; Tobler, 1993).
 #'
 #' The Modified Hiking cost function combines MIDE (París Roche, 2002), a method to calculate walking hours for an average hiker with a light load (Márquez-Pérez et al., 2017), and Tobler's 'Hiking Function' (Tobler, 1993). The Modified Hiking Function benefits from the precision of the MIDE rule and the continuity of Tobler's Hiking Function (Márquez-Pérez et al., 2017).
@@ -42,8 +42,8 @@ create_slope_cs <- function(dem, cost_function = "all", neighbours = 16, crit_sl
         stop("dem argument expects a RasterLayer object")
     }
     
-    if (cost_function != "tobler" & cost_function != "modified tobler" & cost_function != "wheeled transport" & cost_function != "herzog" & cost_function != 
-        "all") {
+    if (cost_function != "tobler" & cost_function != "modified tobler" & cost_function != "wheeled transport" & cost_function != "herzog" & 
+        cost_function != "all") {
         stop("Incorrect cost_function. Expecting 'tobler', 'modified tobler', 'wheeled transport' 'herzog', or 'all'")
     }
     
@@ -77,8 +77,8 @@ create_slope_cs <- function(dem, cost_function = "all", neighbours = 16, crit_sl
     }
     
     if (cost_function == "herzog") {
-        slope[adj] <- 1/((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + (93.419 * slope[adj]^2) + 
-            (19.825 * slope[adj]) + 1.64)
+        slope[adj] <- 1/((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + (93.419 * 
+            slope[adj]^2) + (19.825 * slope[adj]) + 1.64)
         Conductance <- gdistance::geoCorrection(slope)
     }
     
@@ -89,8 +89,8 @@ create_slope_cs <- function(dem, cost_function = "all", neighbours = 16, crit_sl
         slope_stack[[1]][adj] <- 6 * exp(-3.5 * abs(slope[adj] + 0.05))
         slope_stack[[2]][adj] <- 4.8 * exp(-5.3 * abs((slope[adj] * 0.7) + 0.03))
         slope_stack[[3]][adj] <- 1/(1 + abs(slope[adj] * 100/crit_slope)^2)
-        slope_stack[[4]][adj] <- 1/((((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + (93.419 * 
-            slope[adj]^2) + (19.825 * slope[adj]) + 1.64)))
+        slope_stack[[4]][adj] <- 1/((((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + 
+            (93.419 * slope[adj]^2) + (19.825 * slope[adj]) + 1.64)))
         
         Conductance <- raster::stack(gdistance::geoCorrection(slope_stack[[1]]), gdistance::geoCorrection(slope_stack[[2]]), gdistance::geoCorrection(slope_stack[[3]]), 
             gdistance::geoCorrection(slope_stack[[4]]))
