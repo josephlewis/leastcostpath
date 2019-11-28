@@ -1,38 +1,19 @@
----
-title: "R package Least Cost Path: formulating least cost path analyses"
-author: "Joseph Lewis"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-# 1. Introduction
-
-This vignette describes <b>leastcostpath</b>, a package written for use in the R environment (R Core Team, 2016). It provides functionality to calculate Least Cost Paths using multiple cost functions that approximate the difficulty of moving across a landscape, taking into account obstacles and local fricion (e.g. slope). Furthermore, this package allows for the incorporation of cost when traversing across slope, as well as other factors such as landscape feature attraction. 
-
-#2. Example 1: Least Cost Path Analysis (Slope only)
-
-```{r libraries, echo = TRUE, message= FALSE, warning= FALSE}
+## ----libraries, echo = TRUE, message= FALSE, warning= FALSE--------------
 library(rgdal)
 library(rgeos)
 library(sp)
 library(raster)
 library(gdistance)
 library(leastcostpath)
-```
 
-```{r slope_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+## ----slope_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE----
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
 plot(r)
 
 cs <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16)
-```
 
-```{r lcp, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+## ----lcp, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE----
 
 loc1 = cbind(2667876, 6479424)
 loc1 = sp::SpatialPoints(loc1)
@@ -45,29 +26,24 @@ lcp <- create_lcp(cost_surface = cs, origin = loc1, destination = loc2, directio
 plot(raster(cs))
 plot(lcp[[1]], add = T, col = "red")
 plot(lcp[[2]], add = T, col = "blue")
-```
 
-#3. Example 2: Least Cost Path Analysis (Slope and Traversal Across Slope)
-
-```{r libraries_2, echo = TRUE, message= FALSE, warning= FALSE}
+## ----libraries_2, echo = TRUE, message= FALSE, warning= FALSE------------
 library(rgdal)
 library(rgeos)
 library(sp)
 library(raster)
 library(gdistance)
 library(leastcostpath)
-```
 
-```{r slope_traverse_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+## ----slope_traverse_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE----
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
 plot(r)
 
 cs <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
   "*" (create_traversal_cs(dem = r, neighbours = 16))
-```
 
-```{r lcp_2, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+## ----lcp_2, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE----
 
 loc1 = cbind(2667876, 6479424)
 loc1 = sp::SpatialPoints(loc1)
@@ -80,20 +56,16 @@ lcp <- create_lcp(cost_surface = cs, origin = loc1, destination = loc2, directio
 plot(raster(cs))
 plot(lcp[[1]], add = T, col = "red")
 plot(lcp[[2]], add = T, col = "blue")
-```
 
-#4. Example 3: Least Cost Path Analysis (Slope, Traversal Across Slope, and Landscape Feature Attraction)
-
-```{r libraries_3, echo = TRUE, message= FALSE, warning= FALSE}
+## ----libraries_3, echo = TRUE, message= FALSE, warning= FALSE------------
 library(rgdal)
 library(rgeos)
 library(sp)
 library(raster)
 library(gdistance)
 library(leastcostpath)
-```
 
-```{r slope_traverse_feature_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+## ----slope_traverse_feature_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE----
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
 plot(r)
@@ -104,9 +76,8 @@ feature_loc = sp::SpatialPoints(feature_loc)
 cs <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
   "*" (create_traversal_cs(dem = r, neighbours = 16)) %>%
   "*" (create_feature_attraction(dem = r, locs = feature_loc, max_attraction = 5000, distance = 200))
-```
 
-```{r lcp_3, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+## ----lcp_3, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE----
 
 loc1 = cbind(2667876, 6479424)
 loc1 = sp::SpatialPoints(loc1)
@@ -120,20 +91,16 @@ plot(raster(cs))
 plot(feature_loc, add = T, col = "black")
 plot(lcp[[1]], add = T, col = "red")
 plot(lcp[[2]], add = T, col = "blue")
-```
 
-#5. Example 4: Least Cost Path Corridor (Slope, Traversal Across Slope, and Landscape Feature Attraction)
-
-```{r libraries_4, echo = TRUE, message= FALSE, warning= FALSE}
+## ----libraries_4, echo = TRUE, message= FALSE, warning= FALSE------------
 library(rgdal)
 library(rgeos)
 library(sp)
 library(raster)
 library(gdistance)
 library(leastcostpath)
-```
 
-```{r slope_traverse_feature_cc, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+## ----slope_traverse_feature_cc, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE----
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
 plot(r)
@@ -144,9 +111,8 @@ feature_loc = sp::SpatialPoints(feature_loc)
 cs <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
   "*" (create_traversal_cs(dem = r, neighbours = 16)) %>%
   "*" (create_feature_attraction(dem = r, locs = feature_loc, max_attraction = 100, distance = 50))
-```
 
-```{r cc, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+## ----cc, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE----
 
 loc1 = cbind(2667876, 6479424)
 loc1 = sp::SpatialPoints(loc1)
@@ -157,18 +123,4 @@ loc2 = sp::SpatialPoints(loc2)
 cc <- create_cost_corridor(cs, loc1, loc2)
 
 plot(cc)
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
 
