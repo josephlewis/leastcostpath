@@ -1,4 +1,4 @@
-leastcostpath - version 0.1.5
+leastcostpath - version 0.1.6
 =============================
 
 ![](https://raw.githubusercontent.com/josephlewis/leastcostpath/master/images/leastcostpath_logo.png)
