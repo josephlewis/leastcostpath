@@ -1,4 +1,4 @@
-leastcostpath - version 0.1.6
+leastcostpath - version 0.1.5
 =============================
 
 ![](https://raw.githubusercontent.com/josephlewis/leastcostpath/master/images/leastcostpath_logo.png)
@@ -44,13 +44,12 @@ Usage
     
 #### Cost Corridors
 
-  cc <- create_cost_corridor(final_cost_cs, loc1, loc2)
-  
-  plot(cc)
-  plot(loc1, add = T)
-  plot(loc2, add = T)
-
-
+    cc <- create_cost_corridor(final_cost_cs, loc1, loc2)
+    
+    plot(cc)
+    plot(loc1, add = T)
+    plot(loc2, add = T)
+    
 Feedback
 --------
 

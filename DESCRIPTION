@@ -1,7 +1,7 @@
 Package: leastcostpath
 Title: leastcostpath: Calculation of Least Cost Paths to model human movement across a landscape
-Version: 0.1.5
-Date: 2019-09-21
+Version: 0.1.6
+Date: 2019-11-28
 Authors@R: person("Joseph", "Lewis", email = "josephlewis1992@gmail.com", role = c("aut", "cre"))
 Maintainer: Joseph Lewis <josephlewis1992@gmail.com>
 URL: josephlewis.github.io
