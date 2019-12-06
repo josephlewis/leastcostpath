@@ -5,7 +5,7 @@
 \title{create_feature_attraction}
 \usage{
 create_feature_attraction(dem, locs, max_attraction = 5,
-  distance = 500)
+  distance = 500, eq = "linear")
 }
 \arguments{
 \item{dem}{Digital Elevation Model. Expects Object of class RasterLayer}
@@ -15,6 +15,8 @@ create_feature_attraction(dem, locs, max_attraction = 5,
 \item{max_attraction}{Value denoting the maximum attraction value of the landscape feature(s). Default is 5. Value must be above 0.}
 
 \item{distance}{Maximum distance that the landscape feature has influence. Default is 500. Value must be above 0.}
+
+\item{eq}{Attraction decay rate: 'linear' or 'exponential'}
 }
 \description{
 Creates landscape feature attraction Cost Surface to be used in Least Cost Path calculation.
@@ -31,7 +33,8 @@ loc2 = cbind(2667800, 6479400)
 loc2 = sp::SpatialPoints(loc2)
 
 locs <- rbind(loc1, loc2)
-feature_attraction <- create_feature_attraction(dem = r, locs = locs, max_attraction = 5, distance = 20)
+feature_attraction <- create_feature_attraction(dem = r, locs = locs,
+max_attraction = 5, distance = 500, eq = 'linear')
 }
 \author{
 Joseph Lewis
