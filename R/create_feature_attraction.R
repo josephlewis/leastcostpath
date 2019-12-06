@@ -33,53 +33,53 @@
 #'
 #' locs <- rbind(loc1, loc2)
 #' feature_attraction <- create_feature_attraction(dem = r, locs = locs,
-#' max_attraction = 5, distance = 20)
+#' max_attraction = 5, distance = 500, eq = 'linear')
 
 create_feature_attraction <- function(dem, locs, max_attraction = 5, distance = 500, eq = "linear") {
-
+    
     message("note: create_feature_attraction expects planar coordinates")
-
+    
     if (!inherits(dem, "RasterLayer")) {
         stop("dem expects a RasterLayer object")
     }
-
+    
     if (!inherits(locs, "SpatialPoints")) {
         stop("locs expects a SpatialPoints object")
     }
-
-    if (max_attraction <= 0 | distance <= 0) {
-        stop("max_attraction and distance must be above 0")
+    
+    if (max_attraction <= 0 | distance <= 1) {
+        stop("max_attraction and distance must be above 1")
     }
-
+    
     if (any(eq != "linear" & eq != "exponential")) {
-        stop("eq expects 'linear' or 'exp' as an argument")
+        stop("eq expects 'linear' or 'exponential' as an argument")
     }
-
+    
     locs_raster <- raster::rasterize(coordinates(locs), dem)
-
+    
     locs_distance <- raster::distance(locs_raster)
-
+    
     if (eq == "linear") {
-
+        
         attraction_decay <- raster::calc(locs_distance, fun = function(x) {
             (-abs(max_attraction)/abs(distance)) * (x) + abs(max_attraction)
         })
-
+        
     }
-
+    
     if (eq == "exponential") {
-
+        
         attraction_decay <- raster::calc(locs_distance, fun = function(x) {
-
+            
             (abs(max_attraction) * exp((log(0.001/max_attraction)/distance) * (x)))
         })
-
+        
     }
-
+    
     attraction_decay[is.na(attraction_decay) | attraction_decay < 1] <- 1
-
+    
     attraction_decay <- gdistance::transition(attraction_decay, mean, 16, symm = TRUE)
-
+    
     return(attraction_decay)
-
+    
 }
