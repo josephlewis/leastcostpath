@@ -58,7 +58,7 @@ Usage
     
     lcp <- cost surface %>% create_lcp(cost_surface = . loc1, loc2)
     
-    cost_corridor <- create_cost_corridor(., loc1, loc2)
+    cost_corridor <- cost surface %>% create_cost_corridor(., loc1, loc2)
     
 Feedback
 --------
