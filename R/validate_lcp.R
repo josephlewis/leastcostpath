@@ -32,11 +32,11 @@
 
 validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000)) {
     
-    if (!is(lcp, "SpatialLines")) {
+    if (!inherits(lcp, "SpatialLines")) {
         stop("lcp expects a SpatialLines or SpatialLinesDataFrame object")
     }
     
-    if (!is(comparison, "SpatialLines")) {
+    if (!inherits(comparison, "SpatialLines")) {
         stop("Comparison expects a SpatialLines object, SpatialLinesDataFrame object, or SpatialPolygonsDataFrame object")
     }
     
@@ -57,15 +57,13 @@ validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000)) 
         buffer_output <- rgeos::gBuffer(comparison, byid = FALSE, width = buffers[1])
     }
     
-    buffer_output <- sp::SpatialPolygonsDataFrame(buffer_output, data = data.frame(ID = 1:length(buffers), row.names = 1:length(buffers)), 
-        match.ID = FALSE)
+    buffer_output <- sp::SpatialPolygonsDataFrame(buffer_output, data = data.frame(ID = 1:length(buffers), row.names = 1:length(buffers)), match.ID = FALSE)
     
     lcp_clipped <- rgeos::gIntersection(buffer_output, lcp, byid = TRUE)
     
     accuracy <- rgeos::gLength(lcp_clipped, byid = TRUE)/rgeos::gLength(lcp) * 100
     
-    lcp_df <- data.frame(ID = 1:length(buffers), Buffer_Applied_from_data = buffers, Percent_LCP_within_Distance = format(accuracy, digits = 3), 
-        stringsAsFactors = FALSE)
+    lcp_df <- data.frame(ID = 1:length(buffers), Buffer_Applied_from_data = buffers, Percent_LCP_within_Distance = accuracy, stringsAsFactors = FALSE)
     
     return(lcp_df)
 }
