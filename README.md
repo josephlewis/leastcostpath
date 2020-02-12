@@ -3,7 +3,7 @@ leastcostpath - version 0.1.6
 
 ![](https://raw.githubusercontent.com/josephlewis/leastcostpath/master/images/leastcostpath_logo.png)
 
-The R package <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) which are often, but not exclusively, used in archaeological research. This package can be used to apply multiple cost functions when approximating the dififculty of moving across a landscape, as well as taking into account traversing across slope and other costs such as openness. This package also provides functionality to validate the accuracy of the computed LCP relative to another path. This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
+The R package <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) which are often, but not exclusively, used in archaeological research. This package can be used to apply multiple cost functions when approximating the dififculty of moving across a landscape, as well as taking into account traversing across slope and other costs such as landscape features. This package also provides functionality to validate the accuracy of the computed LCP relative to another path. This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
 Getting Started
 ---------------
@@ -54,7 +54,7 @@ Usage
 
     cost_surface <- create_slope_cs(r, cost_function = 'tobler') %>%
     "*" (create_traversal_cs(r)) %>%
-    "*" (create_feature_attraction(r,  sp_locs, max_attraction = 50, distance = 800))
+    "*" (create_feature(raster = r, locations = loc1, x = seq(200, 1, length.out = 20))
     
     lcp <- cost surface %>% create_lcp(cost_surface = . loc1, loc2)
     
