@@ -65,9 +65,13 @@ Usage
     "*" (create_traversal_cs(r)) %>%
     "*" (create_feature(raster = r, locations = loc1, x = seq(200, 1, length.out = 20))
     
-    lcp <- cost surface %>% create_lcp(cost_surface = . loc1, loc2)
+    lcp <- cost_surface %>% create_lcp(cost_surface = . loc1, loc2)
     
-    cost_corridor <- cost surface %>% create_cost_corridor(., loc1, loc2)
+    cost_corridor <- cost_surface %>% create_cost_corridor(., loc1, loc2)
+    
+    locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
+    
+    lcp_network <- cost_surface %>% create_lcp_network(., locations = locs, cost_distance = FALSE, parallel = FALSE)
     
 Feedback
 --------
