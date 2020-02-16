@@ -24,7 +24,7 @@ library(gdistance)
 library(leastcostpath)
 ```
 
-```{r raster, echo = TRUE, message= FALSE, warning= FALSE}
+```{r raster, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
 plot(r)
@@ -126,14 +126,12 @@ loc2 = sp::SpatialPoints(loc2)
 cc <- create_cost_corridor(cs, loc1, loc2)
 
 plot(cc)
-
-plot(cc > 0.10)
 ```
 
 #7. Example 5: Least Cost Path Network (Slope and Traversal Across Slope)
 
 ```{r slope_traverse_feature_ntwk, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
-locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
+locs <- sp::spsample(as(r, 'SpatialPolygons'),n=25,'regular')
 
 lcp_network <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
   "*" (create_traversal_cs(dem = r, neighbours = 16)) %>%
