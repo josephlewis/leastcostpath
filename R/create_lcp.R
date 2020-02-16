@@ -37,7 +37,7 @@
 #' loc2 = cbind(2667800, 6479400)
 #' loc2 = sp::SpatialPoints(loc2)
 #'
-#' create_lcp(cost_surface = final_cost_cs, origin = loc1,
+#' lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1,
 #' destination = loc2, directional = FALSE)
 
 create_lcp <- function(cost_surface, origin, destination, directional = FALSE) {

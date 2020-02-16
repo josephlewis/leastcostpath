@@ -34,7 +34,7 @@
 #'
 #' @examples
 #' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-#' create_slope_cs(r, cost_function = 'tobler', neighbours = 16)
+#' slope_cs <- create_slope_cs(r, cost_function = 'tobler', neighbours = 16)
 
 create_slope_cs <- function(dem, cost_function = "all", neighbours = 16, crit_slope = 12) {
     
