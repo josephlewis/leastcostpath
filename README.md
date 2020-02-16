@@ -45,7 +45,8 @@ Usage
 
     locs <- spsample(as(r, 'SpatialPolygons'),n=10,'regular')
     
-    lcp_network <- create_lcp_network(cost_surface = final_cost_cs, locations = locs, cost_distance = FALSE, parallel = FALSE)
+    lcp_network <- create_lcp_network(cost_surface = final_cost_cs, locations = locs, 
+    cost_distance = FALSE, parallel = FALSE)
     
     plot(raster(final_cost_cs))
     plot(lcp_network, add = T)
