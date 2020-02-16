@@ -1,3 +1,7 @@
+# 1.0.0 (14 February 2020)
+* Removed create_feature_attraction and replaced with create_feature_cs. 
+* Re-implemented create_lcp_network. Provides parallel and non-parallel functionality. 
+
 # 0.1.6 (28 November 2019)
 * Improved readability of create_traversal_slope function
 * Addition of create_feature_attraction

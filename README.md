@@ -1,7 +1,5 @@
-leastcostpath - version 0.1.6
+leastcostpath - version 1.0.0
 =============================
-
-![](https://raw.githubusercontent.com/josephlewis/leastcostpath/master/images/leastcostpath_logo.png)
 
 The R package <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) which are often, but not exclusively, used in archaeological research. This package can be used to apply multiple cost functions when approximating the dififculty of moving across a landscape, as well as taking into account traversing across slope and other costs such as landscape features. This package also provides functionality to validate the accuracy of the computed LCP relative to another path. This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
@@ -37,10 +35,20 @@ Usage
     loc2 = cbind(2667800, 6479400)
     loc2 = sp::SpatialPoints(loc2)
 
-    lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1, destination = loc2, directional = TRUE)
+    lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1, destination = loc2, directional = FALSE)
   
     plot(raster(final_cost_cs))
-    plot(lcps[[1]], add = T)
+    plot(lcps[[1]], add = T, col = "red")
+    plot(lcps[[2]], add = T, col = "blue")
+    
+#### Least Cost Path Network computation using created Cost Surfaces
+
+    locs <- spsample(as(r, 'SpatialPolygons'),n=10,'regular')
+    
+    lcp_network <- create_lcp_network(cost_surface = final_cost_cs, locations = locs, cost_distance = FALSE, parallel = FALSE)
+    
+    plot(raster(final_cost_cs))
+    plot(lcp_network, add = T)
     
 #### Cost Corridors
 
@@ -85,6 +93,9 @@ Versioning
 -   version 0.1.6
       * Addition of create_feature_attraction
       * Improved readability of create_traversal_slope function 
+-   version 1.0.0
+      * Removed create_feature_attraction and replaced with create_feature_cs. 
+      * Re-implemented create_lcp_network. Provides parallel and non-parallel functionality. 
 
 Authors
 -------
