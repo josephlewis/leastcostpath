@@ -112,4 +112,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2019) leastcostpath: R Implementation of Least Cost Path Analysis (version 0.1.6)
+    Lewis, J. (2020) leastcostpath: R Implementation of Least Cost Path Analysis (version 1.0.0)
