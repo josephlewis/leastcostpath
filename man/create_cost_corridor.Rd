@@ -31,7 +31,7 @@ loc1 = sp::SpatialPoints(loc1)
 loc2 = cbind(2667800, 6479400)
 loc2 = sp::SpatialPoints(loc2)
 
-create_cost_corridor(slope_cs, loc1, loc2)
+cost_corridor <- create_cost_corridor(slope_cs, loc1, loc2)
 }
 \author{
 Joseph Lewis

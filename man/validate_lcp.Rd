@@ -27,7 +27,7 @@ x2 <- c(1,5,5,8)
 y2 <- c(1,4,6,7)
 line2 <- sp::SpatialLines(list(sp::Lines(sp::Line(cbind(x2,y2)), ID='b')))
 
-validate_lcp(lcp = line1, comparison = line2, buffers = c(0.1, 0.2, 0.5, 1))
+val_lcp <- validate_lcp(lcp = line1, comparison = line2, buffers = c(0.1, 0.2, 0.5, 1))
 }
 \author{
 Joseph Lewis

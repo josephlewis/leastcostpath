@@ -19,7 +19,7 @@ The create_traversal_cs function computes a cost surface based on the difficulty
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-create_traversal_cs(r, neighbours = 16)
+traversal_cs <- create_traversal_cs(r, neighbours = 16)
 }
 \author{
 Joseph Lewis
