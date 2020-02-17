@@ -104,3 +104,8 @@ plot(r)
 plot(locs, add = T)
 plot(lcp_network, add = T, col = "red")
 
+## ----cumulative, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE----
+cumulative_lcps <- create_cumulative_lcps(lcps = lcp_network, raster = r, rescale = TRUE)
+
+plot(cumulative_lcps)
+
