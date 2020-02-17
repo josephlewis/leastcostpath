@@ -4,7 +4,7 @@
 \alias{create_cost_corridor}
 \title{create_cost_corridor}
 \usage{
-create_cost_corridor(cost_surface, origin, destination)
+create_cost_corridor(cost_surface, origin, destination, rescale = TRUE)
 }
 \arguments{
 \item{cost_surface}{Cost Surface. Expects Object of class TransitionLayer.}
@@ -12,13 +12,13 @@ create_cost_corridor(cost_surface, origin, destination)
 \item{origin}{origin Location from which the Accumulated Cost is calculated. Expects Object of class SpatialPoints}
 
 \item{destination}{Destination Location from which the Accumulated Cost is calculated. Expects Object of class SpatialPoints}
+
+\item{rescale}{Rescales cost corridor raster to values between 0 and 1. Default is TRUE}
 }
 \description{
 Creates a Cost Corridor using a previously created Cost Surface
 }
 \details{
-Creates a Cost Corridor from a Cost Surface
-
 The create_cost_corridor function combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both diretions of movement.
 }
 \examples{
@@ -31,7 +31,7 @@ loc1 = sp::SpatialPoints(loc1)
 loc2 = cbind(2667800, 6479400)
 loc2 = sp::SpatialPoints(loc2)
 
-cost_corridor <- create_cost_corridor(slope_cs, loc1, loc2)
+cost_corridor <- create_cost_corridor(slope_cs, loc1, loc2, rescale = TRUE)
 }
 \author{
 Joseph Lewis
