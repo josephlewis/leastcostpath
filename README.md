@@ -80,7 +80,7 @@ Usage
     
     cumulative_cost_paths <- cost_surface %>% create_lcp_network(., locations = locs, cost_distance = FALSE, parallel = FALSE) %>% create_cumulative_lcps(lcps = ., raster = r, rescale = FALSE)
     
-Usage
+Vignettes
 --------
 
 [Least Cost Path Vignette 1](https://josephlewis.github.io/doc/leastcostpath1.html)
