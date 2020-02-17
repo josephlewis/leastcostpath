@@ -1,4 +1,4 @@
-leastcostpath - version 1.0.0
+leastcostpath - version 1.1.0
 =============================
 
 The R package <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) which are often, but not exclusively, used in archaeological research. This package can be used to apply multiple cost functions when approximating the dififculty of moving across a landscape, as well as taking into account traversing across slope and other costs such as landscape features. This package also provides functionality to validate the accuracy of the computed LCP relative to another path. This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
@@ -13,7 +13,6 @@ Installation
     library(devtools)
     install_github("josephlewis/leastcostpath")
     library(leastcostpath)
-
 
 Usage
 --------
@@ -51,7 +50,13 @@ Usage
     plot(raster(final_cost_cs))
     plot(lcp_network, add = T)
     
-#### Cost Corridors
+#### Cumulative Least Cost Paths using created LCP Networks
+
+    cumulative_lcps <- create_cumulative_lcps(lcps = lcp_network, raster = r, rescale = FALSE)
+
+    plot(cumulative_lcps)
+    
+#### Cost Corridors using Created Cost Surfaces
 
     cc <- create_cost_corridor(final_cost_cs, loc1, loc2)
     
@@ -72,6 +77,8 @@ Usage
     locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
     
     lcp_network <- cost_surface %>% create_lcp_network(., locations = locs, cost_distance = FALSE, parallel = FALSE)
+    
+    cumulative_cost_paths <- cost_surface %>% create_lcp_network(., locations = locs, cost_distance = FALSE, parallel = FALSE) %>% create_cumulative_lcps(lcps = ., raster = r, rescale = FALSE)
     
 Feedback
 --------
@@ -112,4 +119,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: R Implementation of Least Cost Path Analysis (version 1.0.0)
+    Lewis, J. (2020) leastcostpath: R Implementation of Least Cost Path Analysis (version 1.1.0)

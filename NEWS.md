@@ -1,3 +1,6 @@
+# 1.0.0 (17 February 2020)
+* Added create_cumulative_lcps function for the creation of cumulative least cost path rasters
+
 # 1.0.0 (14 February 2020)
 * Removed create_feature_attraction and replaced with create_feature_cs. 
 * Re-implemented create_lcp_network. Provides parallel and non-parallel functionality. 
