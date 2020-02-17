@@ -108,6 +108,8 @@ Versioning
 -   version 1.0.0
       * Removed create_feature_attraction and replaced with create_feature_cs. 
       * Re-implemented create_lcp_network. Provides parallel and non-parallel functionality. 
+-   version 1.1.0
+      * Added create_cumulative_lcps function for the creation of cumulative least cost path rasters 
 
 Authors
 -------
