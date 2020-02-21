@@ -7,15 +7,18 @@
 create_traversal_cs(dem, neighbours = 16)
 }
 \arguments{
-\item{dem}{Digital Elevation Model. Expects Object of class RasterLayer}
+\item{dem}{Digital Elevation Model. \code{RasterLayer} (raster package)}
 
-\item{neighbours}{Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected input values are 4, 8, 16. Default is 16.}
+\item{neighbours}{Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16}
+}
+\value{
+Transition object
 }
 \description{
-Creates Traversal across slope Cost Surface to be used in Least Cost Path calculation.
+Creates a Traversal across slope Cost Surface
 }
 \details{
-The create_traversal_cs function computes a cost surface based on the difficulty of traversing across the slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Traversal across slope accounts for downhill being easier than uphill. The function requires a Digital Elevation Model (class 'RasterLayer').
+Creates a cost surface based on the difficulty of traversing **(across)** slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Traversal across slope accounts for movement directly perpendicular across slope being easier than movement diagonally up/down slope.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

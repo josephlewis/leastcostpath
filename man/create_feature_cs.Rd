@@ -4,20 +4,25 @@
 \alias{create_feature_cs}
 \title{create_feature_cs}
 \usage{
-create_feature_cs(raster, locations, x)
+create_feature_cs(raster, locations, x, neighbours = 16)
 }
 \arguments{
-\item{raster}{Raster file. Expects Object of class RasterLayer. This is used to derive extent and spatial reference system of the landscape feature cost surface.}
+\item{raster}{\code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the landscape feature cost surface}
 
-\item{locations}{Locations of landscape features. Expects Object of class SpatialPoints}
+\item{locations}{\code{SpatialPoints}. Locations of landscape features}
 
-\item{x}{vector of values denoting the attraction/repulsion from the landscape feature(s).}
+\item{x}{\code{numeric vector} of values denoting the attraction/repulsion from the landscape features}
+
+\item{neighbours}{Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16}
+}
+\value{
+Transition object
 }
 \description{
-Creates Landscape Feature Cost Surface to be used in Least Cost Path calculation.
+Creates a Landscape Feature Cost Surface
 }
 \details{
-The create_feature_cs function computes a cost surface representating the attraction/repulsion of a feature in the landscape. The function requires a Raster (class 'RasterLayer'), the locaion of the feature(s) (class 'SpatialPoints'), and a vector (Class 'numeric') of attraction/repulsion values from the feature(s).
+Creates a cost surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

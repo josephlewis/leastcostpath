@@ -13,11 +13,14 @@ validate_lcp(lcp, comparison, buffers = c(50, 100, 250, 500, 1000))
 
 \item{buffers}{Vector of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).}
 }
+\value{
+data.frame object
+}
 \description{
-Calculates the accuracy of the Least Cost Path by calculating the percentage of Least Cost Path within certain distance(s) from another SpatialLine.
+Calculates accuracy of Least Cost Path
 }
 \details{
-The function computes the accuracy of the Least Cost Path using the buffer method proposed by \href{https://www.tandfonline.com/doi/abs/10.1080/136588197242419}{Goodchild and Hunter (1997)}. Expects two SpatialLines/SpatialLinesDataFrame objects and a numeric vector of buffer distances. Returns a data.frame with accuracy results.
+Calculates the accuracy of the Least Cost Path using the buffer method proposed by Goodchild and Hunter (1997).
 }
 \examples{
 x1 <- c(1,5,4,8)

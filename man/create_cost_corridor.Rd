@@ -7,19 +7,22 @@
 create_cost_corridor(cost_surface, origin, destination, rescale = TRUE)
 }
 \arguments{
-\item{cost_surface}{Cost Surface. Expects Object of class TransitionLayer.}
+\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Cost Corridor calculation}
 
-\item{origin}{origin Location from which the Accumulated Cost is calculated. Expects Object of class SpatialPoints}
+\item{origin}{\code{SpatialPoints}. orgin location from which the Accumulated Cost is calculated. Only the first cell is taken into account.}
 
-\item{destination}{Destination Location from which the Accumulated Cost is calculated. Expects Object of class SpatialPoints}
+\item{destination}{\code{SpatialPoints}. destination location from which the Accumulated Cost is calculated. Only the first cell is taken into account}
 
-\item{rescale}{Rescales cost corridor raster to values between 0 and 1. Default is TRUE}
+\item{rescale}{if TRUE raster values scaled to between 0 and 1. Default is TRUE}
+}
+\value{
+RasterLayer object
 }
 \description{
-Creates a Cost Corridor using a previously created Cost Surface
+Creates a Cost Corridor raster object
 }
 \details{
-The create_cost_corridor function combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both diretions of movement.
+Combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both directions of movement.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

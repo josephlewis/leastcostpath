@@ -7,19 +7,22 @@
 create_lcp(cost_surface, origin, destination, directional = FALSE)
 }
 \arguments{
-\item{cost_surface}{Cost Surface. Expects Object of class TransitionLayer.}
+\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation}
 
-\item{origin}{Location from which the Least Cost Path is calculated. Expects Object of class SpatialPoints}
+\item{origin}{\code{SpatialPoints} location from which the Least Cost Path is calculated. Only the first cell is taken into account.}
 
-\item{destination}{Location to which the Least Cost Path is calculated. Expects Object of class SpatialPoints}
+\item{destination}{\code{SpatialPoints} location to which the Least Cost Path is calculated}
 
-\item{directional}{If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin.}
+\item{directional}{if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. See details for more}
+}
+\value{
+SpatialLines object or list of SpatialLines object (dependent on directional argument)
 }
 \description{
-Calculates Least Cost Paths which are often, but not exclusively, used in archaeological research
+Calculates Least Cost Path
 }
 \details{
-The function computes the Least Cost Path from an origin location to a destination location. It uses the cost surface generated using the create_slope_cs and/or create_traversal_cs functions. The function takes a Cost Surface ('TransitionLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
+Calculates the Least Cost Path from an origin location to a destination location. See details for more.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

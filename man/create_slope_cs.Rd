@@ -4,25 +4,28 @@
 \alias{create_slope_cs}
 \title{create_slope_cs}
 \usage{
-create_slope_cs(dem, cost_function = "all", neighbours = 16,
+create_slope_cs(dem, cost_function = "tobler", neighbours = 16,
   crit_slope = 12)
 }
 \arguments{
-\item{dem}{Digital Elevation Model. Expects Object of class RasterLayer}
+\item{dem}{Digital Elevation Model. \code{RasterLayer} (raster package)}
 
-\item{cost_function}{Cost Function to be used in the Least Cost Path calculation. Current implementation computes LCPs using Tobler's Hiking function, Marquez-Perez et al. Modified Hiking function, Herzog's wheeled transport function, and Herzog's sixth degree polynomial function. Default parameter value is 'tobler'.}
+\item{cost_function}{Cost Function used in the Least Cost Path calculation. Implemented cost functions include 'tobler', 'modified tobler', 'wheeled transport' 'herzog', or 'all'. Default is 'tobler'. See Details for more information}
 
-\item{neighbours}{Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected values are 4, 8, 16. Default is 16.}
+\item{neighbours}{Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16}
 
-\item{crit_slope}{Critical Slope (in percent) is 'the transition where switchbacks become more effective than direct uphill or downhill paths'. Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Critical slope defaulted is 15 degrees, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012). Critical slope only used in 'wheeled transport' cost function.}
+\item{crit_slope}{Critical Slope (in percent) is 'the transition where switchbacks become more effective than direct uphill or downhill paths'. Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Default is 12, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012). Critical slope only used in 'wheeled transport' cost function}
+}
+\value{
+Transition object
 }
 \description{
-Creates Slope Cost Surface to be used in Least Cost Path calculation.
+Creates a Slope Cost Surface
 }
 \details{
-The create_slope_cs function computes a cost surface based on the difficulty of traversing the slope. It implements multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. The function requires a Digital Elevation Model (class 'RasterLayer'), the cost function to be used, and the critical slope - critical slope only used in 'wheeled transport' cost function.
+Creates a cost surface based on the difficulty of moving up/down slope. This function allows for multiple isotropic and anisotropic cost functions that estimate human movement across a landscape.
 
-isotropic cost functions include 'tobler', 'modified tobler', 'wheeled transport', 'herzog', and 'all'. Default is 'tobler'.
+
 
 The most widely used cost function that approximates the difficulty of moving across a landscape is Waldo Tobler's 'Hiking Function' (Gorenflo and Gale, 1990; Wheatley and Gillings, 2001). This function allows for the assessment of time necessary to traverse a surface and takes into account up-slope and down-slope momentum (Kantner, 2004; Tobler, 1993).
 
@@ -30,7 +33,7 @@ The Modified Hiking cost function combines MIDE (París Roche, 2002), a method t
 
 Herzog (2013), based on the cost function provided by Llobera and Sluckin (2007), has developed a cost function to approximate the cost for wheeled transport. The cost function is symmetric and is most applicable for use when the same route was taken in both directions.
 
-Herzog's (2014) Sixth-degree polynomial cost function approximates the energy expenditure values found in Minetti et al. (2002) but eliminates the problem of unrealistic negative energy expenditure values for steep downhill slopes.
+Herzog's (2010) Sixth-degree polynomial cost function approximates the energy expenditure values found in Minetti et al. (2002) but eliminates the problem of unrealistic negative energy expenditure values for steep downhill slopes.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
