@@ -1,4 +1,4 @@
-#' create_CPP_lcps
+#' create_CCP_lcps
 #'
 #' Calculates Cumulative Cost Paths from Radial Locations
 #'
@@ -40,10 +40,10 @@
 #'
 #'locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
 #'
-#' lcp_network <- create_CPP_lcps(cost_surface = final_cost_cs, location = locs, distance = 20,
+#' lcp_network <- create_CCP_lcps(cost_surface = final_cost_cs, location = locs, distance = 20,
 #' radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 
-create_CPP_lcps <- function(cost_surface, location, distance, radial_points, cost_distance = FALSE, parallel = FALSE) {
+create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cost_distance = FALSE, parallel = FALSE) {
     
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
