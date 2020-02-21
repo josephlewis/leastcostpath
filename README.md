@@ -113,11 +113,6 @@ Usage
     cumulative_cost_paths <- cost_surface %>% 
     create_FETE_lcps(cost_surface = final_cost_cs, locations = locs,cost_distance = FALSE, parallel = FALSE) %>%
     create_cumulative_lcps(lcps = ., raster = r, rescale = FALSE)
-    
-Vignettes
---------
-
-[Least Cost Path Vignette 1](https://josephlewis.github.io/doc/leastcostpath1.html)
 
 Feedback
 --------
