@@ -1,16 +1,18 @@
 #' create_cost_corridor
 #'
-#' Creates a Cost Corridor using a previously created Cost Surface
+#' Creates a Cost Corridor raster object
 #'
-#'The create_cost_corridor function combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both diretions of movement.
+#' Combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both directions of movement.
 #'
-#' @param cost_surface Cost Surface. Expects Object of class TransitionLayer.
+#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Cost Corridor calculation
 #'
-#' @param origin origin Location from which the Accumulated Cost is calculated. Expects Object of class SpatialPoints
+#' @param origin \code{SpatialPoints}. orgin location from which the Accumulated Cost is calculated. Only the first cell is taken into account.
 #'
-#' @param destination Destination Location from which the Accumulated Cost is calculated. Expects Object of class SpatialPoints
-#' 
-#' @param rescale Rescales cost corridor raster to values between 0 and 1. Default is TRUE
+#' @param destination \code{SpatialPoints}. destination location from which the Accumulated Cost is calculated. Only the first cell is taken into account
+#'
+#' @param rescale if TRUE raster values scaled to between 0 and 1. Default is TRUE
+#'
+#' @return RasterLayer object
 #'
 #' @author Joseph Lewis
 #'
@@ -36,14 +38,17 @@
 
 create_cost_corridor <- function(cost_surface, origin, destination, rescale = TRUE) {
     
-    if (!inherits(cost_surface, "TransitionLayer")) 
-        stop("cost_surface expects TransitionLayer object")
+    if (!inherits(cost_surface, "TransitionLayer")) {
+        stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
+    }
     
-    if (!inherits(origin, c("SpatialPoints", "SpatialPointsDataFrame"))) 
-        stop("Origin expects SpatialPoints or SpatialPointsDataFrame object")
+    if (!inherits(origin, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+        stop("Origin argument is invalid. Expecting SpatialPoints or SpatialPointsDataFrame object")
+    }
     
-    if (!inherits(destination, c("SpatialPoints", "SpatialPointsDataFrame"))) 
-        stop("Destination expects SpatialPoints or SpatialPointsDataFrame object")
+    if (!inherits(destination, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+        stop("Destination argument is invalid. Expecting SpatialPoints or SpatialPointsDataFrame object")
+    }
     
     accCost_origin <- accCost(cost_surface, origin)
     accCost_destination <- accCost(cost_surface, destination)
@@ -53,8 +58,6 @@ create_cost_corridor <- function(cost_surface, origin, destination, rescale = TR
     costCorridor[is.infinite(costCorridor)] <- NA
     
     if (rescale) {
-        
-        # function to rescale cell values between 0 and 1 from Tim Assal http://www.timassal.com/?p=859
         rasterRescale <- function(r) {
             ((r - cellStats(r, "min"))/(cellStats(r, "max") - cellStats(r, "min")))
         }

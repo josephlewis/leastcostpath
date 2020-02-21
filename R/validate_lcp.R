@@ -1,14 +1,16 @@
 #' validate_lcp
 #'
-#' Calculates the accuracy of the Least Cost Path by calculating the percentage of Least Cost Path within certain distance(s) from another SpatialLine.
+#' Calculates accuracy of Least Cost Path
 #'
-#' The function computes the accuracy of the Least Cost Path using the buffer method proposed by \href{https://www.tandfonline.com/doi/abs/10.1080/136588197242419}{Goodchild and Hunter (1997)}. Expects two SpatialLines/SpatialLinesDataFrame objects and a numeric vector of buffer distances. Returns a data.frame with accuracy results.
+#' Calculates the accuracy of the Least Cost Path using the buffer method proposed by Goodchild and Hunter (1997).
 #'
 #' @param lcp Least Cost Path to assess the accuracy of. Expects object of class SpatialLines/SpatialLinesDataFrame
 #'
 #' @param comparison SpatialLines to validate the Least Cost Path against. Expects object of class SpatialLines/SpatialLinesDataFrame
 #'
 #' @param buffers Vector of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).
+#'
+#' @return data.frame object
 #'
 #' @author Joseph Lewis
 #'
@@ -32,16 +34,16 @@
 
 validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000)) {
     
-    if (!inherits(lcp, "SpatialLines")) {
-        stop("lcp expects a SpatialLines or SpatialLinesDataFrame object")
+    if (!inherits(lcp, c("SpatialLines", "SpatialLinesDataFrame"))) {
+        stop("lcp argument is invalid. Expecting SpatialLines or SpatialLinesDataFrame object")
     }
     
-    if (!inherits(comparison, "SpatialLines")) {
-        stop("Comparison expects a SpatialLines object, SpatialLinesDataFrame object, or SpatialPolygonsDataFrame object")
+    if (!inherits(comparison, c("SpatialLines", "SpatialLinesDataFrame", "SpatialPolygons", "SpatialPolygonsDataFrame"))) {
+        stop("Comparison argument is invalid. Expecting a SpatialLines SpatialLinesDataFrame or SpatialPolygonsDataFrame object")
     }
     
     if (!inherits(buffers, "numeric")) {
-        stop("buffers must include numeric values only")
+        stop("x argument is invalid. Expecting a numeric vector object")
     }
     
     if (length(buffers) > 1) {

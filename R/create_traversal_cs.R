@@ -1,18 +1,18 @@
 #' create_traversal_cs
 #'
-#' Creates Traversal across slope Cost Surface to be used in Least Cost Path calculation.
+#' Creates a Traversal across slope Cost Surface
 #'
-#'The create_traversal_cs function computes a cost surface based on the difficulty of traversing across the slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Traversal across slope accounts for downhill being easier than uphill. The function requires a Digital Elevation Model (class 'RasterLayer').
+#' Creates a cost surface based on the difficulty of traversing **(across)** slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Traversal across slope accounts for movement directly perpendicular across slope being easier than movement diagonally up/down slope.
 #'
+#' @param dem Digital Elevation Model. \code{RasterLayer} (raster package)
 #'
-#' @param dem Digital Elevation Model. Expects Object of class RasterLayer
+#' @param neighbours Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16
 #'
-#' @param neighbours Number of directions used in the Least Cost Path calculation. \href{https://www.ncbi.nlm.nih.gov/pubmed/17892887}{Huber and Church (1985)} for methodological considerations when considering number of neighbours. Expected input values are 4, 8, 16. Default is 16.
+#' @return Transition object
 #'
 #' @author Joseph Lewis
 #'
 #' @import rgdal
-#' @import rgeos
 #' @import sp
 #' @import raster
 #' @import gdistance
@@ -26,11 +26,11 @@
 create_traversal_cs <- function(dem, neighbours = 16) {
     
     if (!inherits(dem, "RasterLayer")) {
-        stop("dem argument expects a RasterLayer object")
+        stop("dem argument is invalid. Expecting a RasterLayer object")
     }
     
     if (!neighbours %in% c(4, 8, 16)) {
-        stop("Incorrect number of neighbours - expecting 4, 8, or 16.")
+        stop("neighbours argument is invalid. Expecting 4, 8, or 16.")
     }
     
     aspect_dem <- raster::terrain(dem, opt = "aspect", unit = "degrees", neighbors = 8)

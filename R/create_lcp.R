@@ -1,16 +1,16 @@
 #' create_lcp
 #'
-#' Calculates Least Cost Paths which are often, but not exclusively, used in archaeological research
+#' Calculates Least Cost Path
 #'
-#' The function computes the Least Cost Path from an origin location to a destination location. It uses the cost surface generated using the create_slope_cs and/or create_traversal_cs functions. The function takes a Cost Surface ('TransitionLayer' class) and point features ('SpatialPoints' class) for the origin location and destination location.
+#' Calculates the Least Cost Path from an origin location to a destination location. See details for more.
 #'
-#' @param cost_surface Cost Surface. Expects Object of class TransitionLayer.
+#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation
 #'
-#' @param origin Location from which the Least Cost Path is calculated. Expects Object of class SpatialPoints
+#' @param origin \code{SpatialPoints} location from which the Least Cost Path is calculated. Only the first cell is taken into account.
 #'
-#' @param destination Location to which the Least Cost Path is calculated. Expects Object of class SpatialPoints
+#' @param destination \code{SpatialPoints} location to which the Least Cost Path is calculated
 #'
-#' @param directional If FALSE (default) then Least Cost Paths computed from origin to destination and destination to origin.
+#' @param directional if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. See details for more
 #'
 #' @author Joseph Lewis
 #'
@@ -21,6 +21,8 @@
 #' @import gdistance
 #'
 #' @export
+#'
+#' @return SpatialLines object or list of SpatialLines object (dependent on directional argument)
 #'
 #'@examples
 #' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
@@ -42,11 +44,19 @@
 
 create_lcp <- function(cost_surface, origin, destination, directional = FALSE) {
     
-    if (!inherits(cost_surface, "TransitionLayer")) 
-        stop("cost_surface expects TransitionLayer object")
+    if (!inherits(cost_surface, "TransitionLayer")) {
+        stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
+    }
     
-    if (!inherits(origin, "SpatialPoints") & !inherits(destination, "SpatialPoints")) 
-        stop("Origin and Destination expects SpatialPoints objects")
+    
+    if (!inherits(origin, "SpatialPoints")) {
+        stop("origin argument is invalid. Expecting a SpatialPoints object")
+    }
+    
+    if (!inherits(destination, "SpatialPoints")) {
+        stop("destination argument is invalid. Expecting a SpatialPoints object")
+    }
+    
     
     sPath <- list()
     

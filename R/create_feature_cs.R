@@ -1,15 +1,18 @@
 #' create_feature_cs
 #'
-#' Creates Landscape Feature Cost Surface to be used in Least Cost Path calculation.
+#' Creates a Landscape Feature Cost Surface
 #'
-#'The create_feature_cs function computes a cost surface representating the attraction/repulsion of a feature in the landscape. The function requires a Raster (class 'RasterLayer'), the locaion of the feature(s) (class 'SpatialPoints'), and a vector (Class 'numeric') of attraction/repulsion values from the feature(s).
+#' Creates a cost surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application.
 #'
-#' @param raster Raster file. Expects Object of class RasterLayer. This is used to derive extent and spatial reference system of the landscape feature cost surface.
+#' @param raster \code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the landscape feature cost surface
 #'
-#' @param locations Locations of landscape features. Expects Object of class SpatialPoints
+#' @param locations \code{SpatialPoints}. Locations of landscape features
 #'
-#' @param x vector of values denoting the attraction/repulsion from the landscape feature(s).
+#' @param x \code{numeric vector} of values denoting the attraction/repulsion from the landscape features
 #'
+#' @param neighbours Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16
+#'
+#' @return Transition object
 #'
 #' @author Joseph Lewis
 #'
@@ -30,19 +33,23 @@
 #'
 #' feature <- create_feature_cs(raster = r, locations = loc1, x = num)
 
-create_feature_cs <- function(raster, locations, x) {
+create_feature_cs <- function(raster, locations, x, neighbours = 16) {
     message("note: create_feature_cs expects planar coordinates")
     
     if (!inherits(raster, "RasterLayer")) {
-        stop("raster expects a RasterLayer object")
+        stop("raster argument is invalid. Expecting a RasterLayer object")
     }
     
     if (!inherits(locations, "SpatialPoints")) {
-        stop("locations expects a SpatialPoints object")
+        stop("locations argument is invalid. Expecting a SpatialPoints object")
     }
     
     if (!inherits(x, "numeric")) {
-        stop("x expects numeric vector")
+        stop("x argument is invalid. Expecting a numeric vector object")
+    }
+    
+    if (!neighbours %in% c(4, 8, 16)) {
+        stop("neighbours argument is invalid. Expecting 4, 8, or 16.")
     }
     
     r <- raster::rasterize(locations, raster)
@@ -65,7 +72,7 @@ create_feature_cs <- function(raster, locations, x) {
     
     rc[is.na(rc)] <- 1
     
-    rc <- gdistance::transition(rc, min, 16, symm = TRUE)
+    rc <- gdistance::transition(rc, min, neighbours, symm = TRUE)
     
     return(rc)
     
