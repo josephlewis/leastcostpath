@@ -8,13 +8,13 @@ create_FETE_lcps(cost_surface, locations, cost_distance = FALSE,
   parallel = FALSE)
 }
 \arguments{
-\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation}
+\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.}
 
-\item{locations}{\code{SpatialPoints}. Locations to calculate Least Cost Paths from and to}
+\item{locations}{\code{SpatialPoints}. Locations to calculate Least Cost Paths from and to.}
 
-\item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
+\item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.}
 
-\item{parallel}{if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE}
+\item{parallel}{if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.}
 }
 \value{
 SpatialLinesDataFrame object
@@ -23,9 +23,7 @@ SpatialLinesDataFrame object
 Calculates least cost paths from each location to all other locations.
 }
 \details{
-Computes least cost paths from each location to all other locations (i.e. from everywhere to everywhere (FETE)). This is based on the method proposed by White and Barber (2012).
-
-The function expects a cost surface ('TransitionLayer' class) and SpatialPoints ('SpatialPoints' class) for the locations.
+Computes least cost paths from each location to all other locations (i.e. From Everywhere To Everywhere (FETE)). This is based on the method proposed by White and Barber (2012).
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

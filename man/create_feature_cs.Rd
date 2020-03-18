@@ -13,7 +13,7 @@ create_feature_cs(raster, locations, x, neighbours = 16)
 
 \item{x}{\code{numeric vector} of values denoting the attraction/repulsion from the landscape features}
 
-\item{neighbours}{Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16}
+\item{neighbours}{Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16.}
 }
 \value{
 Transition object

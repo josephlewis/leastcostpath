@@ -12,9 +12,9 @@ create_CCP_lcps(cost_surface, location, distance, radial_points,
 
 \item{location}{\code{SpatialPoints}. Location to which the Least Cost Paths are calculated to. Only the first cell is taken into account}
 
-\item{distance}{Distance from centre location to the radial locations}
+\item{distance}{\code{numeric} value. Distance from centre location to the radial locations}
 
-\item{radial_points}{Number of radial locations around centre location}
+\item{radial_points}{\code{numeric} value. Number of radial locations around centre location}
 
 \item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
 

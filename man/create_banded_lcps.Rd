@@ -12,11 +12,11 @@ create_banded_lcps(cost_surface, location, min_distance, max_distance,
 
 \item{location}{\code{SpatialPoints}. Location from which the Least Cost Paths are calculated. Only the first cell is taken into account}
 
-\item{min_distance}{minimum distance from centre location}
+\item{min_distance}{\code{numeric} value. minimum distance from centre location}
 
-\item{max_distance}{maximum distance from centre location}
+\item{max_distance}{\code{numeric} value. maximum distance from centre location}
 
-\item{radial_points}{Number of random locations around centre location within distances}
+\item{radial_points}{\code{numeric} value. Number of random locations around centre location within distances}
 
 \item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
 

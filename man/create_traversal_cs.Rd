@@ -7,9 +7,9 @@
 create_traversal_cs(dem, neighbours = 16)
 }
 \arguments{
-\item{dem}{Digital Elevation Model. \code{RasterLayer} (raster package)}
+\item{dem}{\code{RasterLayer} (raster package). Digital Elevation Model.}
 
-\item{neighbours}{Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16}
+\item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16}
 }
 \value{
 Transition object

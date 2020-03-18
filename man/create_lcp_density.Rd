@@ -4,14 +4,14 @@
 \alias{create_lcp_density}
 \title{create_lcp_density}
 \usage{
-create_lcp_density(lcps, raster, rescale = TRUE)
+create_lcp_density(lcps, raster, rescale = FALSE)
 }
 \arguments{
 \item{lcps}{\code{SpatialLines} or \code{SpatialLinesDataFrame}. Least Cost Paths}
 
 \item{raster}{\code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the cumulative least cost path raster}
 
-\item{rescale}{if TRUE raster values scaled to between 0 and 1. Default is TRUE}
+\item{rescale}{if TRUE raster values scaled to between 0 and 1. Default is FALSE}
 }
 \value{
 RasterLayer object

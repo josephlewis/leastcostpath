@@ -7,13 +7,13 @@
 create_lcp(cost_surface, origin, destination, directional = FALSE)
 }
 \arguments{
-\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation}
+\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.}
 
-\item{origin}{\code{SpatialPoints} location from which the Least Cost Path is calculated. Only the first cell is taken into account.}
+\item{origin}{\code{SpatialPoints} location from which the Least Cost Path is calculated. Only the first row is taken into account.}
 
-\item{destination}{\code{SpatialPoints} location to which the Least Cost Path is calculated}
+\item{destination}{\code{SpatialPoints} location to which the Least Cost Path is calculated. Only the first row is taken into account.}
 
-\item{directional}{if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. See details for more}
+\item{directional}{if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE.}
 }
 \value{
 SpatialLines object or list of SpatialLines object (dependent on directional argument)

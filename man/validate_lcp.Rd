@@ -9,9 +9,9 @@ validate_lcp(lcp, comparison, buffers = c(50, 100, 250, 500, 1000))
 \arguments{
 \item{lcp}{Least Cost Path to assess the accuracy of. Expects object of class SpatialLines/SpatialLinesDataFrame}
 
-\item{comparison}{SpatialLines to validate the Least Cost Path against. Expects object of class SpatialLines/SpatialLinesDataFrame}
+\item{comparison}{\code{SpatialLines} or \code{SpatialLinesDataFrame} to validate the Least Cost Path against.}
 
-\item{buffers}{Vector of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).}
+\item{buffers}{\code{numeric vector} of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).}
 }
 \value{
 data.frame object

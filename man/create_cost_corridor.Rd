@@ -4,7 +4,7 @@
 \alias{create_cost_corridor}
 \title{create_cost_corridor}
 \usage{
-create_cost_corridor(cost_surface, origin, destination, rescale = TRUE)
+create_cost_corridor(cost_surface, origin, destination, rescale = FALSE)
 }
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Cost Corridor calculation}
@@ -13,7 +13,7 @@ create_cost_corridor(cost_surface, origin, destination, rescale = TRUE)
 
 \item{destination}{\code{SpatialPoints}. destination location from which the Accumulated Cost is calculated. Only the first cell is taken into account}
 
-\item{rescale}{if TRUE raster values scaled to between 0 and 1. Default is TRUE}
+\item{rescale}{if TRUE raster values scaled to between 0 and 1. Default is FALSE}
 }
 \value{
 RasterLayer object
@@ -34,7 +34,7 @@ loc1 = sp::SpatialPoints(loc1)
 loc2 = cbind(2667800, 6479400)
 loc2 = sp::SpatialPoints(loc2)
 
-cost_corridor <- create_cost_corridor(slope_cs, loc1, loc2, rescale = TRUE)
+cost_corridor <- create_cost_corridor(slope_cs, loc1, loc2, rescale = FALSE)
 }
 \author{
 Joseph Lewis
