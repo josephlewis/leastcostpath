@@ -148,7 +148,7 @@ Versioning
       * Renamed create_lcp_network to create_FETE_lcps for consistency with academic literature
       * Implemented create_CCP_lcps
       * Implemented create_banded_lcps
--   version 1.2.0
+-   version 1.2.1
       * Maximum slope traversable argument added to create_slope_cs function
 
 Authors
