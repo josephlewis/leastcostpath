@@ -8,7 +8,7 @@
 #'
 #' @param raster \code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the cumulative least cost path raster
 #'
-#' @param rescale if TRUE raster values scaled to between 0 and 1. Default is TRUE
+#' @param rescale if TRUE raster values scaled to between 0 and 1. Default is FALSE
 #'
 #' @return RasterLayer object
 #'
@@ -38,7 +38,7 @@
 #'
 #' cumulative_lcps <- create_lcp_density(lcps = lcp_network, raster = r, rescale = FALSE)
 
-create_lcp_density <- function(lcps, raster, rescale = TRUE) {
+create_lcp_density <- function(lcps, raster, rescale = FALSE) {
     
     if (!inherits(lcps, c("SpatialLines", "SpatialLinesDataFrame"))) {
         stop("lcps expects a SpatialLines or SpatialLinesDataFrame object")
@@ -60,6 +60,8 @@ create_lcp_density <- function(lcps, raster, rescale = TRUE) {
         
         cumulative_pts <- rasterRescale(cumulative_pts)
     }
+    
+    cumulative_pts[is.na(cumulative_pts)] <- 0
     
     return(cumulative_pts)
     

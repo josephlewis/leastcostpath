@@ -4,9 +4,9 @@
 #'
 #' Creates a cost surface based on the difficulty of traversing **(across)** slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Traversal across slope accounts for movement directly perpendicular across slope being easier than movement diagonally up/down slope.
 #'
-#' @param dem Digital Elevation Model. \code{RasterLayer} (raster package)
+#' @param dem \code{RasterLayer} (raster package). Digital Elevation Model.
 #'
-#' @param neighbours Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16
+#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16
 #'
 #' @return Transition object
 #'

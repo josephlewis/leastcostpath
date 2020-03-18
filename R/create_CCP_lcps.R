@@ -8,9 +8,9 @@
 #'
 #' @param location \code{SpatialPoints}. Location to which the Least Cost Paths are calculated to. Only the first cell is taken into account
 #'
-#' @param distance Distance from centre location to the radial locations
+#' @param distance \code{numeric} value. Distance from centre location to the radial locations
 #'
-#' @param radial_points Number of radial locations around centre location
+#' @param radial_points \code{numeric} value. Number of radial locations around centre location
 #'
 #' @param cost_distance if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE
 #'
@@ -71,7 +71,7 @@ create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cos
     
     circle <- methods::as(circle, "SpatialLines")
     
-    circle_pts <- sp::spsample(circle, n = round(radial_points), "regular")
+    circle_pts <- sp::spsample(circle, n = round(radial_points), "random")
     
     all_pts <- rbind(location, circle_pts)
     

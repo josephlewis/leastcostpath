@@ -2,17 +2,15 @@
 #'
 #' Calculates least cost paths from each location to all other locations.
 #'
-#' Computes least cost paths from each location to all other locations (i.e. from everywhere to everywhere (FETE)). This is based on the method proposed by White and Barber (2012).
+#' Computes least cost paths from each location to all other locations (i.e. From Everywhere To Everywhere (FETE)). This is based on the method proposed by White and Barber (2012).
 #'
-#' The function expects a cost surface ('TransitionLayer' class) and SpatialPoints ('SpatialPoints' class) for the locations.
+#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.
 #'
-#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation
+#' @param locations \code{SpatialPoints}. Locations to calculate Least Cost Paths from and to.
 #'
-#' @param locations \code{SpatialPoints}. Locations to calculate Least Cost Paths from and to
+#' @param cost_distance if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.
 #'
-#' @param cost_distance if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE
-#'
-#'@param parallel if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE
+#'@param parallel if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.
 #'
 #' @return SpatialLinesDataFrame object
 #'

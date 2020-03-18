@@ -4,13 +4,13 @@
 #'
 #' Calculates the Least Cost Path from an origin location to a destination location. See details for more.
 #'
-#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation
+#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.
 #'
-#' @param origin \code{SpatialPoints} location from which the Least Cost Path is calculated. Only the first cell is taken into account.
+#' @param origin \code{SpatialPoints} location from which the Least Cost Path is calculated. Only the first row is taken into account.
 #'
-#' @param destination \code{SpatialPoints} location to which the Least Cost Path is calculated
+#' @param destination \code{SpatialPoints} location to which the Least Cost Path is calculated. Only the first row is taken into account.
 #'
-#' @param directional if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. See details for more
+#' @param directional if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE.
 #'
 #' @author Joseph Lewis
 #'

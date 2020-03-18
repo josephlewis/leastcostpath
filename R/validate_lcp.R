@@ -6,9 +6,9 @@
 #'
 #' @param lcp Least Cost Path to assess the accuracy of. Expects object of class SpatialLines/SpatialLinesDataFrame
 #'
-#' @param comparison SpatialLines to validate the Least Cost Path against. Expects object of class SpatialLines/SpatialLinesDataFrame
+#' @param comparison \code{SpatialLines} or \code{SpatialLinesDataFrame} to validate the Least Cost Path against.
 #'
-#' @param buffers Vector of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).
+#' @param buffers \code{numeric vector} of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).
 #'
 #' @return data.frame object
 #'

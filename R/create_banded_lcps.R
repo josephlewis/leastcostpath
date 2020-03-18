@@ -8,11 +8,11 @@
 #'
 #' @param location \code{SpatialPoints}. Location from which the Least Cost Paths are calculated. Only the first cell is taken into account
 #'
-#' @param min_distance minimum distance from centre location
+#' @param min_distance \code{numeric} value. minimum distance from centre location
 #'
-#' @param max_distance maximum distance from centre location
+#' @param max_distance \code{numeric} value. maximum distance from centre location
 #'
-#' @param radial_points Number of random locations around centre location within distances
+#' @param radial_points \code{numeric} value. Number of random locations around centre location within distances
 #'
 #' @param cost_distance if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE
 #'
