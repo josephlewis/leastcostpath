@@ -1,3 +1,6 @@
+# 1.2.1 (18 March 2020)
+* Maximum slope traversable argument added to create_slope_cs function
+
 # 1.2.0 (21 February 2020)
 * Renamed create_lcp_network to create_FETE_lcps for consistency with academic literature
 * Implemented create_CCP_lcps

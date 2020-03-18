@@ -1,9 +1,9 @@
-leastcostpath - version 1.2.0
+leastcostpath - version 1.2.1
 =============================
 
-The R library <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths, which are often, but not exclusively, used in archaeological research. This library can be used to apply multiple cost functiond when approximating the difficulty of moving across a landscape, as well as incorporating traversal across slope. Furthermore, attraction/repulsion of landscape features can be incorporated within the Least Cost Path calculation.
+The R library <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths, which are often, but not exclusively, used in archaeological research. This library can be used to apply multiple cost functions when approximating the difficulty of moving across a landscape, as well as incorporating traversal <i>across</i> slope. Furthermore, attraction/repulsion of landscape features can be incorporated within the Least Cost Path calculation.
 
-This library also provides the functionality to calculate movement potential within a landscape through the implementation of Feature-Everywhere-to-Everywhere (FETE) (White and Barber, 2012), Cumulative Cost Paths (Verhagen, 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015). 
+This library also provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (FETE) (White and Barber, 2012), Cumulative Cost Paths (Verhagen, 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015). 
 
 Lastly, the library provides functionality to validate the accuracy of computed Least Cost Paths relative to another path. 
 
@@ -148,6 +148,8 @@ Versioning
       * Renamed create_lcp_network to create_FETE_lcps for consistency with academic literature
       * Implemented create_CCP_lcps
       * Implemented create_banded_lcps
+-   version 1.2.0
+      * Maximum slope traversable argument added to create_slope_cs function
 
 Authors
 -------
@@ -159,4 +161,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: R Implementation of Least Cost Path Analysis (version 1.2.0)
+    Lewis, J. (2020) leastcostpath: R Implementation of Least Cost Path Analysis (version 1.2.1)
