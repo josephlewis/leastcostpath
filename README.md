@@ -5,7 +5,7 @@ The R library <b>leastcostpath</b> provides functionality to calculate Least Cos
 
 This library also provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (FETE) (White and Barber, 2012), Cumulative Cost Paths (Verhagen, 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015). 
 
-Lastly, the library provides functionality to validate the accuracy of computed Least Cost Paths relative to another path. 
+Lastly, the library provides functionality to validate the accuracy of computed Least Cost Paths compared to other linear feature (e.g known location of a road). 
 
 This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
