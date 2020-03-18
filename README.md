@@ -1,7 +1,7 @@
 leastcostpath - version 1.2.1
 =============================
 
-The R library <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths, which are often, but not exclusively, used in archaeological research. This library can be used to apply multiple cost functions when approximating the difficulty of moving across a landscape, as well as incorporating traversal <i>across</i> slope. Furthermore, attraction/repulsion of landscape features can be incorporated within the Least Cost Path calculation.
+The R library <b>leastcostpath</b> provides functionality to calculate Least Cost Paths, which are often, but not exclusively, used in archaeological research. This library can be used to apply multiple cost functions when approximating the difficulty of moving across a landscape, as well as incorporating traversal <i>across</i> slope. Furthermore, attraction/repulsion of landscape features can be incorporated within the Least Cost Path calculation.
 
 This library also provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (FETE) (White and Barber, 2012), Cumulative Cost Paths (Verhagen, 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015). 
 
