@@ -8,5 +8,8 @@ repos:
   CRAN: https://cran.rstudio.com
   rforge: http://R-Forge.R-project.org
 
+apt_packages:
+    - gdal-bin
+
 before_install:
   - R -e 'install.packages("rgdal", repos=c("http://R-Forge.R-project.org", "http://cran.rstudio.com"))'
