@@ -1,24 +1,16 @@
-language: r
-sudo: required
-dist: trusty
-cache:
-  #  - packages
-  - ccache
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-r:
-  - release
-- devel
-- oldrel
+language: R
+sudo: false
+cache: packages
 
-addons:
-  apt:
-  sources:
-  - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
-packages:
-  - devscripts # checkbashisms
-- libgdal-dev
-- libproj-dev
-- libgeos-dev
-- libudunits2-dev
-- libnetcdf-dev
-- netcdf-bin
+repos:
+  CRAN: https://cran.rstudio.com
+  rforge: http://R-Forge.R-project.org
+
+apt_packages:
+    - gdal-bin
+
+before_install:
+install.packages("rgdal", repos="http://R-Forge.R-project.org")
+
