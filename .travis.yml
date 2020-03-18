@@ -4,6 +4,5 @@ language: R
 sudo: false
 cache: packages
 
-repos:
-  CRAN: https://cran.rstudio.com
-  rforge: http://R-Forge.R-project.org
+before_install:
+  - R -e 'install.packages("rgdal", repos=c("http://R-Forge.R-project.org", "http://cran.rstudio.com"))'
