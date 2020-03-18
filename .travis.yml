@@ -12,4 +12,5 @@ apt_packages:
     - gdal-bin
 
 before_install:
-  - R -e 'install.packages("rgdal", repos=c("http://R-Forge.R-project.org", "http://cran.rstudio.com"))'
+install.packages("rgdal", repos="http://R-Forge.R-project.org")
+
