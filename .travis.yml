@@ -1,33 +1,28 @@
-language: r
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-r:
-  - release
-  - oldrel # breaks on sf_0.7-2 not available
-  - devel
+language: R
+sudo: false
+cache: packages
 
-deploy.skip_cleanup: true
-
-sudo: required
-dist: trusty
-
-cache:
-  - packages
-  - ccache
-
-latex: false
-    packages:
-      - devscripts # checkbashisms
-      - libprotobuf-dev
-      - protobuf-compiler
-      - libv8-3.14-dev
-      - libjq-dev
-      - libudunits2-dev
-      - libproj-dev
-      - libgeos-dev
-      - libspatialite-dev
-      - libgdal-dev
-      - libjson-c-dev
+repos:
+  CRAN: https://cran.rstudio.com
+  rforge: http://R-Forge.R-project.org
 
 before_install:
   - R -e 'install.packages("rgdal", repos="http://R-Forge.R-project.org")'
 
+apt_packages:
+- gdal-bin
+- libgdal-dev
+- libxml2-dev
+- libproj-dev
+- libprotobuf-dev
+- protobuf-compiler
+- libv8-3.14-dev
+- libjq-dev
+- libudunits2-dev
+- libproj-dev
+- libgeos-dev
+- libspatialite-dev
+- libgdal-dev
+- libjson-c-dev
