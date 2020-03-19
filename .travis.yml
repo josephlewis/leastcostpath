@@ -1,17 +1,20 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+language: r
 
-language: R
-sudo: false
-cache: packages
+r:
+  - release
+  - oldrel # breaks on sf_0.7-2 not available
+  - devel
 
-repos:
-  CRAN: https://cran.rstudio.com
-  rforge: http://R-Forge.R-project.org
+deploy.skip_cleanup: true
 
-before_install:
-  - R -e 'install.packages("rgdal", repos="http://R-Forge.R-project.org")'
+sudo: required
+dist: trusty
 
-addons:
+cache:
+  - packages
+  - ccache
+
+latex: false
     packages:
       - devscripts # checkbashisms
       - libprotobuf-dev
@@ -24,4 +27,7 @@ addons:
       - libspatialite-dev
       - libgdal-dev
       - libjson-c-dev
-      - libnetcdf-dev
+
+before_install:
+  - R -e 'install.packages("rgdal", repos="http://R-Forge.R-project.org")'
+
