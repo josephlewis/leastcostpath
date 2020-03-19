@@ -8,9 +8,20 @@ repos:
   CRAN: https://cran.rstudio.com
   rforge: http://R-Forge.R-project.org
 
-apt_packages:
-    - gdal-bin
-
 before_install:
-install.packages("rgdal", repos="http://R-Forge.R-project.org")
+  - R -e 'install.packages("rgdal", repos="http://R-Forge.R-project.org")'
 
+addons:
+    packages:
+      - devscripts # checkbashisms
+      - libprotobuf-dev
+      - protobuf-compiler
+      - libv8-3.14-dev
+      - libjq-dev
+      - libudunits2-dev
+      - libproj-dev
+      - libgeos-dev
+      - libspatialite-dev
+      - libgdal-dev
+      - libjson-c-dev
+      - libnetcdf-dev
