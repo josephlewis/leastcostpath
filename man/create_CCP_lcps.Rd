@@ -34,13 +34,9 @@ r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'
 
 slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
-traverse_cs <- create_traversal_cs(r, neighbours = 16)
-
-final_cost_cs <- slope_cs * traverse_cs
-
 locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
 
-lcp_network <- create_CCP_lcps(cost_surface = final_cost_cs, location = locs, distance = 20,
+lcp_network <- create_CCP_lcps(cost_surface = slope_cs, location = locs, distance = 20,
 radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 }
 \author{

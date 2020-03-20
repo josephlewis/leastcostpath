@@ -30,13 +30,9 @@ r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'
 
 slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
-traverse_cs <- create_traversal_cs(r, neighbours = 16)
-
-final_cost_cs <- slope_cs * traverse_cs
-
 locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
 
-lcp_network <- create_FETE_lcps(cost_surface = final_cost_cs, locations = locs,
+lcp_network <- create_FETE_lcps(cost_surface = slope_cs, locations = locs,
 cost_distance = FALSE, parallel = FALSE)
 }
 \author{
