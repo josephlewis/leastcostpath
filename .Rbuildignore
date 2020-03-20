@@ -1,0 +1,5 @@
+^\.travis\.yml$
+^Meta$
+^doc$
+^leastcostpath\.Rproj$
+^\.Rproj\.user$
