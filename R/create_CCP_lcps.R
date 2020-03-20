@@ -30,7 +30,9 @@
 #' @export
 #'
 #'@examples
-#' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
+#'r <- raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
+#'
+#'r[] <- runif(1:length(r))
 #'
 #' slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 #'

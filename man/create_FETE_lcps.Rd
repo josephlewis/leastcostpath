@@ -26,7 +26,9 @@ Calculates least cost paths from each location to all other locations.
 Computes least cost paths from each location to all other locations (i.e. From Everywhere To Everywhere (FETE)). This is based on the method proposed by White and Barber (2012).
 }
 \examples{
-r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
+r <- raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
+
+r[] <- runif(1:length(r))
 
 slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
