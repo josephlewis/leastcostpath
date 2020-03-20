@@ -30,16 +30,17 @@
 #' @export
 #'
 #'@examples
-#'r <- raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
 #'
-#'r[] <- runif(1:length(r))
+#'#r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
 #'
-#' slope_cs <- create_slope_cs(r, cost_function = 'tobler')
+#'#r[] <- stats::runif(1:length(r))
 #'
-#'locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
+#' #slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 #'
-#' lcp_network <- create_CCP_lcps(cost_surface = slope_cs, location = locs, distance = 20,
-#' radial_points = 10, cost_distance = FALSE, parallel = FALSE)
+#' #locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
+#'
+#' #lcp_network <- create_CCP_lcps(cost_surface = slope_cs, location = locs, distance = 20,
+#' #radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 
 create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cost_distance = FALSE, parallel = FALSE) {
     

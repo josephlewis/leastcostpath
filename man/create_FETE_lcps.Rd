@@ -26,16 +26,17 @@ Calculates least cost paths from each location to all other locations.
 Computes least cost paths from each location to all other locations (i.e. From Everywhere To Everywhere (FETE)). This is based on the method proposed by White and Barber (2012).
 }
 \examples{
-r <- raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
 
-r[] <- runif(1:length(r))
+#r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
 
-slope_cs <- create_slope_cs(r, cost_function = 'tobler')
+#r[] <- stats::runif(1:length(r))
 
-locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
+#slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
-lcp_network <- create_FETE_lcps(cost_surface = slope_cs, locations = locs,
-cost_distance = FALSE, parallel = FALSE)
+#locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
+
+#lcp_network <- create_FETE_lcps(cost_surface = slope_cs, locations = locs,
+#cost_distance = FALSE, parallel = FALSE)
 }
 \author{
 Joseph Lewis

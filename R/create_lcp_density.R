@@ -23,20 +23,19 @@
 #' @export
 #'
 #' @examples
-#' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 #'
-#' slope_cs <- create_slope_cs(r, cost_function = 'tobler')
+#' #r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
 #'
-#' traverse_cs <- create_traversal_cs(r, neighbours = 16)
+#'#r[] <- stats::runif(1:length(r))
 #'
-#' final_cost_cs <- slope_cs * traverse_cs
+#' #slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 #'
-#' locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
+#' #locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
 #'
-#' lcp_network <- create_FETE_lcps(cost_surface = final_cost_cs, locations = locs,
-#' cost_distance = FALSE, parallel = FALSE)
+#' #lcp_network <- create_FETE_lcps(cost_surface = slope_cs, locations = locs,
+#' #cost_distance = FALSE, parallel = FALSE)
 #'
-#' cumulative_lcps <- create_lcp_density(lcps = lcp_network, raster = r, rescale = FALSE)
+#' #cumulative_lcps <- create_lcp_density(lcps = lcp_network, raster = r, rescale = FALSE)
 
 create_lcp_density <- function(lcps, raster, rescale = FALSE) {
     

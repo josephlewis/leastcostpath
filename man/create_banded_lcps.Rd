@@ -32,18 +32,18 @@ Calculates Least Cost Paths from random locations within distances
 Computes Least Cost Paths from centre location to random locations within distances. This is based on the method proposed by Llobera (2015).
 }
 \examples{
-r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
-slope_cs <- create_slope_cs(r, cost_function = 'tobler')
+#r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
 
-traverse_cs <- create_traversal_cs(r, neighbours = 16)
+#r[] <- stats::runif(1:length(r))
 
-final_cost_cs <- slope_cs * traverse_cs
+#slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
-locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
+#locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
 
-lcp_network <- create_banded_lcps(cost_surface = final_cost_cs, location = locs, min_distance = 20,
-max_distance = 50, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
+#lcp_network <- create_banded_lcps(cost_surface = final_cost_cs, location = locs, min_distance = 20,
+#max_distance = 50, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
+
 }
 \author{
 Joseph Lewis
