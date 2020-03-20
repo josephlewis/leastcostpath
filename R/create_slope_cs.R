@@ -41,13 +41,15 @@
 #' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 #' slope_cs <- create_slope_cs(r, cost_function = 'tobler', neighbours = 16, max_slope = NULL)
 
-create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit_slope = 12, max_slope = NULL) {
+create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, 
+    crit_slope = 12, max_slope = NULL) {
     
     if (!inherits(dem, "RasterLayer")) {
         stop("dem argument is invalid. Expecting a RasterLayer object")
     }
     
-    if (cost_function != "tobler" & cost_function != "modified tobler" & cost_function != "wheeled transport" & cost_function != 
+    if (cost_function != "tobler" & cost_function != "modified tobler" & 
+        cost_function != "wheeled transport" & cost_function != 
         "herzog" & cost_function != "all") {
         stop("cost_function argument is invalid. Expecting 'tobler', 'modified tobler', 'wheeled transport', 'herzog', or 'all'")
     }
@@ -64,7 +66,8 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
     
     slope <- gdistance::geoCorrection(hd)
     
-    adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
+    adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), 
+        pairs = TRUE, directions = neighbours)
     
     rand <- stats::runif(1, min = 0.01, max = 1)
     
@@ -74,7 +77,8 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         
         slope[adj] <- ifelse(slope[adj] > max_slope, rand, slope[adj])
         
-        slope[adj] <- ifelse(slope[adj] < -max_slope, rand, slope[adj])
+        slope[adj] <- ifelse(slope[adj] < -max_slope, rand, 
+            slope[adj])
         
     }
     
@@ -82,17 +86,20 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         slope[adj] <- 6 * exp(-3.5 * abs(slope[adj] + 0.05))
         
         if (inherits(max_slope, "numeric")) {
-            slope@transitionMatrix@x[slope@transitionMatrix@x == 6 * exp(-3.5 * abs(rand + 0.05))] <- 0
+            slope@transitionMatrix@x[slope@transitionMatrix@x == 
+                6 * exp(-3.5 * abs(rand + 0.05))] <- 0
         }
         
         Conductance <- gdistance::geoCorrection(slope)
     }
     
     if (cost_function == "modified tobler") {
-        slope[adj] <- 4.8 * exp(-5.3 * abs((slope[adj] * 0.7) + 0.03))
+        slope[adj] <- 4.8 * exp(-5.3 * abs((slope[adj] * 0.7) + 
+            0.03))
         
         if (inherits(max_slope, "numeric")) {
-            slope@transitionMatrix@x[slope@transitionMatrix@x == 4.8 * exp(-5.3 * abs((rand * 0.7) + 0.03))] <- 0
+            slope@transitionMatrix@x[slope@transitionMatrix@x == 
+                4.8 * exp(-5.3 * abs((rand * 0.7) + 0.03))] <- 0
         }
         Conductance <- gdistance::geoCorrection(slope)
     }
@@ -100,17 +107,22 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
     if (cost_function == "wheeled transport") {
         slope[adj] <- 1/(1 + abs(slope[adj] * 100/crit_slope)^2)
         if (inherits(max_slope, "numeric")) {
-            slope@transitionMatrix@x[slope@transitionMatrix@x == 1/(1 + abs(rand * 100/crit_slope)^2)] <- 0
+            slope@transitionMatrix@x[slope@transitionMatrix@x == 
+                1/(1 + abs(rand * 100/crit_slope)^2)] <- 0
         }
         Conductance <- gdistance::geoCorrection(slope)
     }
     
     if (cost_function == "herzog") {
-        slope[adj] <- 1/((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * slope[adj]^3) + 
-            (93.419 * slope[adj]^2) + (19.825 * slope[adj]) + 1.64)
+        slope[adj] <- 1/((1337.8 * slope[adj]^6) + (278.19 * 
+            slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * 
+            slope[adj]^3) + (93.419 * slope[adj]^2) + (19.825 * 
+            slope[adj]) + 1.64)
         if (inherits(max_slope, "numeric")) {
-            slope@transitionMatrix@x[slope@transitionMatrix@x == 1/((((1337.8 * rand^6) + (278.19 * rand^5) - (517.39 * rand^4) - 
-                (78.199 * rand^3) + (93.419 * rand^2) + (19.825 * rand) + 1.64)))] <- 0
+            slope@transitionMatrix@x[slope@transitionMatrix@x == 
+                1/((((1337.8 * rand^6) + (278.19 * rand^5) - 
+                  (517.39 * rand^4) - (78.199 * rand^3) + (93.419 * 
+                  rand^2) + (19.825 * rand) + 1.64)))] <- 0
         }
         Conductance <- gdistance::geoCorrection(slope)
     }
@@ -119,22 +131,32 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         
         slope_stack <- raster::stack(slope, slope, slope, slope)
         
-        slope_stack[[1]][adj] <- 6 * exp(-3.5 * abs(slope[adj] + 0.05))
-        slope_stack[[1]]@transitionMatrix@x[slope@transitionMatrix@x == 6 * exp(-3.5 * abs(rand + 0.05))] <- 0
+        slope_stack[[1]][adj] <- 6 * exp(-3.5 * abs(slope[adj] + 
+            0.05))
+        slope_stack[[1]]@transitionMatrix@x[slope@transitionMatrix@x == 
+            6 * exp(-3.5 * abs(rand + 0.05))] <- 0
         
-        slope_stack[[2]][adj] <- 4.8 * exp(-5.3 * abs((slope[adj] * 0.7) + 0.03))
-        slope_stack[[2]]@transitionMatrix@x[slope@transitionMatrix@x == 4.8 * exp(-5.3 * abs((rand * 0.7) + 0.03))] <- 0
+        slope_stack[[2]][adj] <- 4.8 * exp(-5.3 * abs((slope[adj] * 
+            0.7) + 0.03))
+        slope_stack[[2]]@transitionMatrix@x[slope@transitionMatrix@x == 
+            4.8 * exp(-5.3 * abs((rand * 0.7) + 0.03))] <- 0
         
         slope_stack[[3]][adj] <- 1/(1 + abs(slope[adj] * 100/crit_slope)^2)
-        slope_stack[[3]]@transitionMatrix@x[slope@transitionMatrix@x == 1/(1 + abs(rand * 100/crit_slope)^2)] <- 0
+        slope_stack[[3]]@transitionMatrix@x[slope@transitionMatrix@x == 
+            1/(1 + abs(rand * 100/crit_slope)^2)] <- 0
         
-        slope_stack[[4]][adj] <- 1/((((1337.8 * slope[adj]^6) + (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - (78.199 * 
-            slope[adj]^3) + (93.419 * slope[adj]^2) + (19.825 * slope[adj]) + 1.64)))
-        slope_stack[[4]]@transitionMatrix@x[slope@transitionMatrix@x == 1/((((1337.8 * rand^6) + (278.19 * rand^5) - (517.39 * 
-            rand^4) - (78.199 * rand^3) + (93.419 * rand^2) + (19.825 * rand) + 1.64)))] <- 0
+        slope_stack[[4]][adj] <- 1/((((1337.8 * slope[adj]^6) + 
+            (278.19 * slope[adj]^5) - (517.39 * slope[adj]^4) - 
+            (78.199 * slope[adj]^3) + (93.419 * slope[adj]^2) + 
+            (19.825 * slope[adj]) + 1.64)))
+        slope_stack[[4]]@transitionMatrix@x[slope@transitionMatrix@x == 
+            1/((((1337.8 * rand^6) + (278.19 * rand^5) - (517.39 * 
+                rand^4) - (78.199 * rand^3) + (93.419 * rand^2) + 
+                (19.825 * rand) + 1.64)))] <- 0
         
-        Conductance <- raster::stack(gdistance::geoCorrection(slope_stack[[1]]), gdistance::geoCorrection(slope_stack[[2]]), 
-            gdistance::geoCorrection(slope_stack[[3]]), gdistance::geoCorrection(slope_stack[[4]]))
+        Conductance <- raster::stack(gdistance::geoCorrection(slope_stack[[1]]), 
+            gdistance::geoCorrection(slope_stack[[2]]), gdistance::geoCorrection(slope_stack[[3]]), 
+            gdistance::geoCorrection(slope_stack[[4]]))
     }
     
     return(Conductance)

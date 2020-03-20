@@ -10,7 +10,7 @@ create_CCP_lcps(cost_surface, location, distance, radial_points,
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation}
 
-\item{location}{\code{SpatialPoints}. Location to which the Least Cost Paths are calculated to. Only the first cell is taken into account}
+\item{location}{\code{SpatialPoints}. Location to which the Least Cost Paths are calculated to. Only the first row is taken into account}
 
 \item{distance}{\code{numeric} value. Distance from centre location to the radial locations}
 

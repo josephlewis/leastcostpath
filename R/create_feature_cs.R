@@ -62,13 +62,15 @@ create_feature_cs <- function(raster, locations, x, neighbours = 16) {
     
     r <- mround(r, res(r)[1]/100)
     
-    r_mod <- matrix(cbind(unique(r)[1:length(x)], unique(r)[1:length(x)] + res(r)[1]/100, x), ncol = 3)
+    r_mod <- matrix(cbind(unique(r)[1:length(x)], unique(r)[1:length(x)] + 
+        res(r)[1]/100, x), ncol = 3)
     
     r_mod <- r_mod[stats::complete.cases(r_mod), ]
     
     r[r > unique(r)[length(x)]] <- NA
     
-    rc <- raster::reclassify(r, r_mod, include.lowest = TRUE, right = FALSE)
+    rc <- raster::reclassify(r, r_mod, include.lowest = TRUE, 
+        right = FALSE)
     
     rc[is.na(rc)] <- 1
     

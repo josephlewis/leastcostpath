@@ -62,12 +62,15 @@ create_lcp <- function(cost_surface, origin, destination, directional = FALSE) {
     
     if (directional == "TRUE") {
         
-        sPath[[1]] <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
+        sPath[[1]] <- gdistance::shortestPath(cost_surface, 
+            origin, destination, output = "SpatialLines")
         
     } else {
         
-        sPath[[1]] <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
-        sPath[[2]] <- gdistance::shortestPath(cost_surface, destination, origin, output = "SpatialLines")
+        sPath[[1]] <- gdistance::shortestPath(cost_surface, 
+            origin, destination, output = "SpatialLines")
+        sPath[[2]] <- gdistance::shortestPath(cost_surface, 
+            destination, origin, output = "SpatialLines")
     }
     
     return(sPath)

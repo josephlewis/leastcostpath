@@ -33,15 +33,20 @@ create_traversal_cs <- function(dem, neighbours = 16) {
         stop("neighbours argument is invalid. Expecting 4, 8, or 16.")
     }
     
-    aspect_dem <- raster::terrain(dem, opt = "aspect", unit = "degrees", neighbors = 8)
+    aspect_dem <- raster::terrain(dem, opt = "aspect", unit = "degrees", 
+        neighbors = 8)
     
-    aspect_dem[aspect_dem >= 0 & aspect_dem <= 90] <- aspect_dem[aspect_dem >= 0 & aspect_dem <= 90] + 90
+    aspect_dem[aspect_dem >= 0 & aspect_dem <= 90] <- aspect_dem[aspect_dem >= 
+        0 & aspect_dem <= 90] + 90
     
-    aspect_dem[aspect_dem > 90 & aspect_dem <= 180] <- aspect_dem[aspect_dem > 90 & aspect_dem <= 180] - 90
+    aspect_dem[aspect_dem > 90 & aspect_dem <= 180] <- aspect_dem[aspect_dem > 
+        90 & aspect_dem <= 180] - 90
     
-    aspect_dem[aspect_dem > 180 & aspect_dem <= 270] <- aspect_dem[aspect_dem > 180 & aspect_dem <= 270] - 90
+    aspect_dem[aspect_dem > 180 & aspect_dem <= 270] <- aspect_dem[aspect_dem > 
+        180 & aspect_dem <= 270] - 90
     
-    aspect_dem[aspect_dem > 270 & aspect_dem <= 360] <- (aspect_dem[aspect_dem > 270 & aspect_dem <= 360] + 90) - 360
+    aspect_dem[aspect_dem > 270 & aspect_dem <= 360] <- (aspect_dem[aspect_dem > 
+        270 & aspect_dem <= 360] + 90) - 360
     
     altDiff_traversal <- function(x) {
         if (abs(x[2] - x[1]) == 0) {
@@ -50,7 +55,8 @@ create_traversal_cs <- function(dem, neighbours = 16) {
             if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
                 hrma <- abs(x[2] - x[1])
                 1 + (0.5/45) * hrma
-            } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
+            } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 
+                90) {
                 hrma <- abs(x[2] - x[1])
                 2 - (0.5/45) * hrma
             } else {
@@ -60,7 +66,8 @@ create_traversal_cs <- function(dem, neighbours = 16) {
             if (abs(x[2] - x[1]) > 0 & abs(x[2] - x[1]) <= 45) {
                 hrma <- abs(x[2] - x[1])
                 1 - (0.5/45) * hrma
-            } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 90) {
+            } else if (abs(x[2] - x[1]) > 45 & abs(x[2] - x[1]) <= 
+                90) {
                 hrma <- abs(x[2] - x[1])
                 (0.5/45) * hrma
             } else {
@@ -69,7 +76,8 @@ create_traversal_cs <- function(dem, neighbours = 16) {
         }
     }
     
-    trans <- gdistance::transition(aspect_dem, altDiff_traversal, neighbours, symm = FALSE)
+    trans <- gdistance::transition(aspect_dem, altDiff_traversal, 
+        neighbours, symm = FALSE)
     
     if (neighbours == 8 | neighbours == 16) {
         trans <- gdistance::geoCorrection(trans)
