@@ -6,7 +6,7 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
-There were 3 NOTEs:
+There were 3 NOTEs when submitting to win-builder:
 
 0 errors √ | 0 warnings √ | 3 notes √
 
