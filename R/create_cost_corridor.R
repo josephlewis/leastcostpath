@@ -36,8 +36,7 @@
 #'
 #' cost_corridor <- create_cost_corridor(slope_cs, loc1, loc2, rescale = FALSE)
 
-create_cost_corridor <- function(cost_surface, origin, destination, 
-    rescale = FALSE) {
+create_cost_corridor <- function(cost_surface, origin, destination, rescale = FALSE) {
     
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
@@ -60,8 +59,7 @@ create_cost_corridor <- function(cost_surface, origin, destination,
     
     if (rescale) {
         rasterRescale <- function(r) {
-            ((r - cellStats(r, "min"))/(cellStats(r, "max") - 
-                cellStats(r, "min")))
+            ((r - cellStats(r, "min"))/(cellStats(r, "max") - cellStats(r, "min")))
         }
         
         costCorridor <- rasterRescale(costCorridor)

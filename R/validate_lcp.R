@@ -32,15 +32,13 @@
 #'
 #' val_lcp <- validate_lcp(lcp = line1, comparison = line2, buffers = c(0.1, 0.2, 0.5, 1))
 
-validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 
-    250, 500, 1000)) {
+validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000)) {
     
     if (!inherits(lcp, c("SpatialLines", "SpatialLinesDataFrame"))) {
         stop("lcp argument is invalid. Expecting SpatialLines or SpatialLinesDataFrame object")
     }
     
-    if (!inherits(comparison, c("SpatialLines", "SpatialLinesDataFrame", 
-        "SpatialPolygons", "SpatialPolygonsDataFrame"))) {
+    if (!inherits(comparison, c("SpatialLines", "SpatialLinesDataFrame", "SpatialPolygons", "SpatialPolygonsDataFrame"))) {
         stop("Comparison argument is invalid. Expecting a SpatialLines SpatialLinesDataFrame or SpatialPolygonsDataFrame object")
     }
     
@@ -52,29 +50,24 @@ validate_lcp <- function(lcp, comparison, buffers = c(50, 100,
         buffer_list <- list()
         
         for (i in 1:length(buffers)) {
-            buffer_list[[i]] <- rgeos::gBuffer(comparison, byid = FALSE, 
-                width = buffers[i])
+            buffer_list[[i]] <- rgeos::gBuffer(comparison, byid = FALSE, width = buffers[i])
         }
         
         buffer_output <- do.call(raster::bind, buffer_list)
         
     } else {
-        buffer_output <- rgeos::gBuffer(comparison, byid = FALSE, 
-            width = buffers[1])
+        buffer_output <- rgeos::gBuffer(comparison, byid = FALSE, width = buffers[1])
     }
     
-    buffer_output <- sp::SpatialPolygonsDataFrame(buffer_output, 
-        data = data.frame(ID = 1:length(buffers), row.names = 1:length(buffers)), 
+    buffer_output <- sp::SpatialPolygonsDataFrame(buffer_output, data = data.frame(ID = 1:length(buffers), row.names = 1:length(buffers)), 
         match.ID = FALSE)
     
-    lcp_clipped <- rgeos::gIntersection(buffer_output, lcp, 
-        byid = TRUE)
+    lcp_clipped <- rgeos::gIntersection(buffer_output, lcp, byid = TRUE)
     
-    accuracy <- rgeos::gLength(lcp_clipped, byid = TRUE)/rgeos::gLength(lcp) * 
-        100
+    accuracy <- rgeos::gLength(lcp_clipped, byid = TRUE)/rgeos::gLength(lcp) * 100
     
-    lcp_df <- data.frame(ID = 1:length(buffers), Buffer_Applied_from_data = buffers, 
-        Percent_LCP_within_Distance = accuracy, stringsAsFactors = FALSE)
+    lcp_df <- data.frame(ID = 1:length(buffers), Buffer_Applied_from_data = buffers, Percent_LCP_within_Distance = accuracy, 
+        stringsAsFactors = FALSE)
     
     return(lcp_df)
 }

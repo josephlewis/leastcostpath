@@ -45,8 +45,7 @@
 #' lcp_network <- create_banded_lcps(cost_surface = final_cost_cs, location = locs, min_distance = 20,
 #' max_distance = 50, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 
-create_banded_lcps <- function(cost_surface, location, min_distance, 
-    max_distance, radial_points, cost_distance = FALSE, parallel = FALSE) {
+create_banded_lcps <- function(cost_surface, location, min_distance, max_distance, radial_points, cost_distance = FALSE, parallel = FALSE) {
     
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
@@ -84,15 +83,13 @@ create_banded_lcps <- function(cost_surface, location, min_distance,
     
     circle_diff <- gDifference(circle_max, circle_min, byid = FALSE)
     
-    circle_pts <- sp::spsample(circle_diff, n = round(radial_points), 
-        "random")
+    circle_pts <- sp::spsample(circle_diff, n = round(radial_points), "random")
     
     all_pts <- rbind(location, circle_pts)
     
     ext <- methods::as(raster::extent(cost_surface), "SpatialPolygons")
     
-    ext <- gBuffer(spgeom = ext, byid = FALSE, width = -raster::res(cost_surface)[1] * 
-        2)
+    ext <- gBuffer(spgeom = ext, byid = FALSE, width = -raster::res(cost_surface)[1] * 2)
     
     raster::crs(ext) <- raster::crs(cost_surface)
     
@@ -108,37 +105,30 @@ create_banded_lcps <- function(cost_surface, location, min_distance,
         
         cl <- parallel::makeCluster(no_cores)
         
-        parallel::clusterExport(cl, varlist = c("cost_surface", 
-            "all_pts"), envir = environment())
+        parallel::clusterExport(cl, varlist = c("cost_surface", "all_pts"), envir = environment())
         
-        lcp_network <- pbapply::pbapply(network, MARGIN = 1, 
-            function(x) {
-                gdistance::shortestPath(cost_surface, all_pts[x[1], 
-                  ], all_pts[x[2], ], output = "SpatialLines")
-            }, cl = cl)
+        lcp_network <- pbapply::pbapply(network, MARGIN = 1, function(x) {
+            gdistance::shortestPath(cost_surface, all_pts[x[1], ], all_pts[x[2], ], output = "SpatialLines")
+        }, cl = cl)
         
         parallel::stopCluster(cl)
         
     } else {
         
-        lcp_network <- pbapply::pbapply(network, MARGIN = 1, 
-            function(x) {
-                gdistance::shortestPath(cost_surface, all_pts[x[1], 
-                  ], all_pts[x[2], ], output = "SpatialLines")
-            })
+        lcp_network <- pbapply::pbapply(network, MARGIN = 1, function(x) {
+            gdistance::shortestPath(cost_surface, all_pts[x[1], ], all_pts[x[2], ], output = "SpatialLines")
+        })
         
     }
     
     lcp_network <- do.call(rbind, lcp_network)
     
-    lcp_network <- SpatialLinesDataFrame(lcp_network, data.frame(from = network[, 
-        1], to = network[, 2]), match.ID = FALSE)
+    lcp_network <- SpatialLinesDataFrame(lcp_network, data.frame(from = network[, 1], to = network[, 2]), match.ID = FALSE)
     
     if (cost_distance) {
         
         cost_dist <- apply(network, MARGIN = 1, function(x) {
-            gdistance::costDistance(cost_surface, all_pts[x[1], 
-                ], all_pts[x[2], ])
+            gdistance::costDistance(cost_surface, all_pts[x[1], ], all_pts[x[2], ])
         })
         
         lcp_network$cost <- cost_dist

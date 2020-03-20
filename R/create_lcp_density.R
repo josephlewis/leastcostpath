@@ -50,14 +50,12 @@ create_lcp_density <- function(lcps, raster, rescale = FALSE) {
     
     lcp_pts <- methods::as(lcps, "SpatialPoints")
     
-    cumulative_pts <- raster::rasterize(x = lcp_pts, y = raster, 
-        fun = "count")
+    cumulative_pts <- raster::rasterize(x = lcp_pts, y = raster, fun = "count")
     
     if (rescale) {
         
         rasterRescale <- function(r) {
-            ((r - raster::cellStats(r, "min"))/(raster::cellStats(r, 
-                "max") - raster::cellStats(r, "min")))
+            ((r - raster::cellStats(r, "min"))/(raster::cellStats(r, "max") - raster::cellStats(r, "min")))
         }
         
         cumulative_pts <- rasterRescale(cumulative_pts)
