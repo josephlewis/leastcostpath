@@ -1,33 +1,11 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
-language: R
-sudo: false
+language: r
 cache: packages
-
-r:
-  - oldrel
-  - release
-  - devel
-
-repos:
-  CRAN: https://cran.rstudio.com
-  rforge: http://R-Forge.R-project.org
+sudo: required
+dist: trusty
 
 before_install:
-  - R -e 'install.packages("rgdal", repos="http://R-Forge.R-project.org")'
+  - sudo add-apt-repository ppa:ubuntugis/ppa --yes
+  - sudo apt-get --yes --force-yes update -qq
+  - sudo apt-get install --yes libudunits2-dev libproj-dev libgeos-dev libgdal-dev
 
-apt_packages:
-- gdal-bin
-- libgdal-dev
-- libxml2-dev
-- libproj-dev
-- libprotobuf-dev
-- protobuf-compiler
-- libv8-3.14-dev
-- libjq-dev
-- libudunits2-dev
-- libproj-dev
-- libgeos-dev
-- libspatialite-dev
-- libgdal-dev
-- libjson-c-dev
+warnings_are_errors: true
