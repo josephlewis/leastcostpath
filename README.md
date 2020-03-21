@@ -54,7 +54,7 @@ Usage
     plot(loc1, add = T)
     plot(loc2, add = T)
     
-#### Feature-Everywhere-to-Everywhere Least Cost Paths
+#### From-Everywhere-to-Everywhere Least Cost Paths
 
     locs <- spsample(as(r, 'SpatialPolygons'),n=10,'regular')
     
