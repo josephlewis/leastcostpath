@@ -6,9 +6,9 @@
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
-There were 3 NOTEs when submitting to win-builder:
+There were 1 NOTE when submitting to win-builder:
 
-0 errors √ | 0 warnings √ | 1 notes √
+0 errors √ | 0 warnings √ | 1 note √
 
 * Possibly mis-spelled words in DESCRIPTION:
   leastcostpath (2:8)
