@@ -38,10 +38,10 @@
 #'
 #' slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 #'
-#' locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
+#' locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'regular')
 #'
 #' lcp_network <- create_CCP_lcps(cost_surface = slope_cs, location = locs,
-#' distance = 20, #radial_points = 10, cost_distance = FALSE, parallel = FALSE)
+#' distance = 20, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 
 create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cost_distance = FALSE, parallel = FALSE) {
     
