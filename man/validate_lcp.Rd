@@ -15,6 +15,8 @@ validate_lcp(lcp, comparison, buffers = c(50, 100, 250, 500, 1000))
 }
 \value{
 data.frame object
+
+\code{data.frame} (base package). The resultant object identifies the percentage of the lcp within x distance (as supplied in the buffers argument) from the provided comparison object.
 }
 \description{
 Calculates accuracy of Least Cost Path

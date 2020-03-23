@@ -2,7 +2,7 @@
 #'
 #' Calculates Least Cost Paths from random locations within distances
 #'
-#' Computes Least Cost Paths from centre location to random locations within distances. This is based on the method proposed by Llobera (2015).
+#' Computes Least Cost Paths from centre location to random locations within a specified distance band. This is based on the method proposed by Llobera (2015).
 #'
 #' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation
 #'
@@ -18,7 +18,7 @@
 #'
 #' @param parallel if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE
 #'
-#' @return SpatialLinesDataFrame object
+#' @return \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths (number of LCPs is dependent on radial_points argument) calculated from a centre location to random locations within a specified distance band.
 #'
 #' @author Joseph Lewis
 #'

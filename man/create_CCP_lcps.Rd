@@ -21,7 +21,7 @@ create_CCP_lcps(cost_surface, location, distance, radial_points,
 \item{parallel}{if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE}
 }
 \value{
-SpatialLinesDataFrame object
+\code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths (number of LCPs is dependent on radial_points argument) calculated from radial locations to a centre location within a specified distance.
 }
 \description{
 Calculates Cumulative Cost Paths from Radial Locations
@@ -31,16 +31,17 @@ Computes Least Cost Paths from radial locations of a specified distance to the c
 }
 \examples{
 
-#r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
+r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50,
+crs='+proj=utm')
 
-#r[] <- stats::runif(1:length(r))
+r[] <- stats::runif(1:length(r))
 
-#slope_cs <- create_slope_cs(r, cost_function = 'tobler')
+slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
-#locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
+locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
 
-#lcp_network <- create_CCP_lcps(cost_surface = slope_cs, location = locs, distance = 20,
-#radial_points = 10, cost_distance = FALSE, parallel = FALSE)
+lcp_network <- create_CCP_lcps(cost_surface = slope_cs, location = locs,
+distance = 20, #radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 }
 \author{
 Joseph Lewis

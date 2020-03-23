@@ -12,7 +12,7 @@
 #'
 #'@param parallel if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.
 #'
-#' @return SpatialLinesDataFrame object
+#' @return \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths calculated from each location to all other locations.
 #'
 #' @author Joseph Lewis
 #'
@@ -28,16 +28,17 @@
 #'
 #'@examples
 #'
-#' #r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
+#'r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50,
+#'crs='+proj=utm')
 #'
-#'#r[] <- stats::runif(1:length(r))
+#'r[] <- stats::runif(1:length(r))
 #'
-#' #slope_cs <- create_slope_cs(r, cost_function = 'tobler')
+#'slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 #'
-#'#locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
+#'locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
 #'
-#' #lcp_network <- create_FETE_lcps(cost_surface = slope_cs, locations = locs,
-#' #cost_distance = FALSE, parallel = FALSE)
+#'lcp_network <- create_FETE_lcps(cost_surface = slope_cs, locations = locs,
+#'cost_distance = FALSE, parallel = FALSE)
 
 create_FETE_lcps <- function(cost_surface, locations, cost_distance = FALSE, parallel = FALSE) {
     

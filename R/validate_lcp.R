@@ -12,6 +12,8 @@
 #'
 #' @return data.frame object
 #'
+#' @return \code{data.frame} (base package). The resultant object identifies the percentage of the lcp within x distance (as supplied in the buffers argument) from the provided comparison object.
+#'
 #' @author Joseph Lewis
 #'
 #' @import rgdal
@@ -59,15 +61,13 @@ validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000)) 
         buffer_output <- rgeos::gBuffer(comparison, byid = FALSE, width = buffers[1])
     }
     
-    buffer_output <- sp::SpatialPolygonsDataFrame(buffer_output, data = data.frame(ID = 1:length(buffers), row.names = 1:length(buffers)), 
-        match.ID = FALSE)
+    buffer_output <- sp::SpatialPolygonsDataFrame(buffer_output, data = data.frame(ID = 1:length(buffers), row.names = 1:length(buffers)), match.ID = FALSE)
     
     lcp_clipped <- rgeos::gIntersection(buffer_output, lcp, byid = TRUE)
     
     accuracy <- rgeos::gLength(lcp_clipped, byid = TRUE)/rgeos::gLength(lcp) * 100
     
-    lcp_df <- data.frame(ID = 1:length(buffers), Buffer_Applied_from_data = buffers, Percent_LCP_within_Distance = accuracy, 
-        stringsAsFactors = FALSE)
+    lcp_df <- data.frame(ID = 1:length(buffers), Buffer_Applied_from_data = buffers, Percent_LCP_within_Distance = accuracy, stringsAsFactors = FALSE)
     
     return(lcp_df)
 }

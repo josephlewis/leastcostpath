@@ -17,6 +17,8 @@ create_cost_corridor(cost_surface, origin, destination, rescale = FALSE)
 }
 \value{
 RasterLayer object
+
+\code{RasterLayer} (raster package). The resultant object is the accumulated cost surface from origin-to-destination and destination-to-origin and can be used to identify areas of preferential movement in the landscape.
 }
 \description{
 Creates a Cost Corridor raster object

@@ -22,7 +22,7 @@
 #'
 #' @export
 #'
-#' @return SpatialLines object or list of SpatialLines object (dependent on directional argument)
+#' @return \code{SpatialLines} (sp package) or \code{list} of \code{SpatialLines} dependent on directional argument. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
 #'
 #'@examples
 #' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

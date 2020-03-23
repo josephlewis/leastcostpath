@@ -14,6 +14,8 @@
 #'
 #' @return RasterLayer object
 #'
+#' @return \code{RasterLayer} (raster package). The resultant object is the accumulated cost surface from origin-to-destination and destination-to-origin and can be used to identify areas of preferential movement in the landscape.
+#'
 #' @author Joseph Lewis
 #'
 #' @import rgdal

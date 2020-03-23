@@ -12,7 +12,7 @@
 #'
 #' @param neighbours Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16.
 #'
-#' @return Transition object
+#' @return \code{TransitionLayer} (gdistance package) numerically expressing the attraction/repulsion of a feature in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations.
 #'
 #' @author Joseph Lewis
 #'

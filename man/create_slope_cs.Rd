@@ -19,7 +19,7 @@ create_slope_cs(dem, cost_function = "tobler", neighbours = 16,
 \item{max_slope}{\code{numeric} value. Maximum percentage slope that is traversable. Default is NULL.}
 }
 \value{
-Transition object
+\code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving up/down slope based on the cost function provided in the cost_function argument.
 }
 \description{
 Creates a Slope Cost Surface

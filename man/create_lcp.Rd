@@ -16,7 +16,7 @@ create_lcp(cost_surface, origin, destination, directional = FALSE)
 \item{directional}{if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE.}
 }
 \value{
-SpatialLines object or list of SpatialLines object (dependent on directional argument)
+\code{SpatialLines} (sp package) or \code{list} of \code{SpatialLines} dependent on directional argument. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
 }
 \description{
 Calculates Least Cost Path
