@@ -5,7 +5,7 @@ Date: 2020-03-18
 Authors@R: person("Joseph", "Lewis", email = "josephlewis1992@gmail.com", role = c("aut", "cre"))
 Maintainer: Joseph Lewis <josephlewis1992@gmail.com>
 URL: josephlewis.github.io
-Description: Provides functionality to calculate cost surfaces based on slope (e.g. Herzog, 2010; Llobera and Sluckin, 2007; París Roche, 2002; Tobler, 1993), traversing slope (Bell and Lock, 2000), and landscape features (Llobera, 2000) to be used when modelling pathways and movement potential within a landscape (e.g. Llobera, 2015; Verhagen, 2013; White and Barber, 2012) 
+Description: leastcostpath provides functionality to calculate cost surfaces based on slope (e.g. Herzog, 2010; Llobera and Sluckin, 2007 <doi:10.1016/j.jtbi.2007.07.020>; París Roche, 2002; Tobler, 1993), traversing slope (Bell and Lock, 2000), and landscape features (Llobera, 2000) to be used when modelling pathways and movement potential within a landscape (e.g. Llobera, 2015; Verhagen, 2013; White and Barber, 2012 <doi:10.1016/j.jas.2012.04.017>). 
 Depends: R (>= 3.4.0)
 Imports: gdistance (>= 1.2-2), raster (>= 2.6-7), rgdal (>= 1.3-3), rgeos (>= 0.3-28), sp (>= 1.3-1), parallel (>= 3.4-1), pbapply (>= 1.4-2), methods, stats
 License: GPL (>= 2)
