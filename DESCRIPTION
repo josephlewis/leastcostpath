@@ -1,5 +1,5 @@
 Package: leastcostpath
-Title: Modelling pathways and movement potential Within a landscape
+Title: Modelling pathways and movement potential within a landscape
 Version: 1.2.1
 Date: 2020-03-18
 Authors@R: person("Joseph", "Lewis", email = "josephlewis1992@gmail.com", role = c("aut", "cre"))
