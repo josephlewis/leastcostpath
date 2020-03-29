@@ -1,4 +1,7 @@
-leastcostpath - version 1.2.1 ![travis](https://api.travis-ci.org/josephlewis/leastcostpath.svg?branch=master)
+leastcostpath - version 1.2.1 [![Travis build
+status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 =============================
 
 The R library <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths, which are often, but not exclusively, used in archaeological research. This library can be used to apply multiple cost functions when approximating the difficulty of moving across a landscape, as well as incorporating traversal <i>across</i> slope. Furthermore, attraction/repulsion of landscape features can be incorporated within the Least Cost Path calculation.
