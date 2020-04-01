@@ -1,3 +1,6 @@
+# 1.2.2 (01 April 2020)
+* Implemented create_lcp_network
+
 # 1.2.1 (18 March 2020)
 * Maximum slope traversable argument added to create_slope_cs function
 
