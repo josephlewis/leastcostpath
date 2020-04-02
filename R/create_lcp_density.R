@@ -56,6 +56,8 @@ create_lcp_density <- function(lcps, raster, rescale = FALSE) {
     
     cumulative_pts <- raster::rasterize(x = lcp_pts, y = raster, fun = "count")
     
+    cumulative_pts[is.na(cumulative_pts)] <- 0
+    
     if (rescale) {
         
         rasterRescale <- function(r) {
@@ -64,8 +66,6 @@ create_lcp_density <- function(lcps, raster, rescale = FALSE) {
         
         cumulative_pts <- rasterRescale(cumulative_pts)
     }
-    
-    cumulative_pts[is.na(cumulative_pts)] <- 0
     
     return(cumulative_pts)
     
