@@ -1,16 +1,9 @@
 ## Test environments
-* local OS Windows >= 8 x64 (build 9200) install, R 3.4.1 (2017-06-30)
+* local OS Windows >= 8 x64 (build 9200) install, R 3.6.3 (2020-02-29)
 * Ubuntu Trusty 14.04 (on travis-ci), R version 3.6.2 (2017-01-27)
 * win-builder (devel and release)
 
 ## R CMD check results
-There were no ERRORs or WARNINGs.
+There were no ERRORs, WARNINGs or NOTES.
 
-There were 1 NOTE when submitting to win-builder:
-
-0 errors √ | 0 warnings √ | 1 note √
-
-* Possibly mis-spelled words in DESCRIPTION:
-  leastcostpath (2:8)
-  
-    leastcostpath is the name of the R package
+0 errors √ | 0 warnings √ | 0 notes √

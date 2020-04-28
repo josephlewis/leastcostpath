@@ -1,7 +1,7 @@
 # 1.2.3 (28 April 2020)
 * Added create_lcp_network vignette
 * Fixed create_lcp_density issue where raster values of 1 would become 0 when rescale is TRUE
-* Addded Tobler offroad cost function
+* Addded Tobler offpath cost function
 * Refactored create_slope_cs for easier scalability
 
 # 1.2.2 (01 April 2020)
