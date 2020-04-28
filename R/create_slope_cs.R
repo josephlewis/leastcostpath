@@ -28,7 +28,7 @@
 #'
 #' @param max_slope \code{numeric} value. Maximum percentage slope that is traversable. Default is NULL.
 #'
-#' @return \code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving up/down slope based on the cost function provided in the cost_function argument.
+#' @return \code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving up/down slope based on the cost function provided in the cost_function argument. list of \code{TransitionLayer} if cost_function = 'all'.
 #'
 #' @author Joseph Lewis
 #'

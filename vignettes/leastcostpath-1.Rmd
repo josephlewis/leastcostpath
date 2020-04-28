@@ -195,8 +195,16 @@ plot(locs, add = T)
 plot(lcp_network, add = T, col = "red")
 ```
 
+#12. Example 10: Least Cost Path Network (Slope and Traversal Across Slope)
 
+```{r lcp_network, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs <- sp::spsample(as(r, 'SpatialPolygons'),n=5,'regular')
 
+lcp_network <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
+  "*" (create_traversal_cs(dem = r, neighbours = 16)) %>%
+  create_lcp_network(., locations = locs, nb_matrix = cbind(c(1, 4, 2, 1), c(2, 2, 4, 3)), cost_distance = FALSE, parallel = FALSE)
 
-
-
+plot(r)
+plot(locs, add = T)
+plot(lcp_network, add = T, col = "red")
+```
