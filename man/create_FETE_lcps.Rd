@@ -4,8 +4,12 @@
 \alias{create_FETE_lcps}
 \title{create_FETE_lcps}
 \usage{
-create_FETE_lcps(cost_surface, locations, cost_distance = FALSE,
-  parallel = FALSE)
+create_FETE_lcps(
+  cost_surface,
+  locations,
+  cost_distance = FALSE,
+  parallel = FALSE
+)
 }
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.}

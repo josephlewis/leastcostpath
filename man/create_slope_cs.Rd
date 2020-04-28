@@ -4,13 +4,18 @@
 \alias{create_slope_cs}
 \title{create_slope_cs}
 \usage{
-create_slope_cs(dem, cost_function = "tobler", neighbours = 16,
-  crit_slope = 12, max_slope = NULL)
+create_slope_cs(
+  dem,
+  cost_function = "tobler",
+  neighbours = 16,
+  crit_slope = 12,
+  max_slope = NULL
+)
 }
 \arguments{
 \item{dem}{\code{RasterLayer} (raster package). Digital Elevation Model.}
 
-\item{cost_function}{Cost Function used in the Least Cost Path calculation. Implemented cost functions include 'tobler', 'modified tobler', 'wheeled transport' 'herzog', or 'all'. Default is 'tobler'. See Details for more information.}
+\item{cost_function}{Cost Function used in the Least Cost Path calculation. Implemented cost functions include 'tobler', 'tobler offpath', 'modified tobler', 'wheeled transport' 'herzog', 'llobera_sluckin' or 'all'. Default is 'tobler'. See Details for more information.}
 
 \item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16.}
 
@@ -31,11 +36,15 @@ Creates a cost surface based on the difficulty of moving up/down slope. This fun
 
 The most widely used cost function that approximates the difficulty of moving across a landscape is Waldo Tobler's 'Hiking Function' (Gorenflo and Gale, 1990; Wheatley and Gillings, 2001). This function allows for the assessment of time necessary to traverse a surface and takes into account up-slope and down-slope momentum (Kantner, 2004; Tobler, 1993).
 
+Tobler's offpath cost function reduces speed of the Tobler's 'Hiking function' by 0.6 to take into account walking off-path (Tobler, 1993)
+
 The Modified Hiking cost function combines MIDE (París Roche, 2002), a method to calculate walking hours for an average hiker with a light load (Márquez-Pérez et al., 2017), and Tobler's 'Hiking Function' (Tobler, 1993). The Modified Hiking Function benefits from the precision of the MIDE rule and the continuity of Tobler's Hiking Function (Márquez-Pérez et al., 2017).
 
 Herzog (2013), based on the cost function provided by Llobera and Sluckin (2007), has provided a cost function to approximate the cost for wheeled transport. The cost function is symmetric and is most applicable for use when the same route was taken in both directions.
 
 Herzog's (2010) Sixth-degree polynomial cost function approximates the energy expenditure values found in Minetti et al. (2002) but eliminates the problem of unrealistic negative energy expenditure values for steep downhill slopes.
+
+Llobera and Sluckin (2007) metabolic energy expenditure cost function in KJ/(m*kg)
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

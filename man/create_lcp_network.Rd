@@ -4,8 +4,13 @@
 \alias{create_lcp_network}
 \title{create_lcp_network}
 \usage{
-create_lcp_network(cost_surface, locations, nb_matrix = NULL,
-  cost_distance = FALSE, parallel = FALSE)
+create_lcp_network(
+  cost_surface,
+  locations,
+  nb_matrix = NULL,
+  cost_distance = FALSE,
+  parallel = FALSE
+)
 }
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.}

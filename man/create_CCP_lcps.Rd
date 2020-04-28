@@ -4,8 +4,14 @@
 \alias{create_CCP_lcps}
 \title{create_CCP_lcps}
 \usage{
-create_CCP_lcps(cost_surface, location, distance, radial_points,
-  cost_distance = FALSE, parallel = FALSE)
+create_CCP_lcps(
+  cost_surface,
+  location,
+  distance,
+  radial_points,
+  cost_distance = FALSE,
+  parallel = FALSE
+)
 }
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation}

@@ -4,8 +4,15 @@
 \alias{create_banded_lcps}
 \title{create_banded_lcps}
 \usage{
-create_banded_lcps(cost_surface, location, min_distance, max_distance,
-  radial_points, cost_distance = FALSE, parallel = FALSE)
+create_banded_lcps(
+  cost_surface,
+  location,
+  min_distance,
+  max_distance,
+  radial_points,
+  cost_distance = FALSE,
+  parallel = FALSE
+)
 }
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation}
