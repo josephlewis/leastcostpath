@@ -1,4 +1,4 @@
-leastcostpath - version 1.2.2 [![Travis build status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.2.3 [![Travis build status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads TOtal](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -155,6 +155,11 @@ Versioning
       * Maximum slope traversable argument added to create_slope_cs function
 -   version 1.2.2
       * Implemented create_lcp_network
+-   version 1.2.3
+      * Added create_lcp_network vignette
+      * Fixed create_lcp_density issue where raster values of 1 would become 0 when rescale is TRUE      
+      * Addded Tobler offroad cost function
+      * Refactored create_slope_cs for easier scalability
 
 Authors
 -------
@@ -166,4 +171,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.2.2)
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.2.3)

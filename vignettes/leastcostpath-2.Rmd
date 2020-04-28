@@ -7,7 +7,7 @@ output:
     toc: true # table of content true
     toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
 vignette: >
-  %\VignetteIndexEntry{leastcostpath-1}
+  %\VignetteIndexEntry{leastcostpath-2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -25,6 +25,7 @@ library(rgdal)
 library(rgeos)
 library(sp)
 library(raster)
+library(spdep)
 library(gdistance)
 library(leastcostpath)
 ```
@@ -67,7 +68,7 @@ plot(lcp_network, add = T, col = "red")
 
 #4. Example 2: Least Cost Path Network - Delauney Network
 
-```{r lcp_matrix, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+```{r lcp_matrix_del, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 neighbour_pts <- spdep::tri2nb(locs)
 
 origin_ids <- base::rep(base::seq_along(neighbour_pts), base::sapply(neighbour_pts, function(x) base::length(x)))
@@ -81,7 +82,7 @@ tail(locs_matrix)
 
 ```
 
-```{r lcp_network, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+```{r lcp_network_del, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
  lcp_network <- final_cs %>%
   create_lcp_network(., locations = locs, nb_matrix = locs_matrix, cost_distance = FALSE, parallel = FALSE)
 
@@ -92,7 +93,7 @@ plot(lcp_network, add = T, col = "red")
 
 #5. Example 3: Least Cost Path Network - Gabriel Network
 
-```{r lcp_matrix, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+```{r lcp_matrix_g, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 neighbour_pts <- spdep::gabrielneigh(locs)
 
 locs_matrix <- base::cbind(neighbour_pts$from, neighbour_pts$to)
@@ -102,7 +103,7 @@ tail(locs_matrix)
 
 ```
 
-```{r lcp_network, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+```{r lcp_network_g, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
  lcp_network <- final_cs %>%
   create_lcp_network(., locations = locs, nb_matrix = locs_matrix, cost_distance = FALSE, parallel = FALSE)
 
@@ -113,7 +114,7 @@ plot(lcp_network, add = T, col = "red")
 
 #6. Example 4: Least Cost Path Network - K Nearest Network
 
-```{r lcp_matrix, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+```{r lcp_matrix_k, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 neighbour_pts <- spdep::knearneigh(locs, k= 2)
 
 k_network <- function(k_neigh) {
@@ -163,7 +164,7 @@ tail(locs_matrix)
 
 ```
 
-```{r lcp_network, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+```{r lcp_network_k, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
  lcp_network <- final_cs %>%
   create_lcp_network(., locations = locs, nb_matrix = locs_matrix, cost_distance = FALSE, parallel = FALSE)
 
@@ -171,46 +172,3 @@ plot(r)
 plot(locs, add = T)
 plot(lcp_network, add = T, col = "red")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
