@@ -39,7 +39,7 @@
 #'
 #' #slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 #'
-#' #locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
+#' #locs <- sp::spsample(as(extent(r), 'SpatialPolygons'),n=1,'random')
 #'
 #' #lcp_network <- create_banded_lcps(cost_surface = final_cost_cs, location = locs, min_distance = 20,
 #' #max_distance = 50, radial_points = 10, cost_distance = FALSE, parallel = FALSE)

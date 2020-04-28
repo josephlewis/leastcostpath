@@ -41,7 +41,7 @@ r[] <- stats::runif(1:length(r))
 
 slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
-locs <- sp::spsample(as(r, 'SpatialPolygons'),n=5,'regular')
+locs <- sp::spsample(as(extent(r), 'SpatialPolygons'),n=5,'regular')
 
 lcp_network <- create_lcp_network(slope_cs, locations = locs,
 nb_matrix = cbind(c(1, 4, 2, 1), c(2, 2, 4, 3)), cost_distance = FALSE, parallel = FALSE)
