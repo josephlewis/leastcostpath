@@ -61,14 +61,24 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
     }
     
     if (!neighbours %in% c(4, 8, 16)) {
-        stop("neighbours argument is invalid. Expecting 4, 8, or 16.")
+        stop("neighbours argument is invalid. Expecting 8, or 16.")
     }
     
     altDiff_slope <- function(x) {
         x[2] - x[1]
     }
     
-    hd <- suppressWarnings(gdistance::transition(dem, altDiff_slope, 8, symm = FALSE))
+    if (neighbours == 4) {
+        
+        hd_neighbours <- 4
+        
+    } else {
+        
+        hd_neighbours <- neighbours
+        
+    }
+    
+    hd <- suppressWarnings(gdistance::transition(dem, altDiff_slope, hd_neighbours, symm = FALSE))
     
     slope <- gdistance::geoCorrection(hd)
     
