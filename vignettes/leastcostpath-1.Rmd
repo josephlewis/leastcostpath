@@ -134,7 +134,7 @@ plot(cc)
 #7. Example 5: From Everywhere to Everywhere (Slope and Traversal Across Slope)
 
 ```{r fete, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
-locs <- sp::spsample(as(r, 'SpatialPolygons'),n=25,'regular')
+locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=25,'regular')
 
 lcp_network <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
   "*" (create_traversal_cs(dem = r, neighbours = 16)) %>%
@@ -197,8 +197,10 @@ plot(lcp_network, add = T, col = "red")
 
 #12. Example 10: Least Cost Path Network (Slope and Traversal Across Slope)
 
+See Least Cost Path Vignette 2 for more examples using Least Cost Path Network
+
 ```{r lcp_network, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
-locs <- sp::spsample(as(r, 'SpatialPolygons'),n=5,'regular')
+locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=5,'regular')
 
 lcp_network <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
   "*" (create_traversal_cs(dem = r, neighbours = 16)) %>%
