@@ -174,7 +174,6 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
 
         if (inherits(max_slope, "numeric")) {
             slope[adj] <- ifelse(slope[adj] == unique(cf(rand))[!is.na(unique(cf(rand)))], 0, slope[adj])
-            slope[adj] <- ifelse(slope[adj] == unique(cf(0))[!is.na(unique(cf(0)))], 0, slope[adj])
         }
 
         Conductance <- gdistance::geoCorrection(slope)
@@ -235,34 +234,24 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         if (inherits(max_slope, "numeric")) {
 
             slope_stack[[1]][adj] <- ifelse(slope_stack[[1]][adj] == unique(cf1(rand))[!is.na(unique(cf1(rand)))], 0, slope_stack[[1]][adj])
-            slope_stack[[1]][adj] <- ifelse(slope_stack[[1]][adj] == unique(cf1(0))[!is.na(unique(cf1(0)))], 0, slope_stack[[1]][adj])
 
             slope_stack[[2]][adj] <- ifelse(slope_stack[[2]][adj] == unique(cf2(rand))[!is.na(unique(cf2(rand)))], 0, slope_stack[[2]][adj])
-            slope_stack[[2]][adj] <- ifelse(slope_stack[[2]][adj] == unique(cf2(0))[!is.na(unique(cf2(0)))], 0, slope_stack[[2]][adj])
 
             slope_stack[[3]][adj] <- ifelse(slope_stack[[3]][adj] == unique(cf3(rand))[!is.na(unique(cf3(rand)))], 0, slope_stack[[3]][adj])
-            slope_stack[[3]][adj] <- ifelse(slope_stack[[3]][adj] == unique(cf3(0))[!is.na(unique(cf3(0)))], 0, slope_stack[[3]][adj])
 
             slope_stack[[4]][adj] <- ifelse(slope_stack[[4]][adj] == unique(cf4(rand))[!is.na(unique(cf4(rand)))], 0, slope_stack[[4]][adj])
-            slope_stack[[4]][adj] <- ifelse(slope_stack[[4]][adj] == unique(cf4(0))[!is.na(unique(cf4(0)))], 0, slope_stack[[4]][adj])
 
             slope_stack[[5]][adj] <- ifelse(slope_stack[[5]][adj] == unique(cf5(rand))[!is.na(unique(cf5(rand)))], 0, slope_stack[[5]][adj])
-            slope_stack[[5]][adj] <- ifelse(slope_stack[[5]][adj] == unique(cf5(0))[!is.na(unique(cf5(0)))], 0, slope_stack[[5]][adj])
 
             slope_stack[[6]][adj] <- ifelse(slope_stack[[6]][adj] == unique(cf6(rand))[!is.na(unique(cf6(rand)))], 0, slope_stack[[6]][adj])
-            slope_stack[[6]][adj] <- ifelse(slope_stack[[6]][adj] == unique(cf6(0))[!is.na(unique(cf6(0)))], 0, slope_stack[[6]][adj])
 
             slope_stack[[7]][adj] <- ifelse(slope_stack[[7]][adj] == unique(cf7(rand))[!is.na(unique(cf7(rand)))], 0, slope_stack[[7]][adj])
-            slope_stack[[7]][adj] <- ifelse(slope_stack[[7]][adj] == unique(cf7(0))[!is.na(unique(cf7(0)))], 0, slope_stack[[7]][adj])
 
             slope_stack[[8]][adj] <- ifelse(slope_stack[[8]][adj] == unique(cf8(rand))[!is.na(unique(cf8(rand)))], 0, slope_stack[[8]][adj])
-            slope_stack[[8]][adj] <- ifelse(slope_stack[[8]][adj] == unique(cf8(0))[!is.na(unique(cf8(0)))], 0, slope_stack[[8]][adj])
 
             slope_stack[[9]][adj] <- ifelse(slope_stack[[9]][adj] == unique(cf9(rand))[!is.na(unique(cf9(rand)))], 0, slope_stack[[9]][adj])
-            slope_stack[[9]][adj] <- ifelse(slope_stack[[9]][adj] == unique(cf9(0))[!is.na(unique(cf9(0)))], 0, slope_stack[[9]][adj])
 
             slope_stack[[10]][adj] <- ifelse(slope_stack[[10]][adj] == unique(cf10(rand))[!is.na(unique(cf10(rand)))], 0, slope_stack[[10]][adj])
-            slope_stack[[10]][adj] <- ifelse(slope_stack[[10]][adj] == unique(cf10(0))[!is.na(unique(cf10(0)))], 0, slope_stack[[10]][adj])
 
 
 
