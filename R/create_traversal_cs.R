@@ -33,6 +33,10 @@ create_traversal_cs <- function(dem, neighbours = 16) {
         stop("neighbours argument is invalid. Expecting 4, 8, or 16.")
     }
     
+    trans <- gdistance::transition(dem, transitionFunction = function(x) {
+        0
+    }, neighbours, symm = FALSE)
+    
     aspect_dem <- raster::terrain(dem, opt = "aspect", unit = "degrees", neighbors = 8)
     
     aspect_dem[aspect_dem >= 0 & aspect_dem <= 90] <- aspect_dem[aspect_dem >= 0 & aspect_dem <= 90] + 90
@@ -69,11 +73,15 @@ create_traversal_cs <- function(dem, neighbours = 16) {
         }
     }
     
-    trans <- gdistance::transition(aspect_dem, altDiff_traversal, neighbours, symm = FALSE)
+    trans_aspect <- gdistance::transition(aspect_dem, altDiff_traversal, neighbours, symm = FALSE)
     
     if (neighbours == 8 | neighbours == 16) {
-        trans <- gdistance::geoCorrection(trans)
+        trans_aspect <- gdistance::geoCorrection(trans_aspect)
     }
+    
+    adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
+    
+    trans[adj] <- trans_aspect[adj]
     
     return(trans)
 }
