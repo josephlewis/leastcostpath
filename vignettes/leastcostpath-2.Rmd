@@ -14,7 +14,9 @@ vignette: >
 
 # 1. Introduction
 
-This vignette describes some examples using the create_lcp_network function in the <b>leastcostpath</b> package. The <b>leastcostpath</b> package is written for use in the R environment (R Core Team, 2016). It provides functionality to calculate Least Cost Paths using multiple cost functions that approximate the difficulty of moving across a landscape, taking into account obstacles and local fricion (e.g. slope). Furthermore, this package allows for the incorporation of cost when traversing across slope, as well as other factors such as landscape features. 
+This vignette describes some examples using the create_lcp_network function in the <b>leastcostpath</b> package. 
+
+The <b>leastcostpath</b> package is written for use in the R environment (R Core Team, 2016). It provides functionality to calculate Least Cost Paths using multiple cost functions that approximate the difficulty of moving across a landscape, taking into account obstacles and local fricion (e.g. slope). Furthermore, this package allows for the incorporation of cost when traversing across slope, as well as other factors such as landscape features. 
 
 The create_lcp_network function uses a specified matrix to assess which locations to calculate the least cost path between. 
 
@@ -42,9 +44,10 @@ plot(r)
 plot(locs, add = T)
 ```
 
-#3. Example 1: Least Cost Path Network - User specified matrix
+# 3. Example 1: Least Cost Path Network - User specified matrix
 
 The below matrix specifies that we want to calculate least cost paths between the following locations:
+
 * Location 1 to 2
 * Location 4 to 2
 * Location 2 to 4
@@ -66,7 +69,7 @@ plot(locs, add = T)
 plot(lcp_network, add = T, col = "red")
 ```
 
-#4. Example 2: Least Cost Path Network - Delauney Network
+# 4. Example 2: Least Cost Path Network - Delauney Network
 
 ```{r lcp_matrix_del, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 neighbour_pts <- spdep::tri2nb(locs)
@@ -91,7 +94,7 @@ plot(locs, add = T)
 plot(lcp_network, add = T, col = "red")
 ```
 
-#5. Example 3: Least Cost Path Network - Gabriel Network
+# 5. Example 3: Least Cost Path Network - Gabriel Network
 
 ```{r lcp_matrix_g, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 neighbour_pts <- spdep::gabrielneigh(locs)
@@ -112,7 +115,7 @@ plot(locs, add = T)
 plot(lcp_network, add = T, col = "red")
 ```
 
-#6. Example 4: Least Cost Path Network - K Nearest Network
+# 6. Example 4: Least Cost Path Network - K Nearest Network
 
 ```{r lcp_matrix_k, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 neighbour_pts <- spdep::knearneigh(locs, k= 2)
