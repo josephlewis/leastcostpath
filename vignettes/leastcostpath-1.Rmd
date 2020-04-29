@@ -30,10 +30,15 @@ library(leastcostpath)
 ```{r raster, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
+r_extent <- as(raster::extent(r), 'SpatialPolygons')
+
+crs(r_extent) <- crs(r)
+
 plot(r)
+plot(r_extent, add = T, border = "red")
 ```
 
-#3. Example 1: Least Cost Path Analysis (Slope only)
+# 3. Example 1: Least Cost Path Analysis (Slope only)
 
 ```{r slope_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 cs <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16)
@@ -54,7 +59,7 @@ plot(lcp[[1]], add = T, col = "red")
 plot(lcp[[2]], add = T, col = "blue")
 ```
 
-#4. Example 2: Least Cost Path Analysis (Slope and Traversal Across Slope)
+# 4. Example 2: Least Cost Path Analysis (Slope and Traversal Across Slope)
 
 ```{r slope_traverse_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 cs <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
@@ -76,7 +81,7 @@ plot(lcp[[1]], add = T, col = "red")
 plot(lcp[[2]], add = T, col = "blue")
 ```
 
-#5. Example 3: Least Cost Path Analysis (Slope, Traversal Across Slope, and Landscape Feature)
+# 5. Example 3: Least Cost Path Analysis (Slope, Traversal Across Slope, and Landscape Feature)
 
 ```{r slope_traverse_feature_cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 feature_loc = cbind(2667652, 6478997)
@@ -105,7 +110,7 @@ plot(lcp[[1]], add = T, col = "red")
 plot(lcp[[2]], add = T, col = "blue")
 ```
 
-#6. Example 4: Least Cost Path Corridor (Slope, Traversal Across Slope, and Landscape Feature)
+# 6. Example 4: Least Cost Path Corridor (Slope, Traversal Across Slope, and Landscape Feature)
 
 ```{r slope_traverse_feature_cc, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 feature_loc = cbind(2667652, 6478997)
@@ -131,10 +136,10 @@ cc <- create_cost_corridor(cs, loc1, loc2)
 plot(cc)
 ```
 
-#7. Example 5: From Everywhere to Everywhere (Slope and Traversal Across Slope)
+# 6. Example 5: From Everywhere to Everywhere (Slope and Traversal Across Slope)
 
 ```{r fete, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
-locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=25,'regular')
+locs <- sp::spsample(r_extent,n=25,'regular')
 
 lcp_network <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
   "*" (create_traversal_cs(dem = r, neighbours = 16)) %>%
@@ -145,7 +150,7 @@ plot(locs, add = T)
 plot(lcp_network, add = T, col = "red")
 ```
 
-#8. Example 6: Least Cost Paths Density
+# 7. Example 6: Least Cost Paths Density
 
 ```{r lcp_d, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 lcp_network_density <- create_lcp_density(lcps = lcp_network, raster = r, rescale = TRUE)
@@ -153,7 +158,7 @@ lcp_network_density <- create_lcp_density(lcps = lcp_network, raster = r, rescal
 plot(lcp_network_density)
 ```
 
-#9. Example 7: Least Cost Paths Kernel Density
+# 8. Example 7: Least Cost Paths Kernel Density
 
 ```{r lcp_kd, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 fwModel <- raster::focalWeight(lcp_network_density, max(res(r)) * 2, type='circle')
@@ -165,7 +170,7 @@ lcp_network_kd <- raster::focal(lcp_network_density, w=fwModel ,fun=sum , na.rm=
 plot(lcp_network_kd)
 ```
 
-#10. Example 8: Cumulative Cost Paths from Radial Locations (Slope and Traversal Across Slope)
+# 9. Example 8: Cumulative Cost Paths from Radial Locations (Slope and Traversal Across Slope)
 
 ```{r ccp, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 locs = cbind(2667652, 6478997)
@@ -180,7 +185,7 @@ plot(locs, add = T)
 plot(lcp_network, add = T, col = "red")
 ```
 
-#11. Example 9: Least Cost Paths from random locations within distances (Slope and Traversal Across Slope)
+# 10. Example 9: Least Cost Paths from random locations within distances (Slope and Traversal Across Slope)
 
 ```{r banded_lcp, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 locs = cbind(2667652, 6478997)
@@ -195,12 +200,12 @@ plot(locs, add = T)
 plot(lcp_network, add = T, col = "red")
 ```
 
-#12. Example 10: Least Cost Path Network (Slope and Traversal Across Slope)
+# 11. Example 10: Least Cost Path Network (Slope and Traversal Across Slope)
 
 See Least Cost Path Vignette 2 for more examples using Least Cost Path Network
 
 ```{r lcp_network, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
-locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=5,'regular')
+locs <- sp::spsample(r_extent,n=5,'regular')
 
 lcp_network <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
   "*" (create_traversal_cs(dem = r, neighbours = 16)) %>%
