@@ -164,7 +164,8 @@ Versioning
       * Added llobera-sluckin cost function
       * Refactored create_slope_cs for easier scalability
 -   version 1.2.4
-      * Fixed max_slope in create_slope_cs function.       
+      * Fixed max_slope in create_slope_cs function.
+      * Fixed create_traversal_cs to work when max_slope in create_slope_cs used. 
 
 Authors
 -------

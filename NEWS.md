@@ -1,5 +1,6 @@
 # 1.2.4 (29th April 2020)
 * Fixed max_slope in create_slope_cs function. 
+* Fixed create_traversal_cs to work when max_slope in create_slope_cs used. 
 
 # 1.2.3 (28 April 2020)
 * Added create_lcp_network vignette
@@ -9,6 +10,7 @@
 * Added irmischer-clarke offpath male/female cost function
 * Added llobera-sluckin cost function
 * Refactored create_slope_cs for easier scalability
+
 
 # 1.2.2 (01 April 2020)
 * Implemented create_lcp_network
