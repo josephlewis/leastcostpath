@@ -191,7 +191,7 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
 
     if (cost_function %in% cfs[cfs == "all"]) {
 
-        slope_stack <- replicate(n = length(cfs[!cfs == "all"]), expr = slope_cs)
+        slope_stack <- replicate(n = length(cfs[!cfs == "all"]), expr = slope)
 
         cf1 <- function(x) {
             (6 * exp(-3.5 * abs(x[adj] + 0.05)))
