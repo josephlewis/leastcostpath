@@ -55,8 +55,8 @@ loc2 = sp::SpatialPoints(loc2)
 lcp <- create_lcp(cost_surface = cs, origin = loc1, destination = loc2, directional = FALSE)
 
 plot(raster(cs))
-plot(lcp[[1]], add = T, col = "red")
-plot(lcp[[2]], add = T, col = "blue")
+plot(lcp[1,], add = T, col = "red")
+plot(lcp[2,], add = T, col = "blue")
 ```
 
 # 4. Example 2: Least Cost Path Analysis (Slope and Traversal Across Slope)
@@ -77,8 +77,8 @@ loc2 = sp::SpatialPoints(loc2)
 lcp <- create_lcp(cost_surface = cs, origin = loc1, destination = loc2, directional = FALSE)
 
 plot(raster(cs))
-plot(lcp[[1]], add = T, col = "red")
-plot(lcp[[2]], add = T, col = "blue")
+plot(lcp[1,], add = T, col = "red")
+plot(lcp[2,], add = T, col = "blue")
 ```
 
 # 5. Example 3: Least Cost Path Analysis (Slope, Traversal Across Slope, and Landscape Feature)
@@ -106,8 +106,8 @@ lcp <- create_lcp(cost_surface = cs, origin = loc1, destination = loc2, directio
 
 plot(raster(cs))
 plot(feature_loc, add = T, col = "black")
-plot(lcp[[1]], add = T, col = "red")
-plot(lcp[[2]], add = T, col = "blue")
+plot(lcp[1,], add = T, col = "red")
+plot(lcp[2,], add = T, col = "blue")
 ```
 
 # 6. Example 4: Least Cost Path Corridor (Slope, Traversal Across Slope, and Landscape Feature)

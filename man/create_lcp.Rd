@@ -4,7 +4,13 @@
 \alias{create_lcp}
 \title{create_lcp}
 \usage{
-create_lcp(cost_surface, origin, destination, directional = FALSE)
+create_lcp(
+  cost_surface,
+  origin,
+  destination,
+  directional = FALSE,
+  cost_distance = FALSE
+)
 }
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.}
@@ -14,9 +20,11 @@ create_lcp(cost_surface, origin, destination, directional = FALSE)
 \item{destination}{\code{SpatialPoints} location to which the Least Cost Path is calculated. Only the first row is taken into account.}
 
 \item{directional}{if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE.}
+
+\item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.}
 }
 \value{
-\code{SpatialLines} (sp package) or \code{list} of \code{SpatialLines} dependent on directional argument. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
+\code{SpatialLinesDataFrame} object (sp package) of length 1 if directional argument is TRUE or 2 if directional argument is FALSE. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
 }
 \description{
 Calculates Least Cost Path
@@ -40,7 +48,7 @@ loc2 = cbind(2667800, 6479400)
 loc2 = sp::SpatialPoints(loc2)
 
 lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1,
-destination = loc2, directional = FALSE)
+destination = loc2, directional = FALSE, cost_distance = FALSE)
 }
 \author{
 Joseph Lewis

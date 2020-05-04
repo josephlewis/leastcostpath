@@ -48,174 +48,173 @@
 #' slope_cs <- create_slope_cs(r, cost_function = 'tobler', neighbours = 16, max_slope = NULL)
 
 create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit_slope = 12, max_slope = NULL) {
-
+    
     if (!inherits(dem, "RasterLayer")) {
         stop("dem argument is invalid. Expecting a RasterLayer object")
     }
-
-    cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female",
+    
+    cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", 
         "modified tobler", "wheeled transport", "herzog", "llobera-sluckin", "all")
-
+    
     if (!cost_function %in% cfs) {
         stop("cost_function argument is invalid. See details for accepted cost functions")
     }
-
+    
     if (!neighbours %in% c(4, 8, 16)) {
         stop("neighbours argument is invalid. Expecting 8, or 16.")
     }
-
+    
     altDiff_slope <- function(x) {
         x[2] - x[1]
     }
-
+    
     if (neighbours == 4) {
-
+        
         hd <- suppressWarnings(gdistance::transition(dem, altDiff_slope, 4, symm = FALSE))
-
+        
         adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = 4)
-
+        
     } else {
-
+        
         hd <- suppressWarnings(gdistance::transition(dem, altDiff_slope, neighbours, symm = FALSE))
-
+        
         adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
-
+        
     }
-
+    
     slope <- gdistance::geoCorrection(hd)
-
+    
     rand <- stats::runif(1, min = 0.01, max = 1)
-
+    
     if (inherits(max_slope, "numeric")) {
-
+        
         max_slope <- max_slope/100
-
+        
         slope[adj] <- ifelse(slope[adj] > max_slope, rand, slope[adj])
-
+        
         slope[adj] <- ifelse(slope[adj] < -max_slope, rand, slope[adj])
-
+        
     }
-
+    
     if (cost_function == "tobler") {
-
+        
         cf <- function(x) {
             (6 * exp(-3.5 * abs(x[adj] + 0.05)))
         }
-
+        
     }
-
+    
     if (cost_function == "tobler offpath") {
-
+        
         cf <- function(x) {
             (6 * exp(-3.5 * abs(x[adj] + 0.05))) * 0.6
         }
-
+        
     }
-
+    
     if (cost_function == "irmischer-clarke male") {
-
+        
         cf <- function(x) {
             (0.11 + exp(-(abs(x[adj]) * 100 + 5)^2/(2 * 30^2)))
         }
-
+        
     }
-
+    
     if (cost_function == "irmischer-clarke offpath male") {
-
+        
         cf <- function(x) {
             (0.11 + 0.67 * exp(-(abs(x[adj]) * 100 + 2)^2/(2 * 30^2)))
         }
-
+        
     }
-
+    
     if (cost_function == "irmischer-clarke female") {
-
+        
         cf <- function(x) {
             0.95 * (0.11 + exp(-(abs(x[adj]) * 100 + 5)^2/(2 * 30^2)))
         }
-
+        
     }
-
+    
     if (cost_function == "irmischer-clarke offpath female") {
-
+        
         cf <- function(x) {
             0.95 * (0.11 + 0.67 * exp(-(abs(x[adj]) * 100 + 2)^2/(2 * 30^2)))
         }
-
+        
     }
-
+    
     if (cost_function == "modified tobler") {
-
+        
         cf <- function(x) {
             (4.8 * exp(-5.3 * abs((x[adj] * 0.7) + 0.03)))
         }
-
+        
     }
-
+    
     if (cost_function == "wheeled transport") {
-
+        
         cf <- function(x) {
             (1/(1 + abs(x[adj] * 100/crit_slope)^2))
         }
-
+        
     }
-
+    
     if (cost_function == "herzog") {
-
+        
         cf <- function(x) {
-            (1/((1337.8 * x[adj]^6) + (278.19 * x[adj]^5) - (517.39 * x[adj]^4) - (78.199 * x[adj]^3) + (93.419 * x[adj]^2) + (19.825 * x[adj]) +
-                1.64))
+            (1/((1337.8 * x[adj]^6) + (278.19 * x[adj]^5) - (517.39 * x[adj]^4) - (78.199 * x[adj]^3) + (93.419 * x[adj]^2) + (19.825 * x[adj]) + 1.64))
         }
-
+        
     }
-
+    
     if (cost_function == "llobera-sluckin") {
-
+        
         cf <- function(x) {
             (1/(2.635 + (17.37 * abs(x[adj])) + (42.37 * abs(x[adj])^2) - (21.43 * abs(x[adj])^3) + (14.93 * abs(x[adj])^4)))
         }
-
+        
     }
-
+    
     if (cost_function %in% cfs[!cfs == "all"]) {
-
-
+        
+        
         slope[adj] <- cf(slope)
-
+        
         if (inherits(max_slope, "numeric")) {
             slope[adj] <- ifelse(slope[adj] == unique(cf(rand))[!is.na(unique(cf(rand)))], 0, slope[adj])
         }
-
+        
         Conductance <- gdistance::geoCorrection(slope)
     }
-
+    
     if (cost_function %in% cfs[cfs == "all"]) {
-
+        
         slope_stack <- replicate(n = length(cfs[!cfs == "all"]), expr = slope)
-
+        
         cf1 <- function(x) {
             (6 * exp(-3.5 * abs(x[adj] + 0.05)))
         }
         cf2 <- function(x) {
             (6 * exp(-3.5 * abs(x[adj] + 0.05))) * 0.6
         }
-
+        
         cf3 <- function(x) {
             (0.11 + exp(-(abs(x[adj]) * 100 + 5)^2/(2 * 30^2)))
         }
-
+        
         cf4 <- function(x) {
             (0.11 + 0.67 * exp(-(abs(x[adj]) * 100 + 2)^2/(2 * 30^2)))
         }
-
+        
         cf5 <- function(x) {
             0.95 * (0.11 + exp(-(abs(x[adj]) * 100 + 5)^2/(2 * 30^2)))
         }
-
+        
         cf6 <- function(x) {
             0.95 * (0.11 + 0.67 * exp(-(abs(x[adj]) * 100 + 2)^2/(2 * 30^2)))
         }
-
+        
         cf7 <- function(x) {
             (4.8 * exp(-5.3 * abs((x[adj] * 0.7) + 0.03)))
         }
@@ -223,13 +222,12 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
             (1/(1 + abs(x[adj] * 100/crit_slope)^2))
         }
         cf9 <- function(x) {
-            (1/((1337.8 * x[adj]^6) + (278.19 * x[adj]^5) - (517.39 * x[adj]^4) - (78.199 * x[adj]^3) + (93.419 * x[adj]^2) + (19.825 * x[adj]) +
-                1.64))
+            (1/((1337.8 * x[adj]^6) + (278.19 * x[adj]^5) - (517.39 * x[adj]^4) - (78.199 * x[adj]^3) + (93.419 * x[adj]^2) + (19.825 * x[adj]) + 1.64))
         }
         cf10 <- function(x) {
             (1/(2.635 + (17.37 * abs(x[adj])) + (42.37 * abs(x[adj])^2) - (21.43 * abs(x[adj])^3) + (14.93 * abs(x[adj])^4)))
         }
-
+        
         slope_stack[[1]][adj] <- cf1(slope)
         slope_stack[[2]][adj] <- cf2(slope)
         slope_stack[[3]][adj] <- cf3(slope)
@@ -240,41 +238,41 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         slope_stack[[8]][adj] <- cf8(slope)
         slope_stack[[9]][adj] <- cf9(slope)
         slope_stack[[10]][adj] <- cf10(slope)
-
+        
         if (inherits(max_slope, "numeric")) {
-
+            
             slope_stack[[1]][adj] <- ifelse(slope_stack[[1]][adj] == unique(cf1(rand))[!is.na(unique(cf1(rand)))], 0, slope_stack[[1]][adj])
-
+            
             slope_stack[[2]][adj] <- ifelse(slope_stack[[2]][adj] == unique(cf2(rand))[!is.na(unique(cf2(rand)))], 0, slope_stack[[2]][adj])
-
+            
             slope_stack[[3]][adj] <- ifelse(slope_stack[[3]][adj] == unique(cf3(rand))[!is.na(unique(cf3(rand)))], 0, slope_stack[[3]][adj])
-
+            
             slope_stack[[4]][adj] <- ifelse(slope_stack[[4]][adj] == unique(cf4(rand))[!is.na(unique(cf4(rand)))], 0, slope_stack[[4]][adj])
-
+            
             slope_stack[[5]][adj] <- ifelse(slope_stack[[5]][adj] == unique(cf5(rand))[!is.na(unique(cf5(rand)))], 0, slope_stack[[5]][adj])
-
+            
             slope_stack[[6]][adj] <- ifelse(slope_stack[[6]][adj] == unique(cf6(rand))[!is.na(unique(cf6(rand)))], 0, slope_stack[[6]][adj])
-
+            
             slope_stack[[7]][adj] <- ifelse(slope_stack[[7]][adj] == unique(cf7(rand))[!is.na(unique(cf7(rand)))], 0, slope_stack[[7]][adj])
-
+            
             slope_stack[[8]][adj] <- ifelse(slope_stack[[8]][adj] == unique(cf8(rand))[!is.na(unique(cf8(rand)))], 0, slope_stack[[8]][adj])
-
+            
             slope_stack[[9]][adj] <- ifelse(slope_stack[[9]][adj] == unique(cf9(rand))[!is.na(unique(cf9(rand)))], 0, slope_stack[[9]][adj])
-
+            
             slope_stack[[10]][adj] <- ifelse(slope_stack[[10]][adj] == unique(cf10(rand))[!is.na(unique(cf10(rand)))], 0, slope_stack[[10]][adj])
-
-
+            
+            
         }
-
-
+        
+        
         Conductance <- lapply(slope_stack, function(x) {
             gdistance::geoCorrection(x)
         })
-
+        
         names(Conductance) <- cfs[!cfs == "all"]
-
+        
     }
-
+    
     return(Conductance)
-
+    
 }

@@ -12,6 +12,8 @@
 #'
 #' @param directional if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE.
 #'
+#' @param cost_distance if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.
+#'
 #' @author Joseph Lewis
 #'
 #' @import rgdal
@@ -22,7 +24,7 @@
 #'
 #' @export
 #'
-#' @return \code{SpatialLines} (sp package) or \code{list} of \code{SpatialLines} dependent on directional argument. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
+#' @return \code{SpatialLinesDataFrame} object (sp package) of length 1 if directional argument is TRUE or 2 if directional argument is FALSE. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
 #'
 #'@examples
 #' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
@@ -40,34 +42,54 @@
 #' loc2 = sp::SpatialPoints(loc2)
 #'
 #' lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1,
-#' destination = loc2, directional = FALSE)
+#' destination = loc2, directional = FALSE, cost_distance = FALSE)
 
-create_lcp <- function(cost_surface, origin, destination, directional = FALSE) {
-
+create_lcp <- function(cost_surface, origin, destination, directional = FALSE, cost_distance = FALSE) {
+    
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
-
-
+    
+    
     if (!inherits(origin, "SpatialPoints")) {
         stop("origin argument is invalid. Expecting a SpatialPoints object")
     }
-
+    
     if (!inherits(destination, "SpatialPoints")) {
         stop("destination argument is invalid. Expecting a SpatialPoints object")
     }
-
-    sPath <- list()
-
+    
     if (directional == "TRUE") {
-
-        sPath[[1]] <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
-
+        
+        sPath <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
+        
+        if (cost_distance) {
+            
+            sPath$cost <- gdistance::costDistance(cost_surface, origin, destination)
+            
+        }
+        
+        sPath$direction <- "A to B"
+        
     } else {
-
-        sPath[[1]] <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
-        sPath[[2]] <- gdistance::shortestPath(cost_surface, destination, origin, output = "SpatialLines")
+        
+        sPaths <- list()
+        
+        sPaths[[1]] <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
+        sPaths[[2]] <- gdistance::shortestPath(cost_surface, destination, origin, output = "SpatialLines")
+        
+        if (cost_distance) {
+            
+            sPaths[[1]]$cost <- gdistance::costDistance(cost_surface, origin, destination)
+            sPaths[[2]]$cost <- gdistance::costDistance(cost_surface, destination, origin)
+            
+        }
+        
+        sPaths[[1]]$direction <- "A to B"
+        sPaths[[2]]$direction <- "B to A"
+        
+        sPath <- do.call(rbind, sPaths)
     }
-
+    
     return(sPath)
 }

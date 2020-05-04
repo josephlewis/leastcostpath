@@ -1,4 +1,4 @@
-leastcostpath - version 1.2.4 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.3.4 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads TOtal](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -49,8 +49,8 @@ Usage
     lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1, destination = loc2, directional = FALSE)
   
     plot(raster(final_cost_cs))
-    plot(lcps[[1]], add = T, col = "red") # location 1 to location 2
-    plot(lcps[[2]], add = T, col = "blue") # location 2 to location 1
+    plot(lcps[1,], add = T, col = "red") # location 1 to location 2
+    plot(lcps[2,], add = T, col = "blue") # location 2 to location 1
     
 #### Cost Corridors
 
@@ -177,7 +177,10 @@ Versioning
       * Refactored create_slope_cs for easier scalability
 -   version 1.2.4
       * Fixed max_slope in create_slope_cs function.
-      * Fixed create_traversal_cs to work when max_slope in create_slope_cs used. 
+      * Fixed create_traversal_cs to work when max_slope in create_slope_cs used
+-   version 1.3.4
+      * create_lcp returns SpatialLines rather than list
+      * Added cost_distance function argument to create_lcp
 
 Authors
 -------
@@ -189,4 +192,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.2.4)
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.3.4)
