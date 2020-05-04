@@ -34,7 +34,10 @@ Usage
     slope_cs <- create_slope_cs(r, cost_function = 'tobler')
     traverse_cs <- create_traversal_cs(r)
     final_cost_cs <- slope_cs * traverse_cs
-
+    
+    slope_cs_10 <- create_slope_cs(r, cost_function = 'tobler', max_slope = 10)
+    final_cost_cs_10 <- slope_cs_10 * traverse_cs
+    
 #### Least Cost Path computation
 
     loc1 = cbind(2667670, 6479000)
@@ -59,7 +62,7 @@ Usage
     
 #### From-Everywhere-to-Everywhere Least Cost Paths
 
-    locs <- spsample(as(r, 'SpatialPolygons'),n=10,'regular')
+    locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=10,'regular')
     
     lcp_network <- create_FETE_lcps(cost_surface = final_cost_cs, locations = locs,
     cost_distance = FALSE, parallel = FALSE)
@@ -70,7 +73,7 @@ Usage
     
 #### Cumulative Cost Paths
 
-    locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
+    locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=1,'random')
 
     lcp_network <- create_CCP_lcps(cost_surface = final_cost_cs, location = locs, distance = 50,
     radial_points = 10, cost_distance = FALSE, parallel = FALSE)
@@ -81,7 +84,7 @@ Usage
     
 #### Banded Least Cost Paths
 
-    locs <- sp::spsample(as(r, 'SpatialPolygons'),n=1,'random')
+    locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=1,'random')
 
     lcp_network <- create_banded_lcps(cost_surface = final_cost_cs, location = locs, min_distance = 20,
     max_distance = 50, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
@@ -96,6 +99,14 @@ Usage
 
     plot(cumulative_lcps)
     
+#### Least Cost Path Network
+
+    locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=5,'regular')
+    
+    mat <- cbind(c(1, 4, 2, 1), c(2, 2, 4, 3))
+    
+    lcp_network <- create_lcp_network(slope_cs, locations = locs, nb_matrix = mat, cost_distance = FALSE, parallel = FALSE)
+    
 #### Pipes!
 
     cost_surface <- create_slope_cs(r, cost_function = 'tobler') %>%
@@ -108,7 +119,7 @@ Usage
     cost_corridor <- cost_surface %>% 
     create_cost_corridor(., loc1, loc2)
     
-    locs <- sp::spsample(as(r, 'SpatialPolygons'),n=10,'regular')
+    locs <- sp::spsample(as(extent(r), 'SpatialPolygons'),n=10,'regular')
     
     lcp_network <- cost_surface %>% 
     create_FETE_lcps(cost_surface = final_cost_cs, locations = locs,cost_distance = FALSE, parallel = FALSE)
@@ -116,7 +127,7 @@ Usage
     cumulative_cost_paths <- cost_surface %>% 
     create_FETE_lcps(cost_surface = final_cost_cs, locations = locs,cost_distance = FALSE, parallel = FALSE) %>%
     create_cumulative_lcps(lcps = ., raster = r, rescale = FALSE)
-
+    
 Feedback
 --------
 
