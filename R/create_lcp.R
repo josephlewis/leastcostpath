@@ -43,32 +43,31 @@
 #' destination = loc2, directional = FALSE)
 
 create_lcp <- function(cost_surface, origin, destination, directional = FALSE) {
-    
+
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
-    
-    
+
+
     if (!inherits(origin, "SpatialPoints")) {
         stop("origin argument is invalid. Expecting a SpatialPoints object")
     }
-    
+
     if (!inherits(destination, "SpatialPoints")) {
         stop("destination argument is invalid. Expecting a SpatialPoints object")
     }
-    
-    
+
     sPath <- list()
-    
+
     if (directional == "TRUE") {
-        
+
         sPath[[1]] <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
-        
+
     } else {
-        
+
         sPath[[1]] <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
         sPath[[2]] <- gdistance::shortestPath(cost_surface, destination, origin, output = "SpatialLines")
     }
-    
+
     return(sPath)
 }
