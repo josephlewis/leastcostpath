@@ -105,7 +105,8 @@ Usage
     
     mat <- cbind(c(1, 4, 2, 1), c(2, 2, 4, 3))
     
-    lcp_network <- create_lcp_network(slope_cs, locations = locs, nb_matrix = mat, cost_distance = FALSE, parallel = FALSE)
+    lcp_network <- create_lcp_network(slope_cs, locations = locs, 
+    nb_matrix = mat, cost_distance = FALSE, parallel = FALSE)
     
 #### Pipes!
 
