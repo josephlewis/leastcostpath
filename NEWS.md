@@ -1,3 +1,6 @@
+# 1.3.5 (11th May 2020)
+* Implemented create_barrier_cs
+
 # 1.3.4 (4th May 2020)
 * create_lcp returns SpatialLines rather than list
 * Added cost_distance function argument to create_lcp

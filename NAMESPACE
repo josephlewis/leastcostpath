@@ -3,6 +3,7 @@
 export(create_CCP_lcps)
 export(create_FETE_lcps)
 export(create_banded_lcps)
+export(create_barrier_cs)
 export(create_cost_corridor)
 export(create_feature_cs)
 export(create_lcp)

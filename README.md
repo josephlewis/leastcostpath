@@ -1,4 +1,4 @@
-leastcostpath - version 1.3.4 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.3.5 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads TOtal](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -181,6 +181,8 @@ Versioning
 -   version 1.3.4
       * create_lcp returns SpatialLines rather than list
       * Added cost_distance function argument to create_lcp
+-   version 1.3.5
+      * Implemented create_barrier_cs
 
 Authors
 -------
@@ -192,4 +194,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.3.4)
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.3.5)
