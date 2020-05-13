@@ -1,8 +1,6 @@
-#' create_traversal_cs
+#' Create a Traversal across Slope Cost Surface
 #'
-#' Creates a Traversal across slope Cost Surface
-#'
-#' Creates a cost surface based on the difficulty of traversing **(across)** slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Traversal across slope accounts for movement directly perpendicular across slope being easier than movement diagonally up/down slope.
+#' Creates a cost surface based on the difficulty of traversing across slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Traversal across slope accounts for movement directly perpendicular across slope being easier than movement diagonally up/down slope.
 #'
 #' @param dem \code{RasterLayer} (raster package). Digital Elevation Model.
 #'

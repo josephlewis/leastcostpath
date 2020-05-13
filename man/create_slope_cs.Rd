@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_slope_cs.R
 \name{create_slope_cs}
 \alias{create_slope_cs}
-\title{Create slope based cost surface}
+\title{Create a slope based cost surface}
 \usage{
 create_slope_cs(
   dem,
@@ -27,11 +27,9 @@ create_slope_cs(
 \code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving up/down slope based on the cost function provided in the cost_function argument. list of \code{TransitionLayer} if cost_function = 'all'.
 }
 \description{
-Creates a Slope based Cost Surface
+Creates a cost surface based on the difficulty of moving up/down slope. This function provides the choice of multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. Maximum percentage slope possible for traversal can also be suppplied.
 }
 \details{
-Creates a cost surface based on the difficulty of moving up/down slope. This function provides the choice of multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. Maximum percentage slope possible for traversal can also be suppplied.
-
 Tobler's 'Hiking Function' is the most widely used cost function when approximating the difficulty of moving across a landscape (Gorenflo and Gale, 1990; Wheatley and Gillings, 2001). The function assess the time necessary to traverse a surface and takes into account up-slope and down-slope (Kantner, 2004; Tobler, 1993).
 
 Tobler's offpath Hiking Function reduces the speed of the Tobler's Hiking Function by 0.6 to take into account walking off-path (Tobler, 1993)
