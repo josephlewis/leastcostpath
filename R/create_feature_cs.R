@@ -1,16 +1,14 @@
-#' create_feature_cs
+#' Create a Landscape Feature cost surface
 #'
-#' Creates a Landscape Feature Cost Surface
+#' Creates a Landscape Feature Cost Surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application.
 #'
-#' Creates a cost surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application.
+#' @param raster \code{RasterLayer} (raster package). The Resolution, Extent, and Spatial Reference System of the provided RasterLayer is used when creating the resultant Barrier Cost Surface
 #'
-#' @param raster \code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the landscape feature cost surface
+#' @param locations \code{SpatialPoints*} (sp package). Location of Features within the landscape
 #'
-#' @param locations \code{SpatialPoints}. Locations of landscape features
+#' @param x \code{numeric vector}. Values denoting the attraction/repulsion of the landscape features within the landscape
 #'
-#' @param x \code{numeric vector} of values denoting the attraction/repulsion from the landscape features
-#'
-#' @param neighbours Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16.
+#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16
 #'
 #' @return \code{TransitionLayer} (gdistance package) numerically expressing the attraction/repulsion of a feature in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations.
 #'
@@ -40,8 +38,8 @@ create_feature_cs <- function(raster, locations, x, neighbours = 16) {
         stop("raster argument is invalid. Expecting a RasterLayer object")
     }
     
-    if (!inherits(locations, "SpatialPoints")) {
-        stop("locations argument is invalid. Expecting a SpatialPoints object")
+    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+        stop("locations argument is invalid. Expecting a SpatialPoints* object")
     }
     
     if (!inherits(x, "numeric")) {

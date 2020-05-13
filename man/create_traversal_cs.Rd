@@ -7,12 +7,12 @@
 create_traversal_cs(dem, neighbours = 16)
 }
 \arguments{
-\item{dem}{\code{RasterLayer} (raster package). Digital Elevation Model.}
+\item{dem}{\code{RasterLayer} (raster package). Digital Elevation Model}
 
 \item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16}
 }
 \value{
-\code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving across slope based on figure given in Bell and Lock (2000). The traversal_cs \code{TransitionLayer} should be multiplied by the create_slope_cs \code{TransitionLayer}, resulting in a \code{TransitionLayer} that takes into account movement across slope in all directions.
+\code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving across slope based on figure given in Bell and Lock (2000). The traversal_cs \code{TransitionLayer} should be multiplied by the create_slope_cs \code{TransitionLayer}, resulting in a \code{TransitionLayer} that takes into account movement across slope in all directions
 }
 \description{
 Creates a cost surface based on the difficulty of traversing across slope. Difficulty of traversal is based on the figure given in Bell and Lock (2000). Traversal across slope accounts for movement directly perpendicular across slope being easier than movement diagonally up/down slope.

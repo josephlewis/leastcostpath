@@ -1,16 +1,18 @@
-#' create_barrier_cs
+#' Create Barrier Cost Surface
 #'
-#' Creates a Barrier Cost Surface
+#' Creates a cost surface that incorporates barriers that inhibit movement in the landscape.
 #'
-#' Creates a cost surface representing barriers to movement in the landscape.
+#' @details
 #'
-#' @param raster \code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the barrier cost surface
+#' The resultant Barrier Cost Surface is produced by assessing which areas of the raster coincide with the Spatial object as specified in the barrier argument. The areas of raster that coincide with the Spatial object are given a conductance value of 0, with all other areas given a Conductance value of 1. The conductance value of 0 ensures that movement is inhibited within these areas. Examples include rivers, lakes, and taboo areas.
 #'
-#' @param barrier \code{Spatial*}. Areas representing barriers to movement in the landscape
+#' @param raster \code{RasterLayer} (raster package). The Resolution, Extent, and Spatial Reference System of the provided RasterLayer is used when creating the resultant Barrier Cost Surface
 #'
-#' @param neighbours Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16.
+#' @param barrier \code{Spatial*} (sp package). Areas within the landscape that movement is inhibited. See details for more
 #'
-#' @return \code{TransitionLayer} (gdistance package) numerically expressing the barriers to movement in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations.
+#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16
+#'
+#' @return \code{TransitionLayer} (gdistance package) numerically expressing the barriers to movement in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations
 #'
 #' @author Joseph Lewis
 #'

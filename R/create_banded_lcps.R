@@ -1,12 +1,10 @@
-#' create_banded_lcps
+#' Calculate Least Cost Paths from random locations within distances
 #'
-#' Calculates Least Cost Paths from random locations within distances
+#' Calculates Least Cost Paths from centre location to random locations within a specified distance band. This is based on the method proposed by Llobera (2015).
 #'
-#' Computes Least Cost Paths from centre location to random locations within a specified distance band. This is based on the method proposed by Llobera (2015).
+#' @param cost_surface \code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation
 #'
-#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation
-#'
-#' @param location \code{SpatialPoints}. Location from which the Least Cost Paths are calculated. Only the first cell is taken into account
+#' @param location \code{SpatialPoints*} (sp package). Location from which the Least Cost Paths are calculated. Only the first cell is taken into account
 #'
 #' @param min_distance \code{numeric} value. minimum distance from centre location
 #'
@@ -14,9 +12,9 @@
 #'
 #' @param radial_points \code{numeric} value. Number of random locations around centre location within distances
 #'
-#' @param cost_distance if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE
+#' @param cost_distance \code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE
 #'
-#' @param parallel if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE
+#' @param parallel \code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE
 #'
 #' @return \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths (number of LCPs is dependent on radial_points argument) calculated from a centre location to random locations within a specified distance band.
 #'
@@ -50,8 +48,8 @@ create_banded_lcps <- function(cost_surface, location, min_distance, max_distanc
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
     
-    if (!inherits(location, c("SpatialPoints", "SpatialPointsDataFrame"))) {
-        stop("Location argument is invalid. Expecting SpatialPoints or SpatialPointsDataFrame object")
+    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+        stop("Locations argument is invalid. Expecting SpatialPoints* object")
     }
     
     if (!inherits(min_distance, "numeric")) {

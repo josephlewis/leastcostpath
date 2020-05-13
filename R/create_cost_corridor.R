@@ -1,18 +1,14 @@
-#' create_cost_corridor
-#'
-#' Creates a Cost Corridor raster object
+#' Create a Cost Corridor
 #'
 #' Combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both directions of movement.
 #'
-#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Cost Corridor calculation
+#' @param cost_surface \code{TransitionLayer} (gdistance package). Cost surface to be used in Cost Corridor calculation
 #'
-#' @param origin \code{SpatialPoints}. orgin location from which the Accumulated Cost is calculated. Only the first cell is taken into account.
+#' @param origin \code{SpatialPoints*} (sp package). orgin location from which the Accumulated Cost is calculated. Only the first cell is taken into account.
 #'
-#' @param destination \code{SpatialPoints}. destination location from which the Accumulated Cost is calculated. Only the first cell is taken into account
+#' @param destination \code{SpatialPoints*} (sp package). destination location from which the Accumulated Cost is calculated. Only the first cell is taken into account
 #'
-#' @param rescale if TRUE raster values scaled to between 0 and 1. Default is FALSE
-#'
-#' @return RasterLayer object
+#' @param rescale \code{logical}. if TRUE raster values scaled to between 0 and 1. Default is FALSE
 #'
 #' @return \code{RasterLayer} (raster package). The resultant object is the accumulated cost surface from origin-to-destination and destination-to-origin and can be used to identify areas of preferential movement in the landscape.
 #'
@@ -44,12 +40,12 @@ create_cost_corridor <- function(cost_surface, origin, destination, rescale = FA
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
     
-    if (!inherits(origin, c("SpatialPoints", "SpatialPointsDataFrame"))) {
-        stop("Origin argument is invalid. Expecting SpatialPoints or SpatialPointsDataFrame object")
+    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+        stop("origin argument is invalid. Expecting a SpatialPoints* object")
     }
     
-    if (!inherits(destination, c("SpatialPoints", "SpatialPointsDataFrame"))) {
-        stop("Destination argument is invalid. Expecting SpatialPoints or SpatialPointsDataFrame object")
+    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+        stop("destination argument is invalid. Expecting a SpatialPoints* object")
     }
     
     accCost_origin <- accCost(cost_surface, origin)

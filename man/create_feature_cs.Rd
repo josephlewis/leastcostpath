@@ -2,27 +2,24 @@
 % Please edit documentation in R/create_feature_cs.R
 \name{create_feature_cs}
 \alias{create_feature_cs}
-\title{create_feature_cs}
+\title{Create a Landscape Feature cost surface}
 \usage{
 create_feature_cs(raster, locations, x, neighbours = 16)
 }
 \arguments{
-\item{raster}{\code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the landscape feature cost surface}
+\item{raster}{\code{RasterLayer} (raster package). The Resolution, Extent, and Spatial Reference System of the provided RasterLayer is used when creating the resultant Barrier Cost Surface}
 
-\item{locations}{\code{SpatialPoints}. Locations of landscape features}
+\item{locations}{\code{SpatialPoints*} (sp package). Location of Features within the landscape}
 
-\item{x}{\code{numeric vector} of values denoting the attraction/repulsion from the landscape features}
+\item{x}{\code{numeric vector}. Values denoting the attraction/repulsion of the landscape features within the landscape}
 
-\item{neighbours}{Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16.}
+\item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16}
 }
 \value{
 \code{TransitionLayer} (gdistance package) numerically expressing the attraction/repulsion of a feature in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations.
 }
 \description{
-Creates a Landscape Feature Cost Surface
-}
-\details{
-Creates a cost surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application.
+Creates a Landscape Feature Cost Surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

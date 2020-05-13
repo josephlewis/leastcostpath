@@ -1,14 +1,12 @@
-#' create_lcp_density
-#'
-#' Creates a cumulative least cost path raster
+#' Creates a cumulative Least Cost Path Raster
 #'
 #' Cumulatively combines Least Cost Paths in order to identify routes of preferential movement within the landscape.
 #'
-#' @param lcps \code{SpatialLines} or \code{SpatialLinesDataFrame}. Least Cost Paths
+#' @param lcps \code{SpatialLines*} (sp package). Least Cost Paths
 #'
 #' @param raster \code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the cumulative least cost path raster
 #'
-#' @param rescale if TRUE raster values scaled to between 0 and 1. Default is FALSE
+#' @param rescale \code{logical}. if TRUE raster values scaled to between 0 and 1. Default is FALSE
 #'
 #' @return \code{RasterLayer} (raster package). The resultant object is the cumulatively combined Least Cost Paths. This identifies routes of preferential movement within the landscape.
 #'
@@ -44,8 +42,8 @@
 
 create_lcp_density <- function(lcps, raster, rescale = FALSE) {
     
-    if (!inherits(lcps, c("SpatialLines", "SpatialLinesDataFrame"))) {
-        stop("lcps expects a SpatialLines or SpatialLinesDataFrame object")
+    if (!inherits(locations, c("SpatialLines", "SpatialLinesDataFrame"))) {
+        stop("lcps expects a SpatialLines* object")
     }
     
     if (!inherits(raster, "RasterLayer")) {

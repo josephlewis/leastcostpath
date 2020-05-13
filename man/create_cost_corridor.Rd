@@ -2,28 +2,23 @@
 % Please edit documentation in R/create_cost_corridor.R
 \name{create_cost_corridor}
 \alias{create_cost_corridor}
-\title{create_cost_corridor}
+\title{Create a Cost Corridor}
 \usage{
 create_cost_corridor(cost_surface, origin, destination, rescale = FALSE)
 }
 \arguments{
-\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Cost Corridor calculation}
+\item{cost_surface}{\code{TransitionLayer} (gdistance package). Cost surface to be used in Cost Corridor calculation}
 
-\item{origin}{\code{SpatialPoints}. orgin location from which the Accumulated Cost is calculated. Only the first cell is taken into account.}
+\item{origin}{\code{SpatialPoints*} (sp package). orgin location from which the Accumulated Cost is calculated. Only the first cell is taken into account.}
 
-\item{destination}{\code{SpatialPoints}. destination location from which the Accumulated Cost is calculated. Only the first cell is taken into account}
+\item{destination}{\code{SpatialPoints*} (sp package). destination location from which the Accumulated Cost is calculated. Only the first cell is taken into account}
 
-\item{rescale}{if TRUE raster values scaled to between 0 and 1. Default is FALSE}
+\item{rescale}{\code{logical}. if TRUE raster values scaled to between 0 and 1. Default is FALSE}
 }
 \value{
-RasterLayer object
-
 \code{RasterLayer} (raster package). The resultant object is the accumulated cost surface from origin-to-destination and destination-to-origin and can be used to identify areas of preferential movement in the landscape.
 }
 \description{
-Creates a Cost Corridor raster object
-}
-\details{
 Combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both directions of movement.
 }
 \examples{

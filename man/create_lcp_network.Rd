@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_lcp_network.R
 \name{create_lcp_network}
 \alias{create_lcp_network}
-\title{create_lcp_network}
+\title{Calculate least cost paths from specified origins and destinations}
 \usage{
 create_lcp_network(
   cost_surface,
@@ -13,24 +13,21 @@ create_lcp_network(
 )
 }
 \arguments{
-\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.}
+\item{cost_surface}{\code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation.}
 
-\item{locations}{\code{SpatialPoints}. Potential locations to calculate Least Cost Paths from and to.}
+\item{locations}{\code{SpatialPoints*} (sp package). Potential locations to calculate Least Cost Paths from and to.}
 
 \item{nb_matrix}{\code{matrix}. 2 column matrix representing the index of origins and destinations to calculate least cost paths between.}
 
-\item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.}
+\item{cost_distance}{\code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.}
 
-\item{parallel}{if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.}
+\item{parallel}{\code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.}
 }
 \value{
 \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths calculated from each origins and destinations as specified in the neighbour matrix.
 }
 \description{
-Calculates least cost paths from origins and destinations
-}
-\details{
-Computes least cost paths from each origins and destinations as specified in the neighbour matrix.
+Calculates least cost paths from each origins and destinations as specified in the neighbour matrix.
 }
 \examples{
 

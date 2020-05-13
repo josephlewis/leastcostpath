@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_banded_lcps.R
 \name{create_banded_lcps}
 \alias{create_banded_lcps}
-\title{create_banded_lcps}
+\title{Calculate Least Cost Paths from random locations within distances}
 \usage{
 create_banded_lcps(
   cost_surface,
@@ -15,9 +15,9 @@ create_banded_lcps(
 )
 }
 \arguments{
-\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation}
+\item{cost_surface}{\code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation}
 
-\item{location}{\code{SpatialPoints}. Location from which the Least Cost Paths are calculated. Only the first cell is taken into account}
+\item{location}{\code{SpatialPoints*} (sp package). Location from which the Least Cost Paths are calculated. Only the first cell is taken into account}
 
 \item{min_distance}{\code{numeric} value. minimum distance from centre location}
 
@@ -25,18 +25,15 @@ create_banded_lcps(
 
 \item{radial_points}{\code{numeric} value. Number of random locations around centre location within distances}
 
-\item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
+\item{cost_distance}{\code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
 
-\item{parallel}{if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE}
+\item{parallel}{\code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE}
 }
 \value{
 \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths (number of LCPs is dependent on radial_points argument) calculated from a centre location to random locations within a specified distance band.
 }
 \description{
-Calculates Least Cost Paths from random locations within distances
-}
-\details{
-Computes Least Cost Paths from centre location to random locations within a specified distance band. This is based on the method proposed by Llobera (2015).
+Calculates Least Cost Paths from centre location to random locations within a specified distance band. This is based on the method proposed by Llobera (2015).
 }
 \examples{
 

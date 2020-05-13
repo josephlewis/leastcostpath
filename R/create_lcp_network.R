@@ -1,18 +1,16 @@
-#' create_lcp_network
+#' Calculate least cost paths from specified origins and destinations
 #'
-#' Calculates least cost paths from origins and destinations
+#' Calculates least cost paths from each origins and destinations as specified in the neighbour matrix.
 #'
-#' Computes least cost paths from each origins and destinations as specified in the neighbour matrix.
+#' @param cost_surface \code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation.
 #'
-#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.
-#'
-#' @param locations \code{SpatialPoints}. Potential locations to calculate Least Cost Paths from and to.
+#' @param locations \code{SpatialPoints*} (sp package). Potential locations to calculate Least Cost Paths from and to.
 #'
 #' @param nb_matrix \code{matrix}. 2 column matrix representing the index of origins and destinations to calculate least cost paths between.
 #'
-#' @param cost_distance if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.
+#' @param cost_distance \code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.
 #'
-#'@param parallel if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.
+#'@param parallel \code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.
 #'
 #' @return \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths calculated from each origins and destinations as specified in the neighbour matrix.
 #'
@@ -49,7 +47,7 @@ create_lcp_network <- function(cost_surface, locations, nb_matrix = NULL, cost_d
     }
     
     if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
-        stop("Locations argument is invalid. Expecting SpatialPoints or SpatialPointsDataFrame object")
+        stop("Locations argument is invalid. Expecting SpatialPoints* object")
     }
     
     if (length(locations) < 2) {

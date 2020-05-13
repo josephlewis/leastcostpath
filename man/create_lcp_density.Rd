@@ -2,24 +2,21 @@
 % Please edit documentation in R/create_lcp_density.R
 \name{create_lcp_density}
 \alias{create_lcp_density}
-\title{create_lcp_density}
+\title{Creates a cumulative Least Cost Path Raster}
 \usage{
 create_lcp_density(lcps, raster, rescale = FALSE)
 }
 \arguments{
-\item{lcps}{\code{SpatialLines} or \code{SpatialLinesDataFrame}. Least Cost Paths}
+\item{lcps}{\code{SpatialLines*} (sp package). Least Cost Paths}
 
 \item{raster}{\code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the cumulative least cost path raster}
 
-\item{rescale}{if TRUE raster values scaled to between 0 and 1. Default is FALSE}
+\item{rescale}{\code{logical}. if TRUE raster values scaled to between 0 and 1. Default is FALSE}
 }
 \value{
 \code{RasterLayer} (raster package). The resultant object is the cumulatively combined Least Cost Paths. This identifies routes of preferential movement within the landscape.
 }
 \description{
-Creates a cumulative least cost path raster
-}
-\details{
 Cumulatively combines Least Cost Paths in order to identify routes of preferential movement within the landscape.
 }
 \examples{

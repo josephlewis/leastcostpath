@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_lcp.R
 \name{create_lcp}
 \alias{create_lcp}
-\title{create_lcp}
+\title{Calculate Least Cost Path from Origin to Destination}
 \usage{
 create_lcp(
   cost_surface,
@@ -13,24 +13,21 @@ create_lcp(
 )
 }
 \arguments{
-\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.}
+\item{cost_surface}{\code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation}
 
-\item{origin}{\code{SpatialPoints} location from which the Least Cost Path is calculated. Only the first row is taken into account.}
+\item{origin}{\code{SpatialPoints*} (sp package) location from which the Least Cost Path is calculated. Only the first row is taken into account}
 
-\item{destination}{\code{SpatialPoints} location to which the Least Cost Path is calculated. Only the first row is taken into account.}
+\item{destination}{\code{SpatialPoints*} (sp package) location to which the Least Cost Path is calculated. Only the first row is taken into account}
 
-\item{directional}{if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE.}
+\item{directional}{\code{logical}. if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE}
 
-\item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.}
+\item{cost_distance}{\code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
 }
 \value{
-\code{SpatialLinesDataFrame} object (sp package) of length 1 if directional argument is TRUE or 2 if directional argument is FALSE. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
+\code{SpatialLinesDataFrame} (sp package) of length 1 if directional argument is TRUE or 2 if directional argument is FALSE. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
 }
 \description{
-Calculates Least Cost Path
-}
-\details{
-Calculates the Least Cost Path from an origin location to a destination location. See details for more.
+Calculates a Least Cost Path from an origin location to a destination location. Applies Dijkstra's algorithm.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

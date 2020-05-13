@@ -1,8 +1,6 @@
-#' cost_matrix
+#' Create a cost based nearest neighbour matrix
 #'
-#' Creates a cost based nearest neighbour matrix
-#'
-#' Creates a cost based nearest neighbour matrix of k length for each provided location.
+#' Creates a cost based nearest neighbour matrix of k length for each provided location. This matrix can be used in the nb_matrix argument within the create_lcp_network function to calculate Least Cost Paths between origins and destinations.
 #'
 #' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in calculating the k nearest neighbour
 #'
@@ -10,7 +8,7 @@
 #'
 #' @param k \code{numeric} number of nearest neighbours to be returned
 #'
-#' #' @return \code{matrix} cost-based k nearest neighbour for each location as specified in the locations argument. The resultant \code{matrix} can be incorporated into the nb_matrix argument with the create_lcp_network function.
+#' #' @return \code{matrix} cost-based k nearest neighbour for each location as specified in the locations argument. The resultant \code{matrix} can be used in the nb_matrix argument within the create_lcp_network function.
 #'
 #' @author Joseph Lewis
 #'
@@ -45,7 +43,7 @@ cost_matrix <- function(cost_surface, locations, k) {
     }
     
     if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
-        stop("Locations argument is invalid. Expecting SpatialPoints or SpatialPointsDataFrame object")
+        stop("Locations argument is invalid. Expecting SpatialPoints* object")
     }
     
     if (!inherits(k, "numeric")) {
@@ -65,7 +63,7 @@ cost_matrix <- function(cost_surface, locations, k) {
     
     for (i in 1:length(locations)) {
         
-        distances <- costDistance(x = cost_surface, fromCoords = locations[i, ], toCoords = locations[-i, ])
+        distances <- gdistance::costDistance(x = cost_surface, fromCoords = locations[i, ], toCoords = locations[-i, ])
         
         distances <- data.frame(ID = 2:length(locations), costDistance = as.vector(distances))
         

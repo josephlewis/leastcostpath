@@ -2,27 +2,22 @@
 % Please edit documentation in R/validate_lcp.R
 \name{validate_lcp}
 \alias{validate_lcp}
-\title{validate_lcp}
+\title{Calculate accuracy of Least Cost Path}
 \usage{
 validate_lcp(lcp, comparison, buffers = c(50, 100, 250, 500, 1000))
 }
 \arguments{
-\item{lcp}{Least Cost Path to assess the accuracy of. Expects object of class SpatialLines/SpatialLinesDataFrame}
+\item{lcp}{\code{SpatialLines*} (sp package). Least Cost Path to assess the accuracy of. Expects object of class SpatialLines/SpatialLinesDataFrame}
 
-\item{comparison}{\code{SpatialLines} or \code{SpatialLinesDataFrame} to validate the Least Cost Path against.}
+\item{comparison}{\code{SpatialLines*} to validate the Least Cost Path against.}
 
 \item{buffers}{\code{numeric vector} of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).}
 }
 \value{
-data.frame object
-
 \code{data.frame} (base package). The resultant object identifies the percentage of the lcp within x distance (as supplied in the buffers argument) from the provided comparison object.
 }
 \description{
-Calculates accuracy of Least Cost Path
-}
-\details{
-Calculates the accuracy of the Least Cost Path using the buffer method proposed by Goodchild and Hunter (1997).
+Calculates the accuracy of a Least Cost Path using the buffer method proposed by Goodchild and Hunter (1997).
 }
 \examples{
 x1 <- c(1,5,4,8)

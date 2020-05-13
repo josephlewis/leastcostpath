@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_FETE_lcps.R
 \name{create_FETE_lcps}
 \alias{create_FETE_lcps}
-\title{create_FETE_lcps}
+\title{Calculate least cost paths from each location to all other locations.}
 \usage{
 create_FETE_lcps(
   cost_surface,
@@ -12,22 +12,19 @@ create_FETE_lcps(
 )
 }
 \arguments{
-\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.}
+\item{cost_surface}{\code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation}
 
-\item{locations}{\code{SpatialPoints}. Locations to calculate Least Cost Paths from and to.}
+\item{locations}{\code{SpatialPoints*} (sp package). Locations to calculate Least Cost Paths from and to}
 
-\item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.}
+\item{cost_distance}{\code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
 
-\item{parallel}{if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.}
+\item{parallel}{\code{logical}. if TRUE the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE}
 }
 \value{
-\code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths calculated from each location to all other locations.
+\code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths calculated from each location to all other locations
 }
 \description{
-Calculates least cost paths from each location to all other locations.
-}
-\details{
-Computes least cost paths from each location to all other locations (i.e. From Everywhere To Everywhere (FETE)). This is based on the method proposed by White and Barber (2012).
+Calculates least cost paths from each location to all other locations (i.e. From Everywhere To Everywhere (FETE)). This is based on the method proposed by White and Barber (2012).
 }
 \examples{
 

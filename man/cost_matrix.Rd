@@ -2,7 +2,7 @@
 % Please edit documentation in R/cost_matrix.R
 \name{cost_matrix}
 \alias{cost_matrix}
-\title{cost_matrix}
+\title{Create a cost based nearest neighbour matrix}
 \usage{
 cost_matrix(cost_surface, locations, k)
 }
@@ -13,13 +13,10 @@ cost_matrix(cost_surface, locations, k)
 
 \item{k}{\code{numeric} number of nearest neighbours to be returned
 
-#' @return \code{matrix} cost-based k nearest neighbour for each location as specified in the locations argument. The resultant \code{matrix} can be incorporated into the nb_matrix argument with the create_lcp_network function.}
+#' @return \code{matrix} cost-based k nearest neighbour for each location as specified in the locations argument. The resultant \code{matrix} can be used in the nb_matrix argument within the create_lcp_network function.}
 }
 \description{
-Creates a cost based nearest neighbour matrix
-}
-\details{
-Creates a cost based nearest neighbour matrix of k length for each provided location.
+Creates a cost based nearest neighbour matrix of k length for each provided location. This matrix can be used in the nb_matrix argument within the create_lcp_network function to calculate Least Cost Paths between origins and destinations.
 }
 \examples{
 

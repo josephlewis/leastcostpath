@@ -1,16 +1,12 @@
-#' validate_lcp
+#' Calculate accuracy of Least Cost Path
 #'
-#' Calculates accuracy of Least Cost Path
+#' Calculates the accuracy of a Least Cost Path using the buffer method proposed by Goodchild and Hunter (1997).
 #'
-#' Calculates the accuracy of the Least Cost Path using the buffer method proposed by Goodchild and Hunter (1997).
+#' @param lcp \code{SpatialLines*} (sp package). Least Cost Path to assess the accuracy of. Expects object of class SpatialLines/SpatialLinesDataFrame
 #'
-#' @param lcp Least Cost Path to assess the accuracy of. Expects object of class SpatialLines/SpatialLinesDataFrame
-#'
-#' @param comparison \code{SpatialLines} or \code{SpatialLinesDataFrame} to validate the Least Cost Path against.
+#' @param comparison \code{SpatialLines*} to validate the Least Cost Path against.
 #'
 #' @param buffers \code{numeric vector} of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).
-#'
-#' @return data.frame object
 #'
 #' @return \code{data.frame} (base package). The resultant object identifies the percentage of the lcp within x distance (as supplied in the buffers argument) from the provided comparison object.
 #'
@@ -41,7 +37,7 @@ validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000)) 
     }
     
     if (!inherits(comparison, c("SpatialLines", "SpatialLinesDataFrame", "SpatialPolygons", "SpatialPolygonsDataFrame"))) {
-        stop("Comparison argument is invalid. Expecting a SpatialLines SpatialLinesDataFrame or SpatialPolygonsDataFrame object")
+        stop("Comparison argument is invalid. Expecting a SpatialLines* or SpatialPolygons* object")
     }
     
     if (!inherits(buffers, "numeric")) {

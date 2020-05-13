@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_CCP_lcps.R
 \name{create_CCP_lcps}
 \alias{create_CCP_lcps}
-\title{create_CCP_lcps}
+\title{Calculate Cumulative Cost Paths from Radial Locations}
 \usage{
 create_CCP_lcps(
   cost_surface,
@@ -14,26 +14,23 @@ create_CCP_lcps(
 )
 }
 \arguments{
-\item{cost_surface}{\code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation}
+\item{cost_surface}{\code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation}
 
-\item{location}{\code{SpatialPoints}. Location to which the Least Cost Paths are calculated to. Only the first row is taken into account}
+\item{location}{\code{SpatialPoints} (sp package). Location to which the Least Cost Paths are calculated to. Only the first row is taken into account}
 
 \item{distance}{\code{numeric} value. Distance from centre location to the radial locations}
 
 \item{radial_points}{\code{numeric} value. Number of radial locations around centre location}
 
-\item{cost_distance}{if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
+\item{cost_distance}{\code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
 
-\item{parallel}{if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE}
+\item{parallel}{\code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE}
 }
 \value{
 \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths (number of LCPs is dependent on radial_points argument) calculated from radial locations to a centre location within a specified distance.
 }
 \description{
-Calculates Cumulative Cost Paths from Radial Locations
-}
-\details{
-Computes Least Cost Paths from radial locations of a specified distance to the centre location. This is based on the method proposed by Verhagen (2013).
+Calculates Least Cost Paths from radial locations of a specified distance to the centre location. This is based on the method proposed by Verhagen (2013).
 }
 \examples{
 

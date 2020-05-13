@@ -1,18 +1,16 @@
-#' create_lcp
+#' Calculate Least Cost Path from Origin to Destination
 #'
-#' Calculates Least Cost Path
+#' Calculates a Least Cost Path from an origin location to a destination location. Applies Dijkstra's algorithm.
 #'
-#' Calculates the Least Cost Path from an origin location to a destination location. See details for more.
+#' @param cost_surface \code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation
 #'
-#' @param cost_surface \code{TransitionLayer} object (gdistance package). Cost surface to be used in Least Cost Path calculation.
+#' @param origin \code{SpatialPoints*} (sp package) location from which the Least Cost Path is calculated. Only the first row is taken into account
 #'
-#' @param origin \code{SpatialPoints} location from which the Least Cost Path is calculated. Only the first row is taken into account.
+#' @param destination \code{SpatialPoints*} (sp package) location to which the Least Cost Path is calculated. Only the first row is taken into account
 #'
-#' @param destination \code{SpatialPoints} location to which the Least Cost Path is calculated. Only the first row is taken into account.
+#' @param directional \code{logical}. if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE
 #'
-#' @param directional if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE.
-#'
-#' @param cost_distance if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.
+#' @param cost_distance \code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE
 #'
 #' @author Joseph Lewis
 #'
@@ -24,7 +22,7 @@
 #'
 #' @export
 #'
-#' @return \code{SpatialLinesDataFrame} object (sp package) of length 1 if directional argument is TRUE or 2 if directional argument is FALSE. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
+#' @return \code{SpatialLinesDataFrame} (sp package) of length 1 if directional argument is TRUE or 2 if directional argument is FALSE. The resultant object is the shortest route (i.e. least cost) between origin and destination using the supplied \code{TransitionLayer}.
 #'
 #'@examples
 #' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
@@ -50,13 +48,12 @@ create_lcp <- function(cost_surface, origin, destination, directional = FALSE, c
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
     
-    
-    if (!inherits(origin, "SpatialPoints")) {
-        stop("origin argument is invalid. Expecting a SpatialPoints object")
+    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+        stop("origin argument is invalid. Expecting a SpatialPoints* object")
     }
     
-    if (!inherits(destination, "SpatialPoints")) {
-        stop("destination argument is invalid. Expecting a SpatialPoints object")
+    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+        stop("destination argument is invalid. Expecting a SpatialPoints* object")
     }
     
     if (directional == "TRUE") {
