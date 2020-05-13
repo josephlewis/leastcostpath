@@ -42,7 +42,7 @@
 
 create_lcp_density <- function(lcps, raster, rescale = FALSE) {
     
-    if (!inherits(locations, c("SpatialLines", "SpatialLinesDataFrame"))) {
+    if (!inherits(lcps, c("SpatialLines", "SpatialLinesDataFrame"))) {
         stop("lcps expects a SpatialLines* object")
     }
     
