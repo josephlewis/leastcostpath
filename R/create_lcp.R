@@ -48,11 +48,11 @@ create_lcp <- function(cost_surface, origin, destination, directional = FALSE, c
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
     
-    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+    if (!inherits(origin, c("SpatialPoints", "SpatialPointsDataFrame"))) {
         stop("origin argument is invalid. Expecting a SpatialPoints* object")
     }
     
-    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+    if (!inherits(destination, c("SpatialPoints", "SpatialPointsDataFrame"))) {
         stop("destination argument is invalid. Expecting a SpatialPoints* object")
     }
     
