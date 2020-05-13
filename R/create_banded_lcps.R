@@ -48,7 +48,7 @@ create_banded_lcps <- function(cost_surface, location, min_distance, max_distanc
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
     
-    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+    if (!inherits(location, c("SpatialPoints", "SpatialPointsDataFrame"))) {
         stop("Locations argument is invalid. Expecting SpatialPoints* object")
     }
     

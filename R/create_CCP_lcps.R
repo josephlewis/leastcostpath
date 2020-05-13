@@ -47,7 +47,7 @@ create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cos
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
     
-    if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
+    if (!inherits(location, c("SpatialPoints", "SpatialPointsDataFrame"))) {
         stop("Location argument is invalid. Expecting SpatialPoints* object")
     }
     
