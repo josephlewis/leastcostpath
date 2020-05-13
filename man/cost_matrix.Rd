@@ -11,7 +11,9 @@ cost_matrix(cost_surface, locations, k)
 
 \item{locations}{\code{SpatialPoints}. Locations to calculate k nearest neighbours from}
 
-\item{k}{\code{numeric} number of nearest neighbours to be returned}
+\item{k}{\code{numeric} number of nearest neighbours to be returned
+
+#' @return \code{matrix} cost-based k nearest neighbour for each location as specified in the locations argument. The resultant \code{matrix} can be incorporated into the nb_matrix argument with the create_lcp_network function.}
 }
 \description{
 Creates a cost based nearest neighbour matrix

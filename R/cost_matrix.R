@@ -10,6 +10,8 @@
 #'
 #' @param k \code{numeric} number of nearest neighbours to be returned
 #'
+#' #' @return \code{matrix} cost-based k nearest neighbour for each location as specified in the locations argument. The resultant \code{matrix} can be incorporated into the nb_matrix argument with the create_lcp_network function.
+#'
 #' @author Joseph Lewis
 #'
 #' @import rgdal
@@ -54,8 +56,8 @@ cost_matrix <- function(cost_surface, locations, k) {
         stop("Number of locations invalid. Expecting more than one location")
     }
     
-    if (k > length(locations)) {
-        stop("k Value exceeds number of locations")
+    if (k > length(locations) - 1) {
+        stop("k Value exceeds number of locations that each location can connect to. See details for more information.")
     }
     
     origin <- rep(1:length(locations), each = k)
@@ -69,9 +71,7 @@ cost_matrix <- function(cost_surface, locations, k) {
         
         xx <- x[order(x$costDistance), ]
         
-        print(xx[1:3, ])
-        
-        destination[which(origin == i)] <- xx$ID[1:3]
+        destination[which(origin == i)] <- xx$ID[1:k]
         
     }
     
