@@ -35,9 +35,10 @@ create_barrier_cs <- function(raster, barrier, neighbours = 16) {
         stop("raster argument is invalid. Expecting a RasterLayer object")
     }
     
-    if (!inherits(barrier, "Spatial")) {
+    if (!inherits(barrier, c("SpatialPoints", "SpatialPointsDataFrame"))) {
         stop("barrier argument is invalid. Expecting a Spatial* object")
     }
+    
     if (!neighbours %in% c(4, 8, 16)) {
         stop("neighbours argument is invalid. Expecting 4, 8, or 16.")
     }
