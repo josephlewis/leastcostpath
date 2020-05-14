@@ -5,7 +5,7 @@ cache: packages
 
 r:
   - release
-  - oldrel # breaks on sf_0.7-2 not available
+  - oldrel
   - devel
 
 before_install:
