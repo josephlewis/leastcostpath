@@ -66,21 +66,11 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         x[2] - x[1]
     }
     
-    if (neighbours == 4) {
-        
-        hd <- suppressWarnings(gdistance::transition(dem, altDiff_slope, 4, symm = FALSE))
-        
-        adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = 4)
-        
-    } else {
-        
-        hd <- suppressWarnings(gdistance::transition(dem, altDiff_slope, neighbours, symm = FALSE))
-        
-        adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
-        
-    }
+    hd <- suppressWarnings(gdistance::transition(x = dem, transitionFunction = altDiff_slope, directions = neighbours, symm = FALSE))
     
     slope <- gdistance::geoCorrection(hd)
+    
+    adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
     
     rand <- stats::runif(1, min = 0.01, max = 1)
     
