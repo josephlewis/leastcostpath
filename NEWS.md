@@ -1,5 +1,6 @@
 # 1.3.6 (13th May 2020)
 * Implemented cost_matrix to be used with the create_lcp_network nb_matrix argument 
+* Fixed error in create_slope_cs when using 16 neighbours
 
 # 1.3.5 (11th May 2020)
 * Implemented create_barrier_cs

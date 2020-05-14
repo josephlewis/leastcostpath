@@ -185,6 +185,7 @@ Versioning
       * Implemented create_barrier_cs
 -   version 1.3.6
       * Implemented cost_matrix to be used with the create_lcp_network nb_matrix argument
+      * Fixed error in create_slope_cs when using 16 neighbours
       
 Authors
 -------
