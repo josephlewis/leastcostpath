@@ -73,10 +73,6 @@ create_traversal_cs <- function(dem, neighbours = 16) {
     
     trans_aspect <- gdistance::transition(aspect_dem, altDiff_traversal, neighbours, symm = FALSE)
     
-    if (neighbours == 8 | neighbours == 16) {
-        trans_aspect <- gdistance::geoCorrection(trans_aspect)
-    }
-    
     adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
     
     trans[adj] <- trans_aspect[adj]
