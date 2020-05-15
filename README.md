@@ -186,6 +186,8 @@ Versioning
 -   version 1.3.6
       * Implemented cost_matrix to be used with the create_lcp_network nb_matrix argument
       * Fixed error in create_slope_cs when using 16 neighbours
+-   version 1.3.7
+      * Fixed neighbour issue with cost_matrix 
       
 Authors
 -------
