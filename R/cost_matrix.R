@@ -8,7 +8,7 @@
 #'
 #' @param k \code{numeric} number of nearest neighbours to be returned
 #'
-#' #' @return \code{matrix} cost-based k nearest neighbour for each location as specified in the locations argument. The resultant \code{matrix} can be used in the nb_matrix argument within the create_lcp_network function.
+#' @return \code{matrix} cost-based k nearest neighbour for each location as specified in the locations argument. The resultant \code{matrix} can be used in the nb_matrix argument within the create_lcp_network function.
 #'
 #' @author Joseph Lewis
 #'
@@ -65,7 +65,7 @@ cost_matrix <- function(cost_surface, locations, k) {
         
         distances <- gdistance::costDistance(x = cost_surface, fromCoords = locations[i, ], toCoords = locations[-i, ])
         
-        distances <- data.frame(ID = 2:length(locations), costDistance = as.vector(distances))
+        distances <- data.frame(ID = seq(1:length(locations))[-i], costDistance = as.vector(distances))
         
         distances <- distances[order(distances$costDistance), ]
         
