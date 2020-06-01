@@ -1,4 +1,4 @@
-leastcostpath - version 1.3.7 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.3.8 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads TOtal](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -188,7 +188,11 @@ Versioning
       * Fixed error in create_slope_cs when using 16 neighbours
 -   version 1.3.7
       * Fixed neighbour issue with cost_matrix 
-      
+-   version 1.3.8
+      * Least Cost Paths created using the create_FETE_lcps function are automically ordered low-to-high cost if the cost_distance argument is TRUE 
+      * Least Cost Paths created using the create_CCP_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
+      * Least Cost Paths created using the create_banded_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
+
 Authors
 -------
 
@@ -199,4 +203,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.3.7)
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.3.8)
