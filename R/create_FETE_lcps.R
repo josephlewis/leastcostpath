@@ -89,6 +89,8 @@ create_FETE_lcps <- function(cost_surface, locations, cost_distance = FALSE, par
         
         lcp_network$cost <- cost_dist
         
+        lcp_network <- lcp_network[order(lcp_network$cost), ]
+        
     }
     
     return(lcp_network)
