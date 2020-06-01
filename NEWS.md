@@ -1,3 +1,8 @@
+# 1.3.8 (1st June 2020)
+* Least Cost Paths created using the create_FETE_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
+* Least Cost Paths created using the create_CCP_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
+* Least Cost Paths created using the create_banded_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
+
 # 1.3.7 (15th May 2020)
 * Fixed neighbour issue with cost_matrix 
 
