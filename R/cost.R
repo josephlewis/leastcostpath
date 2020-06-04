@@ -94,6 +94,7 @@ cost <- function(cost_function, adj, crit_slope) {
         
     }
     
+    # if (cost_function == 'hernandez') { cf <- function(x) { ((0.031 * atan(x[adj])^2) + (-0.025 * atan(x[adj]) + 1)) } }
     
     return(cf)
     
