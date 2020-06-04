@@ -41,8 +41,21 @@ create_barrier_cs <- function(raster, barrier, neighbours = 16) {
         stop("barrier argument is invalid. Expecting a Spatial* object")
     }
     
-    if (!neighbours %in% c(4, 8, 16)) {
-        stop("neighbours argument is invalid. Expecting 4, 8, or 16.")
+    if (!neighbours %in% c(4, 8, 16, 32, 48)) {
+        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48.")
+    }
+    
+    if (neighbours == 32) {
+        
+        neighbours <- neighbours_32
+        
+        print("ok")
+        
+    } else if (neighbours == 48) {
+        
+        print("48")
+        
+        neighbours <- neighbours_48
     }
     
     # crop Spatial* object to raster extent
@@ -51,7 +64,7 @@ create_barrier_cs <- function(raster, barrier, neighbours = 16) {
     # create raster based on supplied Spatial* object
     barrier_raster <- raster::rasterize(x = barrier_cropped, y = raster, field = 0, background = 1)
     
-    barrier_cs <- gdistance::transition(barrier_raster, transitionFunction = min, 16)
+    barrier_cs <- gdistance::transition(barrier_raster, transitionFunction = min, neighbours)
     
     return(barrier_cs)
     

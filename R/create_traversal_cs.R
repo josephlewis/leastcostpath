@@ -27,8 +27,21 @@ create_traversal_cs <- function(dem, neighbours = 16) {
         stop("dem argument is invalid. Expecting a RasterLayer object")
     }
     
-    if (!neighbours %in% c(4, 8, 16)) {
-        stop("neighbours argument is invalid. Expecting 4, 8, or 16.")
+    if (!neighbours %in% c(4, 8, 16, 32, 48)) {
+        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48.")
+    }
+    
+    if (neighbours == 32) {
+        
+        neighbours <- neighbours_32
+        
+        print("ok")
+        
+    } else if (neighbours == 48) {
+        
+        print("48")
+        
+        neighbours <- neighbours_48
     }
     
     trans <- gdistance::transition(dem, transitionFunction = function(x) {

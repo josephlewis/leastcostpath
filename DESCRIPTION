@@ -1,7 +1,7 @@
 Package: leastcostpath
 Title: Modelling Pathways and Movement Potential Within a Landscape
-Version: 1.3.9
-Date: 2020-06-01
+Version: 1.4.0
+Date: 2020-06-05
 Authors@R: person("Joseph", "Lewis", email = "josephlewis1992@gmail.com", role = c("aut", "cre"))
 Maintainer: Joseph Lewis <josephlewis1992@gmail.com>
 URL: josephlewis.github.io

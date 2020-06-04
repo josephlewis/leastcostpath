@@ -9,7 +9,6 @@ create_stochastic_lcp(
   origin,
   destination,
   directional = FALSE,
-  cost_distance = FALSE,
   percent_quantile
 )
 }
@@ -21,8 +20,6 @@ create_stochastic_lcp(
 \item{destination}{\code{SpatialPoints*} (sp package) location to which the Least Cost Path is calculated. Only the first row is taken into account}
 
 \item{directional}{\code{logical}. if TRUE Least Cost Path calculated from origin to destination only. If FALSE Least Cost Path calculated from origin to destination and destination to origin. Default is FALSE}
-
-\item{cost_distance}{\code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE}
 
 \item{percent_quantile}{\code{numeric}. Optional numeric value between 0 and 1. If argument is supplied then threshold is a random value between the minimum value in the supplied cost surface and the corresponding percent quantile value in the supplied cost surface. If no argument is supplied, then the threshold is a random value between the minimum value and maximum valie in the supplied cost surface. See details for more information}
 }
@@ -56,10 +53,10 @@ r[] <- stats::runif(1:length(r))
 
 slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
-locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=2,'regular')
+locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=2,'random')
 
 stochastic_lcp <- create_stochastic_lcp(cost_surface = slope_cs,
-origin = locs[1,], destination = locs[2,], directional = FALSE, cost_distance = TRUE)
+origin = locs[1,], destination = locs[2,], directional = FALSE)
 }
 \references{
 Pinto, N., Keitt, T.H. (2009) Beyond the least-cost path: evaluating corridor redundancy using a graph-theoretic approach. Landscape Ecol 24, 253-266 \url{https://doi.org/10.1007/s10980-008-9303-y}

@@ -1,5 +1,11 @@
+# 1.4.0 (4th June 2020)
+* Refactored code to enable greater flexibility
+* Added 32 and 48 neighbour matrices based on [Kovanen and Sarjakoski (2015)](https://doi.org/10.1145/2803172) (see leastcostpath::neighbours_32 and leastcostpath::neighbours_48 for their layout)
+* Implemented create_wide_lcp. Inspired by [Shirabe (2016)](https://doi.org/10.1080/13658816.2015.1124435)
+* Removed 'all' cost_function argument from create_slope_cs. 
+
 # 1.3.9 (1st June 2020)
-* Implemented create_stochastic_lcp. Based on the method proposed by Pinto and Keitt (2009). See function documentation for reference. 
+* Implemented create_stochastic_lcp. Based on the method proposed by Pinto and Keitt (2009). See function documentation for reference
 
 # 1.3.8 (1st June 2020)
 * Least Cost Paths created using the create_FETE_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
