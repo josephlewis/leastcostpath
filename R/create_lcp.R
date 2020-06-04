@@ -62,7 +62,7 @@ create_lcp <- function(cost_surface, origin, destination, directional = FALSE, c
         
         if (cost_distance) {
             
-            sPath$cost <- gdistance::costDistance(cost_surface, origin, destination)
+            sPath$cost <- as.vector(gdistance::costDistance(cost_surface, origin, destination))
             
         }
         
@@ -77,8 +77,8 @@ create_lcp <- function(cost_surface, origin, destination, directional = FALSE, c
         
         if (cost_distance) {
             
-            sPaths[[1]]$cost <- gdistance::costDistance(cost_surface, origin, destination)
-            sPaths[[2]]$cost <- gdistance::costDistance(cost_surface, destination, origin)
+            sPaths[[1]]$cost <- as.vector(gdistance::costDistance(cost_surface, origin, destination))
+            sPaths[[2]]$cost <- as.vector(gdistance::costDistance(cost_surface, destination, origin))
             
         }
         
