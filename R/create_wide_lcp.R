@@ -106,9 +106,7 @@ create_wide_lcp <- function(dem, origin, destination, cost_function = "tobler", 
         
     }
     
-    accumulated_wide_path <- dem
-    
-    accumulated_wide_path[] <- apply(X = gdistance::transitionMatrix(Conductance), MARGIN = 2, FUN = sum)
+    accumulated_wide_path <- raster(Conductance, "colSums")
     
     Conductance <- gdistance::transition(accumulated_wide_path, mean, neighbours)
     
