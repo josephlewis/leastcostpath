@@ -1,3 +1,6 @@
+# 1.4.1 (5th June 2020)
+* Fixed create_stochastic_lcp when directional = FALSE. Now checks to ensure both Least Cost Paths are valid. 
+
 # 1.4.0 (4th June 2020)
 * Refactored code to enable greater flexibility
 * Added 32 and 48 neighbour matrices based on [Kovanen and Sarjakoski (2015)](https://doi.org/10.1145/2803172) (see leastcostpath::neighbours_32 and leastcostpath::neighbours_48 for their layout)
@@ -70,7 +73,7 @@
   * `create_slope_cs`
   * `create_traversal_cs`
   * `create_openness_cs`
-* Addition of openness cost surface creation
+  * Addition of openness cost surface creation
 
 # version 0.1.2 - Implemented cost when traversing across slope. 
 # version 0.1.1 - Implemented choice of directionality
