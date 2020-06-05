@@ -3,7 +3,7 @@
 \docType{data}
 \name{neighbours_48}
 \alias{neighbours_48}
-\title{48 Neighbourhood matrix}
+\title{48 Neighbourhood matrices based on Kovanen and Sarjakoski (2015)}
 \format{
 An object of class \code{matrix} (inherits from \code{array}) with 9 rows and 9 columns.
 }
@@ -11,7 +11,10 @@ An object of class \code{matrix} (inherits from \code{array}) with 9 rows and 9 
 neighbours_48
 }
 \description{
-48 neighbourhood matrix based on [Kovanen and Sarjakoski (2015)](https://doi.org/10.1145/2803172)
+see leastcostpath::neighbours_48 for layout
+}
+\references{
+Kovanen, J., Sarjakoski, T. (2015). Tilewise Accumulated Cost Surface Computation with Graphics Processing Units. ACM Transactions on Spatial Algorithms and Systems  1, 1-27. \url{https://doi.org/10.1145/2803172}
 }
 \author{
 Joseph Lewis
