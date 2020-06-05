@@ -95,18 +95,24 @@ create_stochastic_lcp <- function(cost_surface, origin, destination, directional
         stochastic_lcp <- suppressWarnings(create_lcp(cost_surface = cost, origin = origin, destination = destination, directional = directional, cost_distance = TRUE))
         
         # check to see if nrow of coordinates greater than 1. This check ensures that the LCP between origin and destination was feasible
-        if (base::nrow(stochastic_lcp@lines[[1]]@Lines[[1]]@coords) > 1) {
-            
-            # check to see if costs are not infinite
-            if (base::all(!is.infinite(stochastic_lcp$cost))) {
-                
-                done = TRUE
-                
-                return(stochastic_lcp)
+        if (directional) {
+            if (base::nrow(stochastic_lcp@lines[[1]]@Lines[[1]]@coords) > 1) {
                 
             }
+        } else if (directional == FALSE) {
+            if (all((base::nrow(stochastic_lcp@lines[[1]]@Lines[[1]]@coords) > 1) & (base::nrow(stochastic_lcp@lines[[2]]@Lines[[1]]@coords) > 1))) {
+            }
+        }
+        
+        # check to see if costs are not infinite
+        if (base::all(!is.infinite(stochastic_lcp$cost))) {
+            
+            done = TRUE
+            
+            return(stochastic_lcp)
             
         }
         
     }
+    
 }
