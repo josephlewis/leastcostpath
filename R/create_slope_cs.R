@@ -22,13 +22,13 @@
 #'
 #' @param cost_function \code{character}. Cost Function used in the Least Cost Path calculation. Implemented cost functions include 'tobler', 'tobler offpath', 'irmischer-clarke male', 'irmischer-clarke offpath male', 'irmischer-clarke female', 'irmischer-clarke offpath female', 'modified tobler', 'wheeled transport', 'herzog', 'llobera-sluckin'. Default is 'tobler'. See Details for more information
 #'
-#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, 16, 32, or 48. Default is 16
+#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected numeric values are 4, 8, 16, 32, 48 or a matrix object. Default is numeric value 16
 #'
 #' @param crit_slope \code{numeric} value. Critical Slope (in percentage) is 'the transition where switchbacks become more effective than direct uphill or downhill paths'. Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Default value is 12, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012). Critical slope only used in 'wheeled transport' cost function
 #'
 #' @param max_slope \code{numeric} value. Maximum percentage slope that is traversable. Slope values that are greater than the specified max_slope are given a conductivity value of 0. Default is NULL
 #'
-#' @return \code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving up/down slope based on the cost function provided in the cost_function argument. list of \code{TransitionLayer} if cost_function = 'all'
+#' @return \code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving up/down slope based on the cost function provided in the cost_function argument.
 #'
 #' @author Joseph Lewis
 #'
@@ -51,17 +51,18 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         stop("dem argument is invalid. Expecting a RasterLayer object")
     }
     
-    if (!neighbours %in% c(4, 8, 16, 32, 48)) {
-        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, or 48")
+    if (any(!neighbours %in% c(4, 8, 16, 32, 48)) & (!inherits(neighbours, "matrix"))) {
+        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48, or matrix object")
     }
     
-    if (neighbours == 32) {
+    if (inherits(neighbours, "numeric")) {
+        if (neighbours == 32) {
+            neighbours <- neighbours_32
+            
+        } else if (neighbours == 48) {
+            neighbours <- neighbours_48
+        }
         
-        neighbours <- neighbours_32
-        
-    } else if (neighbours == 48) {
-        
-        neighbours <- neighbours_48
     }
     
     slope <- calculate_slope(dem = dem, neighbours = neighbours)
