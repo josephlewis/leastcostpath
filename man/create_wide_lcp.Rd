@@ -30,13 +30,13 @@ create_wide_lcp(
 Calculates a wide least cost path from an origin location to a destination location. Applies Dijkstra's algorithm. See details for more information
 }
 \details{
-The calculation of a wide least cost path is inspired by Shirabe (2015).Instead of calculating a least cost path where the path width is assumed to be zero or negligible compared to the cell size, create_wide_lcp creates a wide least cost path where the path has a specified cell width.
+The calculation of a wide least cost path is inspired by Shirabe (2015).Instead of calculating a least cost path where the path width is assumed to be zero or negligible compared to the cell size, create_wide_lcp creates a wide least cost path where the path is calculated based on a cost surface that incorporates the total permeability of passage from adjacent cells
 
 The algorithm proceeds as follows:
 
 Each column of the supplied cost surface is summed, resulting in a raster with each cell representing the total permeability of passage from each adjacent neighbour.. A transitionMatrix is created from this total permeability of passage raster, with the permeability calculated taking the mean between each cell to its adjacent cells as supplied in the neighbours argument.
 
-Using this total permeability of passage transitionMatrix, the least cost path can be calculated. This represents the least cost path between two locations based on the total permeability of passage transitionMatrix that incorporates the summed permeability of passage. To visualise the wide least cost path, the least cost path is represented as a polygon with the width as supplied in the path_ncells argument.
+Using this total permeability of passage cost surface, the least cost path can be calculated. This represents the least cost path between two locations based on the total permeability of passage cost surface that incorporates the summed permeability of passage. To visualise the wide least cost path, the least cost path is represented as a polygon with the width as supplied in the path_ncells argument.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
