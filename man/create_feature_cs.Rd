@@ -13,7 +13,7 @@ create_feature_cs(raster, locations, x, neighbours = 16)
 
 \item{x}{\code{numeric vector}. Values denoting the attraction/repulsion of the landscape features within the landscape. Each value in the vector is assigned to each ring of cells moving outwards from supplied locations}
 
-\item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, 16, 32, or 48. Default is 16}
+\item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected numeric values are 4, 8, 16, 32, 48 or a matrix object. Default is numeric value 16}
 }
 \value{
 \code{TransitionLayer} (gdistance package) numerically expressing the attraction/repulsion of a feature in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations.

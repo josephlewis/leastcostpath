@@ -4,7 +4,7 @@
 #'
 #' @param dem \code{RasterLayer} (raster package). Digital Elevation Model
 #'
-#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, 16, 32, or 48. Default is 16
+#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected numeric values are 4, 8, 16, 32, 48 or a matrix object. Default is numeric value 16
 #'
 #' @return \code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving across slope based on figure given in Bell and Lock (2000). The traversal_cs \code{TransitionLayer} should be multiplied by the create_slope_cs \code{TransitionLayer}, resulting in a \code{TransitionLayer} that takes into account movement across slope in all directions
 #'
@@ -27,17 +27,18 @@ create_traversal_cs <- function(dem, neighbours = 16) {
         stop("dem argument is invalid. Expecting a RasterLayer object")
     }
     
-    if (!neighbours %in% c(4, 8, 16, 32, 48)) {
-        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, or 48")
+    if (any(!neighbours %in% c(4, 8, 16, 32, 48)) & (!inherits(neighbours, "matrix"))) {
+        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48, or matrix object")
     }
     
-    if (neighbours == 32) {
+    if (inherits(neighbours, "numeric")) {
+        if (neighbours == 32) {
+            neighbours <- neighbours_32
+            
+        } else if (neighbours == 48) {
+            neighbours <- neighbours_48
+        }
         
-        neighbours <- neighbours_32
-        
-    } else if (neighbours == 48) {
-        
-        neighbours <- neighbours_48
     }
     
     trans <- gdistance::transition(dem, transitionFunction = function(x) {

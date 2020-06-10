@@ -8,7 +8,7 @@
 #'
 #' @param x \code{numeric vector}. Values denoting the attraction/repulsion of the landscape features within the landscape. Each value in the vector is assigned to each ring of cells moving outwards from supplied locations
 #'
-#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, 16, 32, or 48. Default is 16
+#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected numeric values are 4, 8, 16, 32, 48 or a matrix object. Default is numeric value 16
 #'
 #' @return \code{TransitionLayer} (gdistance package) numerically expressing the attraction/repulsion of a feature in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations.
 #'
@@ -48,17 +48,18 @@ create_feature_cs <- function(raster, locations, x, neighbours = 16) {
         stop("x argument is invalid. Expecting a numeric vector object")
     }
     
-    if (!neighbours %in% c(4, 8, 16, 32, 48)) {
-        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, or 48")
+    if (any(!neighbours %in% c(4, 8, 16, 32, 48)) & (!inherits(neighbours, "matrix"))) {
+        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48, or matrix object")
     }
     
-    if (neighbours == 32) {
+    if (inherits(neighbours, "numeric")) {
+        if (neighbours == 32) {
+            neighbours <- neighbours_32
+            
+        } else if (neighbours == 48) {
+            neighbours <- neighbours_48
+        }
         
-        neighbours <- neighbours_32
-        
-    } else if (neighbours == 48) {
-        
-        neighbours <- neighbours_48
     }
     
     r <- raster::rasterize(locations, raster)
