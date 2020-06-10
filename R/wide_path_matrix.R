@@ -1,6 +1,6 @@
 #' Create a wide path matrix
 #'
-#' Creates a wide path matrix to be used when calculating wide path least cost paths. This function will return an odd-dimension matrix approximating the shape of an octogon. The centre cell of the matrix has a value of 0 and represents the focal cell. See \code{\link[raster]{focal}}, \code{\link[raster]{focalWeight}} and \code{\link[raster]{adjacent}} for more information.
+#' Creates a wide path matrix to be used when calculating wide path least cost paths. This function will return an odd-dimension matrix approximating the shape of an octogan. The centre cell of the matrix has a value of 0 and represents the focal cell. See \code{\link[raster]{focal}}, \code{\link[raster]{focalWeight}} and \code{\link[raster]{adjacent}} for more information.
 #'
 #' @param ncells \code{numeric} value. Dimension of wide path matrix. Note that the value refers to the number of cells and not distance
 #'

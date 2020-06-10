@@ -13,7 +13,7 @@ wide_path_matrix(ncells)
 \code{matrix} wide path matrix used when calculating wide path least cost paths via \code{\link{create_wide_lcp}}
 }
 \description{
-Creates a wide path matrix to be used when calculating wide path least cost paths. This function will return an odd-dimension matrix approximating the shape of an octogon. The centre cell of the matrix has a value of 0 and represents the focal cell. See \code{\link[raster]{focal}}, \code{\link[raster]{focalWeight}} and \code{\link[raster]{adjacent}} for more information.
+Creates a wide path matrix to be used when calculating wide path least cost paths. This function will return an odd-dimension matrix approximating the shape of an octogan. The centre cell of the matrix has a value of 0 and represents the focal cell. See \code{\link[raster]{focal}}, \code{\link[raster]{focalWeight}} and \code{\link[raster]{adjacent}} for more information.
 }
 \examples{
 w <- wide_path_matrix(9)
