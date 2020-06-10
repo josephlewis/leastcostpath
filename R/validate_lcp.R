@@ -8,6 +8,8 @@
 #'
 #' @param buffers \code{numeric vector} of buffer distances to assess. Default values are c(50, 100, 250, 500, 1000).
 #'
+#' @references Goodchild, F. M., and G. J. Hunter, 1997. A Simple Positional Accuracy Measure for Linear Features. International Journal of Geographical Information Sciences, 11(3), 299-306.
+#'
 #' @return \code{data.frame} (base package). The resultant object identifies the percentage of the lcp within x distance (as supplied in the buffers argument) from the provided comparison object.
 #'
 #' @author Joseph Lewis

@@ -10,6 +10,8 @@
 #'
 #'@param parallel \code{logical}. if TRUE the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE
 #'
+#'@references White, DA. Barber, SB. (2012). Geospatial modeling of pedestrian transportation networks: a case study from precolumbian Oaxaca, Mexico. J Archaeol Sci 39:2684-2696. \url{https://doi.org/10.1016/j.jas.2012.04.017}
+#'
 #' @return \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths calculated from each location to all other locations
 #'
 #' @author Joseph Lewis

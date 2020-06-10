@@ -11,15 +11,15 @@ create_feature_cs(raster, locations, x, neighbours = 16)
 
 \item{locations}{\code{SpatialPoints*} (sp package). Location of Features within the landscape}
 
-\item{x}{\code{numeric vector}. Values denoting the attraction/repulsion of the landscape features within the landscape}
+\item{x}{\code{numeric vector}. Values denoting the attraction/repulsion of the landscape features within the landscape. Each value in the vector is assigned to each ring of cells moving outwards from supplied locations}
 
-\item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16}
+\item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, 16, 32, or 48. Default is 16}
 }
 \value{
 \code{TransitionLayer} (gdistance package) numerically expressing the attraction/repulsion of a feature in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations.
 }
 \description{
-Creates a Landscape Feature Cost Surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application.
+Creates a Landscape Feature Cost Surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
@@ -29,6 +29,9 @@ loc1 = sp::SpatialPoints(loc1)
 num <- seq(200, 1, length.out = 20)
 
 feature <- create_feature_cs(raster = r, locations = loc1, x = num)
+}
+\references{
+Llobera, M. (2000). Understanding movement: a pilot model towards the sociology of movement. In: Lock G (ed) Beyond the map. Archaeology and spatial technologies. (pp 66-84). Amsterdam: IOS Press/Ohmsha.
 }
 \author{
 Joseph Lewis

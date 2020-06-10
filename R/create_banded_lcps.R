@@ -18,6 +18,8 @@
 #'
 #' @return \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths (number of LCPs is dependent on radial_points argument) calculated from a centre location to random locations within a specified distance band.
 #'
+#' @references Llobera, M. (2015). Working the digital: some thoughts from landscape archaeology. In Chapman R, Wylie A (eds), Material evidence: learning from archaeological practice (pp. 173-188). Abingdon: Routledge.
+#'
 #' @author Joseph Lewis
 #'
 #' @import rgdal

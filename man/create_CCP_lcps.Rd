@@ -46,6 +46,9 @@ locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=1,'regular')
 lcp_network <- create_CCP_lcps(cost_surface = slope_cs, location = locs,
 distance = 20, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 }
+\references{
+Verhagen, P. (2013). On the road to nowhere? Least cost paths, accessibility and the predictive modelling perspective. In Contreras F, Farjas M, Melero FJ (eds). Fusion of cultures. Proceedings of the 38th annual conference on computer applications and quantitative methods in archaeology, Granada, Spain, April 2010. (pp 383-389). Oxford: Archaeopress
+}
 \author{
 Joseph Lewis
 }

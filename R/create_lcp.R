@@ -12,6 +12,8 @@
 #'
 #' @param cost_distance \code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE
 #'
+#' @references Dijkstra, E. W. (1959). A note on two problems in connexion with graphs. Numerische Mathematik. 1: 269-271.
+#'
 #' @author Joseph Lewis
 #'
 #' @import rgdal

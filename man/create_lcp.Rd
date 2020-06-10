@@ -47,6 +47,9 @@ loc2 = sp::SpatialPoints(loc2)
 lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1,
 destination = loc2, directional = FALSE, cost_distance = FALSE)
 }
+\references{
+Dijkstra, E. W. (1959). A note on two problems in connexion with graphs. Numerische Mathematik. 1: 269-271.
+}
 \author{
 Joseph Lewis
 }

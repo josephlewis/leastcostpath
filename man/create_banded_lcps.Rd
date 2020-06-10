@@ -49,6 +49,9 @@ Calculates Least Cost Paths from centre location to random locations within a sp
 #max_distance = 50, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 
 }
+\references{
+Llobera, M. (2015). Working the digital: some thoughts from landscape archaeology. In Chapman R, Wylie A (eds), Material evidence: learning from archaeological practice (pp. 173-188). Abingdon: Routledge.
+}
 \author{
 Joseph Lewis
 }

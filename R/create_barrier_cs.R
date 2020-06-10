@@ -10,7 +10,7 @@
 #'
 #' @param barrier \code{Spatial*} (sp package). Areas within the landscape that movement is inhibited. See details for more
 #'
-#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16
+#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, 16, 32, or 48. Default is 16
 #'
 #' @return \code{TransitionLayer} (gdistance package) numerically expressing the barriers to movement in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations
 #'
@@ -42,18 +42,14 @@ create_barrier_cs <- function(raster, barrier, neighbours = 16) {
     }
     
     if (!neighbours %in% c(4, 8, 16, 32, 48)) {
-        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48.")
+        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, or 48")
     }
     
     if (neighbours == 32) {
         
         neighbours <- neighbours_32
         
-        print("ok")
-        
     } else if (neighbours == 48) {
-        
-        print("48")
         
         neighbours <- neighbours_48
     }

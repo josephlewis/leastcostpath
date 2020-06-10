@@ -30,6 +30,8 @@
 #'
 #' @references
 #'
+#' Dijkstra, E. W. (1959). A note on two problems in connexion with graphs. Numerische Mathematik. 1: 269-271.
+#'
 #' Pinto, N., Keitt, T.H. (2009) Beyond the least-cost path: evaluating corridor redundancy using a graph-theoretic approach. Landscape Ecol 24, 253-266 \url{https://doi.org/10.1007/s10980-008-9303-y}
 #'
 #' @return \code{SpatialLinesDataFrame} (sp package) of length 1 if directional argument is TRUE or 2 if directional argument is FALSE. The resultant object is the shortest route (i.e. least cost) between origin and destination after a random threshold has been applied to the supplied \code{TransitionLayer}.
@@ -87,8 +89,8 @@ create_stochastic_lcp <- function(cost_surface, origin, destination, directional
             threshold_val <- stats::runif(1, min_val, quantile_val)
         }
         
-        # replace values lower than threshold_val with 0. Neighbours with higher costs are more likely to be maintained. This is the inverse of stochastic rule noted in
-        # Pinto and Keitt (2009) and reflects the cost surface representing conductivity rather than resistance.
+        # replace values lower than threshold_val with 0. Neighbours with higher costs are more likely to be maintained. This is the inverse of stochastic rule
+        # noted in Pinto and Keitt (2009) and reflects the cost surface representing conductivity rather than resistance.
         
         cost[adj] <- base::ifelse(cost[adj] < threshold_val, 0, cost[adj])
         

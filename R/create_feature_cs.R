@@ -1,16 +1,18 @@
 #' Create a Landscape Feature cost surface
 #'
-#' Creates a Landscape Feature Cost Surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application.
+#' Creates a Landscape Feature Cost Surface representing the attraction/repulsion of a feature in the landscape. See Llobera (2000) for theoretical discussion in its application
 #'
 #' @param raster \code{RasterLayer} (raster package). The Resolution, Extent, and Spatial Reference System of the provided RasterLayer is used when creating the resultant Barrier Cost Surface
 #'
 #' @param locations \code{SpatialPoints*} (sp package). Location of Features within the landscape
 #'
-#' @param x \code{numeric vector}. Values denoting the attraction/repulsion of the landscape features within the landscape
+#' @param x \code{numeric vector}. Values denoting the attraction/repulsion of the landscape features within the landscape. Each value in the vector is assigned to each ring of cells moving outwards from supplied locations
 #'
-#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, or 16. Default is 16
+#' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected values are 4, 8, 16, 32, or 48. Default is 16
 #'
 #' @return \code{TransitionLayer} (gdistance package) numerically expressing the attraction/repulsion of a feature in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations.
+#'
+#' @references Llobera, M. (2000). Understanding movement: a pilot model towards the sociology of movement. In: Lock G (ed) Beyond the map. Archaeology and spatial technologies. (pp 66-84). Amsterdam: IOS Press/Ohmsha.
 #'
 #' @author Joseph Lewis
 #'
@@ -46,8 +48,17 @@ create_feature_cs <- function(raster, locations, x, neighbours = 16) {
         stop("x argument is invalid. Expecting a numeric vector object")
     }
     
-    if (!neighbours %in% c(4, 8, 16)) {
-        stop("neighbours argument is invalid. Expecting 4, 8, or 16.")
+    if (!neighbours %in% c(4, 8, 16, 32, 48)) {
+        stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, or 48")
+    }
+    
+    if (neighbours == 32) {
+        
+        neighbours <- neighbours_32
+        
+    } else if (neighbours == 48) {
+        
+        neighbours <- neighbours_48
     }
     
     r <- raster::rasterize(locations, raster)

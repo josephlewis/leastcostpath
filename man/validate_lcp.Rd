@@ -29,6 +29,9 @@ line2 <- sp::SpatialLines(list(sp::Lines(sp::Line(cbind(x2,y2)), ID='b')))
 
 val_lcp <- validate_lcp(lcp = line1, comparison = line2, buffers = c(0.1, 0.2, 0.5, 1))
 }
+\references{
+Goodchild, F. M., and G. J. Hunter, 1997. A Simple Positional Accuracy Measure for Linear Features. International Journal of Geographical Information Sciences, 11(3), 299-306.
+}
 \author{
 Joseph Lewis
 }

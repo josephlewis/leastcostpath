@@ -59,6 +59,8 @@ stochastic_lcp <- create_stochastic_lcp(cost_surface = slope_cs,
 origin = locs[1,], destination = locs[2,], directional = FALSE)
 }
 \references{
+Dijkstra, E. W. (1959). A note on two problems in connexion with graphs. Numerische Mathematik. 1: 269-271.
+
 Pinto, N., Keitt, T.H. (2009) Beyond the least-cost path: evaluating corridor redundancy using a graph-theoretic approach. Landscape Ecol 24, 253-266 \url{https://doi.org/10.1007/s10980-008-9303-y}
 }
 \author{
