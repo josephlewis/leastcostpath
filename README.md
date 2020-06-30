@@ -14,8 +14,8 @@ This package is built on classes and functions provided in the R package gdistan
 
 Functions currently in development:
 
-add_dem_error()
-force_isotropy()
+* add_dem_error()
+* force_isotropy()
 
 Getting Started
 ---------------
