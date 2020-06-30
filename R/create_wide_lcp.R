@@ -56,11 +56,25 @@
 
 create_wide_lcp <- function(cost_surface, origin, destination, neighbours = 16, path_ncells) {
     
+    if (inherits(neighbours, "numeric")) {
+        if (neighbours == 32) {
+            neighbours <- neighbours_32
+            
+        } else if (neighbours == 48) {
+            neighbours <- neighbours_48
+        }
+        
+    }
+    
     window <- wide_path_matrix(ncells = path_ncells)
     
     accumulated_wide_path <- raster(cost_surface, "colSums")
     
-    wide_Conductance <- gdistance::transition(x = accumulated_wide_path, transitionFunction = mean, neighbours)
+    tf <- function(x) {
+        x[1]
+    }
+    
+    wide_Conductance <- gdistance::transition(x = accumulated_wide_path, transitionFunction = tf, neighbours)
     
     wide_Conductance <- gdistance::geoCorrection(wide_Conductance, scl = FALSE)
     
