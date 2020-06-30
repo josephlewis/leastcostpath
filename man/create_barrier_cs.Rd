@@ -4,7 +4,7 @@
 \alias{create_barrier_cs}
 \title{Create Barrier Cost Surface}
 \usage{
-create_barrier_cs(raster, barrier, neighbours = 16)
+create_barrier_cs(raster, barrier, neighbours = 16, background = 1)
 }
 \arguments{
 \item{raster}{\code{RasterLayer} (raster package). The Resolution, Extent, and Spatial Reference System of the provided RasterLayer is used when creating the resultant Barrier Cost Surface}
@@ -12,6 +12,8 @@ create_barrier_cs(raster, barrier, neighbours = 16)
 \item{barrier}{\code{Spatial*} (sp package). Areas within the landscape that movement is inhibited. See details for more}
 
 \item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected numeric values are 4, 8, 16, 32, 48 or a matrix object. Default is numeric value 16}
+
+\item{background}{\code{numeric} value. Value Value to put in the cells that are not covered by any of the features of barrier. Default is \code{numeric value 1}}
 }
 \value{
 \code{TransitionLayer} (gdistance package) numerically expressing the barriers to movement in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations
