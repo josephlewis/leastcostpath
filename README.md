@@ -4,13 +4,18 @@ DEV - leastcostpath - version 1.4.1 [![Build Status](https://travis-ci.org/josep
 [![CRAN Downloads TOtal](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
 =============================
 
-The R library <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths, which are often, but not exclusively, used in archaeological research. This library can be used to apply multiple cost functions when approximating the difficulty of moving across a landscape, as well as incorporating traversal <i>across</i> slope. Furthermore, attraction/repulsion of landscape features can be incorporated within the Least Cost Path calculation.
+The R library <b>leastcostpath</b> provides the functionality to calculate Cost Surfaces based on multiple cost functions that approximate the difficulty of moving across a landscape. Furthermore, the attraction/repulsion of landscape features can be incorporated into the Cost Surfaces, as well as barriers that inhibit movement. 
 
-This library also provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (FETE) (White and Barber, 2012), Cumulative Cost Paths (Verhagen, 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015). 
+Cost Surfaces can be used to calculate Least Cost Paths, which are often, but not exclusively, used in archaeological research. <b>leastcostpath</> also provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (FETE) (White and Barber, 2012), Cumulative Cost Paths (Verhagen, 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015). Furthermore, the library allows for the calculation of stochastic least cost paths. 
 
 Lastly, the library provides functionality to validate the accuracy of computed Least Cost Paths relative to another path. 
 
 This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
+
+Functions currently in development:
+
+add_dem_error()
+force_isotropy()
 
 Getting Started
 ---------------
@@ -107,6 +112,27 @@ Usage
     
     lcp_network <- create_lcp_network(slope_cs, locations = locs, 
     nb_matrix = mat, cost_distance = FALSE, parallel = FALSE)
+    
+#### Stochastic Least Cost Path
+
+    locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=2,'random')
+
+    stochastic_lcp <- replicate(n = 10, create_stochastic_lcp(cost_surface = slope_cs,
+    origin = locs[1,], destination = locs[2,], directional = FALSE))
+    
+    stochastic_lcp <- do.call(rbind, stochastic_lcp)
+
+#### Wide Least Cost Path
+
+    n <- 3
+
+    loc1 = cbind(2667670, 6479000)
+    loc1 = sp::SpatialPoints(loc1)
+
+    loc2 = cbind(2667800, 6479400)
+    loc2 = sp::SpatialPoints(loc2)
+
+    wide_lcp <- create_wide_lcp(dem = r, origin = loc1, destination = loc2, ncells = n)
     
 #### Pipes!
 
