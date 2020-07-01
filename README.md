@@ -126,14 +126,17 @@ Usage
 
     n <- 3
 
+    slope_cs <- create_slope_cs(r, cost_function = 'tobler', neighbours = wide_path_matrix(n))
+
     loc1 = cbind(2667670, 6479000)
     loc1 = sp::SpatialPoints(loc1)
 
     loc2 = cbind(2667800, 6479400)
     loc2 = sp::SpatialPoints(loc2)
 
-    wide_lcp <- create_wide_lcp(dem = r, origin = loc1, destination = loc2, ncells = n)
-    
+    lcps <- create_wide_lcp(cost_surface = slope_cs, origin = loc1,
+    destination = loc2, path_ncells = n)
+
 #### Pipes!
 
     cost_surface <- create_slope_cs(r, cost_function = 'tobler') %>%
@@ -222,7 +225,7 @@ Versioning
       * Implemented create_stochastic_lcp. Based on the method proposed by Pinto and Keitt (2009). See function documentation for reference.
 -   version 1.4.0
       * Refactored code to enable greater flexibility
-      * * Added 32 and 48 neighbour matrices based on [Kovanen and Sarjakoski (2015)](https://doi.org/10.1145/2803172) (see leastcostpath::neighbours_32 and leastcostpath::neighbours_48 for their layout)
+      * Added 32 and 48 neighbour matrices based on [Kovanen and Sarjakoski (2015)](https://doi.org/10.1145/2803172) (see leastcostpath::neighbours_32 and leastcostpath::neighbours_48 for their layout)
       * Implemented create_wide_lcp. Inspired by [Shirabe (2016)](https://doi.org/10.1080/13658816.2015.1124435)
       * Removed 'all' cost_function argument from create_slope_cs. 
 -   version 1.4.1
