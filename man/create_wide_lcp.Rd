@@ -34,7 +34,7 @@ The calculation of a wide least cost path is inspired by Shirabe (2015).Instead 
 
 The algorithm proceeds as follows:
 
-Each column of the supplied cost surface is summed, resulting in a raster with each cell representing the total permeability of passage from each adjacent neighbour.. A transitionMatrix is created from this total permeability of passage raster, with the permeability calculated taking the mean between each cell to its adjacent cells as supplied in the neighbours argument.
+Each column of the supplied cost surface is summed, resulting in a raster with each cell representing the total permeability of passage from each adjacent neighbour (adjacent cells specificed when creating cost surface through the use of wide_path_matirx(). A transitionMatrix is created from this total permeability of passage raster, with the permeability of movement between cells based on the total permeability raster. That is, moving into each cell regardless of direction will incur the same cost.
 
 Using this total permeability of passage cost surface, the least cost path can be calculated. This represents the least cost path between two locations based on the total permeability of passage cost surface that incorporates the summed permeability of passage. To visualise the wide least cost path, the least cost path is represented as a polygon with the width as supplied in the path_ncells argument.
 }
