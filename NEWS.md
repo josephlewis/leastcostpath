@@ -1,5 +1,8 @@
+# 1.5.1 (4th July 2020)
+* Implemented crop_cs. See function documentation for more information and usage
+
 # 1.4.1 (5th June 2020)
-* Fixed create_stochastic_lcp when directional = FALSE. Now checks to ensure both Least Cost Paths are valid. 
+* Fixed create_stochastic_lcp when directional = FALSE. Now checks to ensure both Least Cost Paths are valid
 
 # 1.4.0 (4th June 2020)
 * Refactored code to enable greater flexibility
@@ -69,7 +72,7 @@
 * Removal of validate_lcp, create_openness, and create_lcp_network - these will be re-added at a later date.
 
 # Version 0.1.4 (19 March 2019)
-* Split `leastcostpath` function into separate functions - allows for the building up of cost surfaces before computating least cost path
+* Split `leastcostpath` function into separate functions - allows for the building up of cost surfaces before computing least cost path
   * `create_slope_cs`
   * `create_traversal_cs`
   * `create_openness_cs`
