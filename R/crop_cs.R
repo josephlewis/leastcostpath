@@ -51,6 +51,8 @@ crop_cs <- function(cost_surface, boundary) {
     
     cost_surface@transitionMatrix[, pts_not_over_boundary] <- 0
     
+    cost_surface@transitionMatrix <- Matrix::drop0(cost_surface@transitionMatrix)
+    
     return(cost_surface)
     
 }
