@@ -43,6 +43,8 @@ crop_cs <- function(cost_surface, boundary) {
         stop("boundary argument is invalid. Expecting a SpatialPolygons* object")
     }
     
+    boundary <- as(boundary, "SpatialPolygons")
+    
     ras <- raster::raster(ncol = cost_surface@ncols, nrow = cost_surface@nrows, ext = cost_surface@extent, crs = cost_surface@crs)
     
     ras_pts <- raster::rasterToPoints(x = ras, spatial = TRUE)
