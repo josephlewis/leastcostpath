@@ -22,7 +22,7 @@ create_barrier_cs(raster, barrier, neighbours = 16, background = 1)
 Creates a cost surface that incorporates barriers that inhibit movement in the landscape.
 }
 \details{
-The resultant Barrier Cost Surface is produced by assessing which areas of the raster coincide with the Spatial object as specified in the barrier argument. The areas of raster that coincide with the Spatial object are given a conductance value of 0, with all other areas given a Conductance value of 1. The conductance value of 0 ensures that movement is inhibited within these areas. Examples include rivers, lakes, and taboo areas.
+The resultant Barrier Cost Surface is produced by assessing which areas of the raster coincide with the Spatial object as specified in the barrier argument. The areas of raster that coincide with the Spatial object are given a conductance value of 0, with all other areas given a Conductance value of 1 (default value). The conductance value of 0 ensures that movement is inhibited within these areas. Examples of use include rivers, lakes, and taboo areas.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
