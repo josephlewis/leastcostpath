@@ -16,6 +16,7 @@ Functions currently in development:
 
 * add_dem_error()
 * force_isotropy()
+* crop_cs()
 
 Getting Started
 ---------------
