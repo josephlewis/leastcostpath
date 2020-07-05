@@ -1,4 +1,4 @@
-leastcostpath - version 1.5.1 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.6.1 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads TOtal](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -12,10 +12,15 @@ Lastly, the library provides functionality to validate the accuracy of computed 
 
 This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
-Functions currently in development:
+*Functions currently in development:*
 
 * add_dem_error()
 * force_isotropy()
+
+*Functions recently added:*
+
+* crop_cs()
+* PDI_validation()
 
 Getting Started
 ---------------
@@ -232,6 +237,8 @@ Versioning
       * Fixed create_stochastic_lcp when directional = FALSE. Now checks to ensure both Least Cost Paths are valid.
 -   version 1.5.1
       * Implemented crop_cs. See function documentation for more information and usage
+-   version 1.6.1
+      * Implemented PDI_validation. See function documentation for more information and usage
 
 Authors
 -------
@@ -243,4 +250,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.5.1)
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.6.1)

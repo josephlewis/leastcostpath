@@ -1,3 +1,6 @@
+# 1.6.1 (5th July 2020)
+* Implemented PDI_validation. See function documentation for more information and usage
+
 # 1.5.1 (4th July 2020)
 * Implemented crop_cs. See function documentation for more information and usage
 
