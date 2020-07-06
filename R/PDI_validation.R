@@ -1,18 +1,30 @@
 #' Calculate Path Deviation Index
 #'
-#' Calculates the Path Deviation Index of a Least Cost Path and a comparison SPatialLines using the method proposed by Jan et al. (1999).
+#' Calculates the Path Deviation Index of a Least Cost Path and a comparison SpatialLines using the method proposed by Jan et al. (1999).
 #'
 #' @param lcp \code{SpatialLines*} (sp package). Least Cost Path to assess the accuracy of. Expects object of class SpatialLines.
 #'
-#' @param comparison \code{SpatialLines*} to validate the Least Cost Path against.
+#' @param comparison \code{SpatialLines*} to validate the Least Cost Path against. Expects object of class SpatialLines.
 #'
-#' @param normalise \code{logical}. If TRUE, PDI is normalised to allow for comparisons when PDIs are calculated for paths with different origin and destination points. Default is FALSE.
+#' @details
+#'
+#' The Path Deviation Index measues the deviation (i.e. the spatial separation between paths) between a pair of paths and aims to overcome the shortcomings of measuring the percentage of coverage of a least cost path from a comparison path (for example, the validation_lcp function).
+#'
+#' The index is defined as the area between paths divided by the distance of the shortest path between an origin and destination. The index can be interpreted as the average distance between the paths.
+#'
+#' \code{Path Deviation Index  = Area between paths / length of shortest path}
+#'
+#' The value of the Path Deviation Index depends on the length of the path and makes comparison of PDIs difficult for paths with different origins and destinations. This can be overcome by normalising the Path Deviation Index by the distance of the shortest path between an origin and destination.
+#'
+#' \code{Normalised PDI = PDI / length of shortest path x 100}
+#'
+#' The normalised Path Deviation Index is the percent of deviation between the two paths over the shortest path. For example, if a normalised PDI is 30 percent, it means that the average distance between two paths is 30 percent of the length of the shortest path. With normalised PDI, all path deviation can be compared regardless of the length of the shortest path.
 #'
 #' @references
 #'
-#' Jan, O., Horowitz, A.J., Peng, Z,R. 1999. Using GPS data to understand variations in path choice. Paper presented at the 78th meeting of the Transportation Research Board, Washington.
+#' Jan, O., Horowitz, A.J., Peng, Z,R. 1999. Using GPS data to understand variations in path choice. Paper presented at the 78th meeting of the Transportation Research Board, Washington. Available at: \url{https://pdfs.semanticscholar.org/22bb/3ae1c37632eeee7b6e3b8d973fdaf534f9ab.pdf?_ga=2.242461442.1085768207.1593946556-1126142591.1590329375}
 #'
-#' @return \code{numeric value} (base package). The average distance between two paths and is calculated as the area between paths divided by the shortest path (straight line distance) between the start and end point.
+#' @return \code{SpatialPolygonsDataFrame} (sp package). Area between the lcp and comparison SpatialLines* with a data.frame containing the PDI, normalised PDI and the distance of the shortest path between the origin and destination
 #'
 #' @author Joseph Lewis
 #'
@@ -34,7 +46,7 @@
 #'
 #'val_lcp <- PDI_validation(lcp = line1, line2)
 
-PDI_validation <- function(lcp, comparison, normalise = FALSE) {
+PDI_validation <- function(lcp, comparison) {
     
     if (!inherits(lcp, "SpatialLines")) {
         stop("lcp argument is invalid. Expecting SpatialLines* object")
@@ -50,6 +62,14 @@ PDI_validation <- function(lcp, comparison, normalise = FALSE) {
     lcp_coords <- sp::coordinates(lcp_pts)
     comparison_coords <- sp::coordinates(comparison_pts)
     
+    if (identical(lcp_coords[1, ], comparison_coords[1, ])) {
+        
+        # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates. This is ensure that the
+        # order of coordinates is correct when creating the polygon between the two SpatialLines
+        comparison_coords <- comparison_coords[nrow(comparison_coords):1, ]
+        
+    }
+    
     start <- lcp_coords[1, ]
     end <- lcp_coords[base::nrow(lcp_coords), ]
     
@@ -59,20 +79,19 @@ PDI_validation <- function(lcp, comparison, normalise = FALSE) {
     ps = sp::Polygons(list(p), 1)
     sps = sp::SpatialPolygons(list(ps), proj4string = crs(lcp))
     
-    plot(sps, col = "black")
-    
     PDI_area <- rgeos::gArea(sps, byid = FALSE)
     
     max_dist <- raster::pointDistance(p1 = start, p2 = end, type = "Euclidean", lonlat = FALSE)
     
     PDI <- PDI_area/max_dist
     
-    if (normalise) {
-        
-        PDI <- (PDI_area/max_dist)/max_dist * 100
-        
-    }
+    sps$PDI <- PDI
+    sps$max_dist <- max_dist
     
-    return(PDI)
+    norm_PDI <- (PDI_area/max_dist)/max_dist * 100
+    
+    sps$normalised_PDI <- norm_PDI
+    
+    return(sps)
     
 }
