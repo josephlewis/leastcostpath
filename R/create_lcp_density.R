@@ -50,7 +50,9 @@ create_lcp_density <- function(lcps, raster, rescale = FALSE) {
         stop("raster expects a RasterLayer object")
     }
     
-    lcp_pts <- methods::as(lcps, "SpatialPoints")
+    # lcp_pts <- methods::as(lcps, 'SpatialPoints')
+    
+    lcp_pts <- lcps
     
     cumulative_pts <- raster::rasterize(x = lcp_pts, y = raster, fun = "count")
     
