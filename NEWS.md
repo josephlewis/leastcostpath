@@ -1,3 +1,7 @@
+# 1.6.2 (6th July 2020)
+* Modified how lcp_density calculates which cells are covered by least cost paths. Instead of rasterising points (which can result in cells being missed), the least cost paths themselves are rasterised. 
+* Amended PDI_validation function to return area between lines
+
 # 1.6.1 (5th July 2020)
 * Implemented PDI_validation. See function documentation for more information and usage
 

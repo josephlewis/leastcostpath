@@ -1,4 +1,4 @@
-leastcostpath - version 1.6.1 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.6.2 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads TOtal](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -239,6 +239,9 @@ Versioning
       * Implemented crop_cs. See function documentation for more information and usage
 -   version 1.6.1
       * Implemented PDI_validation. See function documentation for more information and usage
+-   version 1.6.2
+      * Modified how lcp_density calculates which cells are covered by least cost paths. Instead of rasterising points (which can result in             cells being missed), the least cost paths themselves are rasterised. 
+      * Amended PDI_validation function to return area between lines
 
 Authors
 -------
@@ -250,4 +253,4 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.6.1)
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.6.2)
