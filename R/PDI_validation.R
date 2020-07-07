@@ -62,10 +62,10 @@ PDI_validation <- function(lcp, comparison) {
     lcp_coords <- sp::coordinates(lcp_pts)
     comparison_coords <- sp::coordinates(comparison_pts)
     
-    if (identical(lcp_coords[1, ], comparison_coords[1, ])) {
+    if (!identical(lcp_coords[1, ], comparison_coords[1, ])) {
         
-        # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates. This is ensure that the
-        # order of coordinates is correct when creating the polygon between the two SpatialLines
+        # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates. This is ensure that the order of coordinates is
+        # correct when creating the polygon between the two SpatialLines
         comparison_coords <- comparison_coords[nrow(comparison_coords):1, ]
         
     }
@@ -79,12 +79,21 @@ PDI_validation <- function(lcp, comparison) {
     ps = sp::Polygons(list(p), 1)
     sps = sp::SpatialPolygons(list(ps), proj4string = crs(lcp))
     
+    if (!suppressWarnings(gIsValid(sps))) {
+        
+        sps <- rgeos::gPolygonize(rgeos::gNode(rgeos::gBoundary(sps)))
+        
+        sps <- rgeos::gUnaryUnion(spgeom = sps)
+        
+    }
+    
     PDI_area <- rgeos::gArea(sps, byid = FALSE)
     
     max_dist <- raster::pointDistance(p1 = start, p2 = end, type = "Euclidean", lonlat = FALSE)
     
     PDI <- PDI_area/max_dist
     
+    sps$area <- PDI_area
     sps$PDI <- PDI
     sps$max_dist <- max_dist
     
