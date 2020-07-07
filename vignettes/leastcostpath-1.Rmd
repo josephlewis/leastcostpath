@@ -12,7 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# R package Least Cost Path: Methods for modelling movement in the landscape
+# R package: Least Cost Path: Methods for modelling movement in the landscape
 
 # 1. Introduction
 
@@ -141,7 +141,7 @@ plot(cc)
 # 6. Example 5: From Everywhere to Everywhere (Slope and Traversal Across Slope)
 
 ```{r fete, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
-locs <- sp::spsample(r_extent,n=9,'regular')
+locs <- sp::spsample(r_extent,n=4,'regular')
 
 lcp_network <- create_slope_cs(dem = r, cost_function = 'tobler', neighbours = 16) %>%
   "*" (create_traversal_cs(dem = r, neighbours = 16)) %>%
