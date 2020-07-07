@@ -1,5 +1,5 @@
 ---
-title: "R package Least Cost Path: Least Cost Path Network Examples"
+title: "leastcostpath-2"
 author: "Joseph Lewis"
 date: "`r Sys.Date()`"
 output:
@@ -11,6 +11,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+# R package Least Cost Path: Least Cost Path Network Examples
 
 # 1. Introduction
 
