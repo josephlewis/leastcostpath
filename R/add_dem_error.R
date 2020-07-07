@@ -69,7 +69,7 @@ add_dem_error <- function(dem, rmse, type = "simple") {
     
     if (type == "simple") {
         
-        error <- stats::rnorm(n = raster::ncell(dem), mean = 0, sd = rmse)
+        error <- stats::rnorm(n = raster::ncell(dem), mean = 0, sd = abs(rmse))
         
         dem <- dem + error
         
