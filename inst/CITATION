@@ -1,9 +1,0 @@
-citHeader("To cite leastcostpath in publications use:")
-
-citEntry(
-  entry    = "Software",
-  title    = "leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (Version 1.7.4)",
-  author   = "Joseph Lewis",
-  year     = "2020",
-  url      = "https://cran.r-project.org/package=leastcostpath",
-  textVersion = paste("Lewis, J. (2020).", "leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (Version 1.7.4).", "Available at: https://cran.r-project.org/package=leastcostpath"))
