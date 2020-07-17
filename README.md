@@ -1,7 +1,7 @@
 leastcostpath - version 1.7.4 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
-[![CRAN Downloads TOtal](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
+[![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
 =============================
 
 The R library <b>leastcostpath</b> provides the functionality to calculate Cost Surfaces based on multiple cost functions that approximate the difficulty of moving across a landscape. Furthermore, the attraction/repulsion of landscape features can be incorporated into the Cost Surfaces, as well as barriers that inhibit movement. 
@@ -201,7 +201,7 @@ Versioning
 -   version 1.2.3
       * Added create_lcp_network vignette
       * Fixed create_lcp_density issue where raster values of 1 would become 0 when rescale is TRUE      
-      * Addded Tobler offpath cost function
+      * Added Tobler offpath cost function
       * Added irmischer-clarke male/female cost function
       * Added irmischer-clarke offpath male/female cost function
       * Added llobera-sluckin cost function
@@ -220,7 +220,7 @@ Versioning
 -   version 1.3.7
       * Fixed neighbour issue with cost_matrix 
 -   version 1.3.8
-      * Least Cost Paths created using the create_FETE_lcps function are automically ordered low-to-high cost if the cost_distance argument is TRUE 
+      * Least Cost Paths created using the create_FETE_lcps function are automatically ordered low-to-high cost if the cost_distance argument is TRUE 
       * Least Cost Paths created using the create_CCP_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
       * Least Cost Paths created using the create_banded_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
 -   version 1.3.9

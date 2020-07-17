@@ -30,7 +30,7 @@
 * Implemented create_stochastic_lcp. Based on the method proposed by Pinto and Keitt (2009). See function documentation for reference
 
 # 1.3.8 (1st June 2020)
-* Least Cost Paths created using the create_FETE_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
+* Least Cost Paths created using the create_FETE_lcps are automaticaly ordered low-to-high cost if the cost_distance argument is TRUE 
 * Least Cost Paths created using the create_CCP_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
 * Least Cost Paths created using the create_banded_lcps are automically ordered low-to-high cost if the cost_distance argument is TRUE 
 
@@ -55,7 +55,7 @@
 # 1.2.3 (28 April 2020)
 * Added create_lcp_network vignette
 * Fixed create_lcp_density issue where raster values of 1 would become 0 when rescale is TRUE
-* Addded Tobler's offpath cost function
+* Added Tobler's offpath cost function
 * Added irmischer-clarke male/female cost function
 * Added irmischer-clarke offpath male/female cost function
 * Added llobera-sluckin cost function
