@@ -6,8 +6,10 @@
 #'
 #' @param rmse \code{numeric}. Vertical Root Mean Square Error of the Digital Elevation Model
 #'
-#' @param type \code{character}. Method for creating random field based on vertical error information. Current implementations are 'simple' only. Default is 'simple'. See Details for more information.
-
+#' @param type \code{character}. Methods for creating random fields. Argument currently accepts 'unfiltered' or 'autocorrelated'. Default is 'autocorrelated'. See details for more information
+#'
+#' @param confidence_level \code{numeric}. Assuming a normal distribution of vertical error, the supplied rmse can be multipled by the confidence level z score in order to calculate confidence intervals that are used when generating the random error field. The confidence level denotes the probability that the true elevation value for each cell falls within a range of values (i.e. the confidence interval).
+#'
 #'@references
 #'
 #'Fisher, P. F., Tate, N. J. (2006). Causes and consequences of error in digital elevation models. Progress in Physical Geography, 30(4), 467-489. \url{https://doi.org/10.1191/0309133306pp492ra}
@@ -28,9 +30,9 @@
 #'
 #' Digital Elevation Models are representations of the earth's surface (DEM) and are subject to error (Wechsler, 1999). However the impact of the error on the results of analyses is often not evaluated (Hunter and Goodchild, 1997; Wechsler, 1999).
 #'
-#' The add_dem_error function with the type argument as 'simple' incorporates vertical error into the supplied Digital Elevation Model by assuming that the error for each cell follows a gaussian (normal) distribution around the measured elevation value and the global Root Mean Square Error (RMSE) estimating the local error variance around this values (Fisher and Tate, 2006).
+#' The add_dem_error function with the type argument as 'unfiltered' incorporates vertical error into the supplied Digital Elevation Model by assuming that the error for each cell follows a gaussian (normal) distribution around the measured elevation value and the global Root Mean Square Error (RMSE) estimating the local error variance around this values (Fisher and Tate, 2006). However, this assumes that the vertical error is random and does not show spatial autocorrelation.
 #'
-#' Although this method does not account for spatial autocorrelation, of which is generally recognised to be present in vertical errors (Hunter and Goodchild, 1997; Wechsler, 1999), the lack of further information beyond RMSE often necessitates its use (Wechsler, 2003; Wechsler, 2007). However, it should be noted that by assuming the vertical error for each cell is random, the resultant DEM incorporating vertical error can be considered of as a 'worst-case-scenario' as it provides the largest potential errors (Wechsler, 1999; Wechsler and Kroll, 2006).
+#' The type argument 'autocorrelated' (default) increases the spatial autocorrelation by applying a mean-low-pass 3x3 filter over the surface (Wechsler and Kroll, 2006).
 #'
 #' Examples of RMSE for various datasets:
 #'
@@ -41,6 +43,7 @@
 #' Ordnance Survey OS Terrain 5 has a maximum RMSE of 2.5m
 #'
 #' Ordnance Survey OS Terrain 50 has a maximum RMSE of 4m
+#'
 #'
 #' @author Joseph Lewis
 #'
@@ -57,23 +60,56 @@
 #'
 #'r_error <- add_dem_error(r, rmse = 9.73)
 
-add_dem_error <- function(dem, rmse, type = "simple") {
+add_dem_error <- function(dem, rmse, type = "unfiltered", confidence_level) {
     
     if (!inherits(dem, "RasterLayer")) {
         stop("dem argument is invalid. Expecting a RasterLayer object")
     }
     
-    if (!type %in% "simple") {
+    allowed_types <- c("unfiltered", "autocorrelated")
+    
+    if (!type %in% allowed_types) {
         stop("type argument is invalid. See details for more information")
     }
     
-    if (type == "simple") {
+    error_mean <- 0
+    error_sd <- abs(rmse)
+    
+    dem_error <- dem
+    dem_error[] <- stats::rnorm(n = raster::ncell(dem), mean = error_mean, sd = error_sd)
+    
+    if (type == "autocorrelated") {
         
-        error <- stats::rnorm(n = raster::ncell(dem), mean = 0, sd = abs(rmse))
+        dem_error <- raster::focal(dem_error, w = matrix(1/9, nrow = 3, ncol = 3), na.rm = TRUE, pad = TRUE)
         
-        dem <- dem + error
+        # rescale to mean of 0 and standard deviation of RMSE of DEM
+        dem_error[] <- base::scale(raster::values(dem_error)) * rmse
         
     }
+    
+    if (!missing(confidence_level)) {
+        
+        cl <- c(70, 75, 80, 90, 95, 99)
+        z_score <- c(1.04, 1.15, 1.28, 1.645, 1.96, 2.58)
+        
+        if (!confidence_level %in% cl) {
+            stop("confidence_level argument is invalid. Expects value of 70, 75, 80, 90, 95, or 99.")
+        }
+        
+        cl_match <- base::match(confidence_level, cl)
+        
+        rmse_upper <- error_mean + (rmse * z_score[cl_match])
+        rmse_lower <- error_mean - (rmse * z_score[cl_match])
+        
+        while (sum(raster::values(dem_error) > rmse_upper | raster::values(dem_error) < rmse_lower, na.rm = TRUE) != 0) {
+            dem_error[raster::values(dem_error) > rmse_upper | raster::values(dem_error) < rmse_lower] <- stats::rnorm(sum(raster::values(dem_error) > rmse_upper | raster::values(dem_error) < 
+                rmse_lower, na.rm = TRUE), mean = error_mean, sd = error_sd)
+            
+        }
+        
+    }
+    
+    dem <- dem + dem_error
     
     return(dem)
     
