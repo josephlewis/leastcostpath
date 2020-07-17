@@ -8,6 +8,8 @@
 #'
 #' @param rescale \code{logical}. if TRUE raster values scaled to between 0 and 1. Default is FALSE
 #'
+#' @param rasterize_as_points \code{logical}. if TRUE (default) then the coordinates of the Least Cost Paths are rasterised. If FALSE Least Cost Paths are represented as lines and rasterised. As the Least Cost Path SpatialLines are converted from vector to raster, the Least Cost Paths represented as lines may result in the width of the rasterized line being greater than one cell, particularly at places of diagonal movement. Conversely, the Least Cost Paths represented as points (default) will result in some raster cells not being counted in the resultant RasterLayer. A greater number of cells not counted is expected when the number of neighbours used when creating the cost surface increases. NOTE: rasterisation of Lines takes much longer than rasterizing points.
+#'
 #' @return \code{RasterLayer} (raster package). The resultant object is the cumulatively combined Least Cost Paths. This identifies routes of preferential movement within the landscape.
 #'
 #' @author Joseph Lewis
@@ -40,7 +42,7 @@
 #'
 #'cumulative_lcps <- create_lcp_density(lcps = lcp_network, raster = r, rescale = FALSE)
 
-create_lcp_density <- function(lcps, raster, rescale = FALSE) {
+create_lcp_density <- function(lcps, raster, rescale = FALSE, rasterize_as_points = TRUE) {
     
     if (!inherits(lcps, c("SpatialLines", "SpatialLinesDataFrame"))) {
         stop("lcps expects a SpatialLines* object")
@@ -50,11 +52,13 @@ create_lcp_density <- function(lcps, raster, rescale = FALSE) {
         stop("raster expects a RasterLayer object")
     }
     
-    # lcp_pts <- methods::as(lcps, 'SpatialPoints')
+    if (rasterize_as_points) {
+        
+        lcps <- methods::as(lcps, "SpatialPoints")
+        
+    }
     
-    lcp_pts <- lcps
-    
-    cumulative_pts <- raster::rasterize(x = lcp_pts, y = raster, fun = "count")
+    cumulative_pts <- raster::rasterize(x = lcps, y = raster, fun = "count")
     
     cumulative_pts[is.na(cumulative_pts)] <- 0
     
