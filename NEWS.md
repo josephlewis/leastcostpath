@@ -1,3 +1,9 @@
+# 1.7.4 (17th July 2020)
+* Allow for the rasterisation of SpatialLines in create_lcp_density through the rasterize_as_points argument. If FALSE, SpatialLines are rasterised. If TRUE, SpatialLines converted to SpatialPoints and rasterised. See function documentation for more information.
+
+# 1.7.3 (17th July 2020)
+* Implemented type 'autocorrelated' and the calculation of probability intervals in add_dem_error
+
 # 1.7.2 (7th July 2020)
 * Implemented add_dem_error. See function documentation for more information and usage
 

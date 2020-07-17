@@ -14,13 +14,13 @@ This package is built on classes and functions provided in the R package gdistan
 
 *Functions currently in development:*
 
-* add_dem_error()
 * force_isotropy()
 
 *Functions recently added:*
 
 * crop_cs()
 * PDI_validation()
+* add_dem_error()
 
 Getting Started
 ---------------
@@ -244,7 +244,11 @@ Versioning
       * Amended PDI_validation function to return area between lines
 -   version 1.7.2
       * Implemented add_dem_error. See function documentation for more information and usage
-
+-   version 1.7.3
+      * Implemented type 'autocorrelated' and the calculation of probability intervals in add_dem_error
+-   version 1.7.4
+      * Allow for the rasterisation of SpatialLines in create_lcp_density through the rasterize_as_points argument. If FALSE, SpatialLines are rasterised. If TRUE, SpatialLines converted to SpatialPoints and rasterised. See function documentation for more information.
+      
 Authors
 -------
 
@@ -255,4 +259,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.2)
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.4). 
+    Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html
