@@ -42,11 +42,8 @@ Usage
     r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
         
     slope_cs <- create_slope_cs(r, cost_function = 'tobler')
-    traverse_cs <- create_traversal_cs(r)
-    final_cost_cs <- slope_cs * traverse_cs
     
     slope_cs_10 <- create_slope_cs(r, cost_function = 'tobler', max_slope = 10)
-    final_cost_cs_10 <- slope_cs_10 * traverse_cs
     
 #### Least Cost Path computation
 
@@ -56,15 +53,15 @@ Usage
     loc2 = cbind(2667800, 6479400)
     loc2 = sp::SpatialPoints(loc2)
 
-    lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1, destination = loc2, directional = FALSE)
+    lcps <- create_lcp(cost_surface = slope_cs, origin = loc1, destination = loc2, directional = FALSE)
   
-    plot(raster(final_cost_cs))
+    plot(raster(slope_cs))
     plot(lcps[1,], add = T, col = "red") # location 1 to location 2
     plot(lcps[2,], add = T, col = "blue") # location 2 to location 1
     
 #### Cost Corridors
 
-    cc <- create_cost_corridor(final_cost_cs, loc1, loc2)
+    cc <- create_cost_corridor(slope_cs, loc1, loc2)
     
     plot(cc)
     plot(loc1, add = T)
@@ -74,10 +71,10 @@ Usage
 
     locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=10,'regular')
     
-    lcp_network <- create_FETE_lcps(cost_surface = final_cost_cs, locations = locs,
+    lcp_network <- create_FETE_lcps(cost_surface = slope_cs, locations = locs,
     cost_distance = FALSE, parallel = FALSE)
     
-    plot(raster(final_cost_cs))
+    plot(raster(slope_cs))
     plot(locs, add = T)
     plot(lcp_network, add = T)
     
@@ -85,10 +82,10 @@ Usage
 
     locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=1,'random')
 
-    lcp_network <- create_CCP_lcps(cost_surface = final_cost_cs, location = locs, distance = 50,
+    lcp_network <- create_CCP_lcps(cost_surface = slope_cs, location = locs, distance = 50,
     radial_points = 10, cost_distance = FALSE, parallel = FALSE)
     
-    plot(raster(final_cost_cs))
+    plot(raster(slope_cs))
     plot(locs, add = T)
     plot(lcp_network, add = T)
     
@@ -96,10 +93,10 @@ Usage
 
     locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=1,'random')
 
-    lcp_network <- create_banded_lcps(cost_surface = final_cost_cs, location = locs, min_distance = 20,
+    lcp_network <- create_banded_lcps(cost_surface = slope_cs, location = locs, min_distance = 20,
     max_distance = 50, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
     
-    plot(raster(final_cost_cs))
+    plot(raster(slope_cs))
     plot(locs, add = T)
     plot(lcp_network, add = T)
 
