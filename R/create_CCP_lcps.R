@@ -4,7 +4,7 @@
 #'
 #' @param cost_surface \code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation
 #'
-#' @param location \code{SpatialPoints} (sp package). Location to which the Least Cost Paths are calculated to. Only the first row is taken into account
+#' @param location \code{SpatialPoints*} (sp package). Location from which the Least Cost Paths are calculated. If there are multiple SpatialPoints in the supplied data, only the first SpatialPoint is taken into account
 #'
 #' @param distance \code{numeric} value. Distance from centre location to the radial locations
 #'
@@ -57,6 +57,10 @@ create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cos
         stop("distance argument is invalid. Expecting a numeric vector object")
     }
     
+    if (distance <= 0) {
+        stop("distance argument is invalid. Expecting a numeric value greater than 0")
+    }
+    
     if (!inherits(radial_points, "numeric")) {
         stop("radial argument is invalid. Expecting a numeric vector object")
     }
@@ -69,7 +73,7 @@ create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cos
     
     location <- methods::as(location, "SpatialPoints")
     
-    circle <- gBuffer(location, byid = FALSE, width = distance)
+    circle <- rgeos::gBuffer(location, byid = FALSE, width = distance)
     
     circle <- methods::as(circle, "SpatialLines")
     
@@ -77,17 +81,23 @@ create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cos
     
     all_pts <- rbind(location, circle_pts)
     
-    ext <- methods::as(raster::extent(cost_surface), "SpatialPolygons")
+    raster::crs(all_pts) <- raster::crs(cost_surface)
     
-    ext <- gBuffer(spgeom = ext, byid = FALSE, width = -raster::res(cost_surface)[1] * 2)
+    ext <- methods::as(raster::extent(cost_surface), "SpatialPolygons")
     
     raster::crs(ext) <- raster::crs(cost_surface)
     
     all_pts <- raster::crop(all_pts, ext)
     
+    if (length(all_pts) <= 1) {
+        stop("All Radial Points outside of Raster extent. Decrease distance argument value to ensure Radial Points are inside Raster extent.")
+    }
+    
     network <- cbind(seq_along(all_pts), rep(x = 1, times = length(all_pts)))
     
     network <- network[network[, 1] != network[, 2], ]
+    
+    network <- matrix(network, ncol = 2)
     
     if (parallel) {
         
