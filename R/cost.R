@@ -7,8 +7,8 @@
 
 cost <- function(cost_function, adj, crit_slope) {
     
-    cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 
-        "wheeled transport", "herzog", "llobera-sluckin")
+    cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", 
+        "modified tobler", "wheeled transport", "herzog", "llobera-sluckin")
     
     if (!cost_function %in% cfs) {
         stop("cost_function argument is invalid. See details for accepted cost functions")
