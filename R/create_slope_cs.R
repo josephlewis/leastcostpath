@@ -1,6 +1,6 @@
 #' Create a slope based cost surface
 #'
-#' Creates a cost surface based on the difficulty of moving up/down slope. This function provides the choice of multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. Maximum percentage slope possible for traversal can also be supplied.
+#' Creates a cost surface based on the difficulty of moving up/down slope. This function provides the choice of multiple isotropic and anisotropic cost functions that estimate human movement across a landscape. Maximum percentage slope possible for traversal can also be supplied. Lastly, geographical slant exaggeration can be accounted for.
 #'
 #' @details
 #'
@@ -18,6 +18,11 @@
 #'
 #' Llobera and Sluckin (2007) cost function approximates the metabolic energy expenditure in KJ/(m*kg) when moving across a landscape.
 #'
+#' Exaggeration
+#'
+#' When observers face directly toward a hill, their awareness of the slant of the hill is greatly overestimated (Pingel, 2009;  Proffitt, 1995; Proffitt, 2001). Pingel (2009) identified that downhill slopes are overestimated at approximately 2.3 times, whilst uphill slopes are overestimated at 2 times.
+#'
+#'
 #' @param dem \code{RasterLayer} (raster package). Digital Elevation Model
 #'
 #' @param cost_function \code{character}. Cost Function used in the Least Cost Path calculation. Implemented cost functions include 'tobler', 'tobler offpath', 'irmischer-clarke male', 'irmischer-clarke offpath male', 'irmischer-clarke female', 'irmischer-clarke offpath female', 'modified tobler', 'wheeled transport', 'herzog', 'llobera-sluckin'. Default is 'tobler'. See Details for more information
@@ -27,6 +32,8 @@
 #' @param crit_slope \code{numeric} value. Critical Slope (in percentage) is 'the transition where switchbacks become more effective than direct uphill or downhill paths'. Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Default value is 12, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012). Critical slope only used in 'wheeled transport' cost function
 #'
 #' @param max_slope \code{numeric} value. Maximum percentage slope that is traversable. Slope values that are greater than the specified max_slope are given a conductivity value of 0. Default is NULL
+#'
+#' @param exaggeration \code{logical}. if TRUE, positive slope values (ie. up-hill movement) multiplied by 1.99 and negative slope values (ie. down-hill movement) multiplied by 2.31. Based on how observers overestimate the slant of a hill. See Details for more information
 #'
 #' @return \code{TransitionLayer} (gdistance package) numerically expressing the difficulty of moving up/down slope based on the cost function provided in the cost_function argument.
 #'
@@ -45,7 +52,7 @@
 #' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 #' slope_cs <- create_slope_cs(r, cost_function = 'tobler', neighbours = 16, max_slope = NULL)
 
-create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit_slope = 12, max_slope = NULL) {
+create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit_slope = 12, max_slope = NULL, exaggeration = FALSE) {
     
     if (!inherits(dem, "RasterLayer")) {
         stop("dem argument is invalid. Expecting a RasterLayer object")
@@ -65,7 +72,7 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         
     }
     
-    slope <- calculate_slope(dem = dem, neighbours = neighbours)
+    slope <- calculate_slope(dem = dem, neighbours = neighbours, exaggeration = exaggeration)
     
     adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
     
