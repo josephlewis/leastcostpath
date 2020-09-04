@@ -1,6 +1,5 @@
 language: r
 sudo: required
-dist: Trusty
 cache: packages
 
 before_install:
