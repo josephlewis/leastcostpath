@@ -31,17 +31,13 @@
 #'
 #' slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 #'
-#' traverse_cs <- create_traversal_cs(r, neighbours = 16)
-#'
-#' final_cost_cs <- slope_cs * traverse_cs
-#'
 #' loc1 = cbind(2667670, 6479000)
 #' loc1 = sp::SpatialPoints(loc1)
 #'
 #' loc2 = cbind(2667800, 6479400)
 #' loc2 = sp::SpatialPoints(loc2)
 #'
-#' lcps <- create_lcp(cost_surface = final_cost_cs, origin = loc1,
+#' lcps <- create_lcp(cost_surface = slope_cs, origin = loc1,
 #' destination = loc2, directional = FALSE, cost_distance = FALSE)
 
 create_lcp <- function(cost_surface, origin, destination, directional = FALSE, cost_distance = FALSE) {
