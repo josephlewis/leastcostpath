@@ -1,3 +1,7 @@
+# 1.7.5 (4th September 2020)
+* Fixed issue with create_banded_lcps and create_CCP_lcps to filter to first SpatialPoint in the supplied SpatialPoints* 
+* Implemented geographical slant in create_slope_cs. See function documentation for more information.
+
 # 1.7.4 (17th July 2020)
 * Allow for the rasterisation of SpatialLines in create_lcp_density through the rasterize_as_points argument. If FALSE, SpatialLines are rasterised. If TRUE, SpatialLines converted to SpatialPoints and rasterised. See function documentation for more information.
 

@@ -1,4 +1,4 @@
-leastcostpath - version 1.7.4 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.7.5 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -44,6 +44,8 @@ Usage
     slope_cs <- create_slope_cs(r, cost_function = 'tobler')
     
     slope_cs_10 <- create_slope_cs(r, cost_function = 'tobler', max_slope = 10)
+    
+    slope_cs_exagg <- create_slope_cs(r, cost_function = 'tobler', exaggeration = TRUE)
     
 #### Least Cost Path computation
 
@@ -245,7 +247,10 @@ Versioning
       * Implemented type 'autocorrelated' and the calculation of probability intervals in add_dem_error
 -   version 1.7.4
       * Allow for the rasterisation of SpatialLines in create_lcp_density through the rasterize_as_points argument. If FALSE, SpatialLines are rasterised. If TRUE, SpatialLines converted to SpatialPoints and rasterised. See function documentation for more information.
-      
+-   version 1.7.5
+      * Fixed issue with create_banded_lcps and create_CCP_lcps to filter to first SpatialPoint in the supplied SpatialPoints* 
+      * Implemented geographical slant in create_slope_cs. See function documentation for more information.
+ 
 Authors
 -------
 
@@ -256,5 +261,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.4). 
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.5). 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html
