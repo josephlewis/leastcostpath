@@ -11,9 +11,9 @@ create_lcp_density(lcps, raster, rescale = FALSE, rasterize_as_points = TRUE)
 
 \item{raster}{\code{RasterLayer} (raster package). This is used to derive the resolution, extent, and spatial reference system to be used when calculating the cumulative least cost path raster}
 
-\item{rescale}{\code{logical}. if TRUE raster values scaled to between 0 and 1. Default is FALSE}
+\item{rescale}{\code{logical}. if TRUE, raster values scaled to between 0 and 1. Default is FALSE}
 
-\item{rasterize_as_points}{\code{logical}. if TRUE (default) then the coordinates of the Least Cost Paths are rasterised. If FALSE Least Cost Paths are represented as lines and rasterised. As the Least Cost Path SpatialLines are converted from vector to raster, the Least Cost Paths represented as lines may result in the width of the rasterized line being greater than one cell, particularly at places of diagonal movement. Conversely, the Least Cost Paths represented as points (default) will result in some raster cells not being counted in the resultant RasterLayer. A greater number of cells not counted is expected when the number of neighbours used when creating the cost surface increases. NOTE: rasterisation of Lines takes much longer than rasterizing points.}
+\item{rasterize_as_points}{\code{logical}. if TRUE (default) then the coordinates of the Least Cost Path vertices are rasterised. If FALSE Least Cost Paths are represented as lines and rasterised. As the Least Cost Path SpatialLines are converted from vector to raster, the Least Cost Paths represented as lines may result in the width of the rasterized line being greater than one cell, particularly at places of diagonal movement. Conversely, the Least Cost Paths represented as points (default) will result in some raster cells not being counted in the resultant RasterLayer. A greater number of cells not counted is expected when the number of neighbours used when creating the cost surface increases. NOTE: rasterisation of Lines takes much longer than rasterizing points.}
 }
 \value{
 \code{RasterLayer} (raster package). The resultant object is the cumulatively combined Least Cost Paths. This identifies routes of preferential movement within the landscape.

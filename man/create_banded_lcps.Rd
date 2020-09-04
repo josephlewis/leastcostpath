@@ -17,7 +17,7 @@ create_banded_lcps(
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation}
 
-\item{location}{\code{SpatialPoints*} (sp package). Location from which the Least Cost Paths are calculated. Only the first cell is taken into account}
+\item{location}{\code{SpatialPoints*} (sp package). Location from which the Least Cost Paths are calculated. If there are multiple SpatialPoints in the supplied data, only the first SpatialPoint is taken into account}
 
 \item{min_distance}{\code{numeric} value. minimum distance from centre location}
 
@@ -37,16 +37,16 @@ Calculates Least Cost Paths from centre location to random locations within a sp
 }
 \examples{
 
-#r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
+r <- raster::raster(nrow=50, ncol=50,  xmn=0, xmx=50, ymn=0, ymx=50, crs='+proj=utm')
 
-#r[] <- stats::runif(1:length(r))
+r[] <- stats::runif(1:length(r))
 
-#slope_cs <- create_slope_cs(r, cost_function = 'tobler')
+slope_cs <- create_slope_cs(r, cost_function = 'tobler')
 
-#locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=1,'random')
+locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=1,'random')
 
-#lcp_network <- create_banded_lcps(cost_surface = final_cost_cs, location = locs, min_distance = 20,
-#max_distance = 50, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
+lcp_network <- create_banded_lcps(cost_surface = slope_cs, location = locs, min_distance = 5,
+max_distance = 25, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 
 }
 \references{

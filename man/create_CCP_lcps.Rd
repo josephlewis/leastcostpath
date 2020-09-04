@@ -16,7 +16,7 @@ create_CCP_lcps(
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} (gdistance package). Cost surface to be used in Least Cost Path calculation}
 
-\item{location}{\code{SpatialPoints} (sp package). Location to which the Least Cost Paths are calculated to. Only the first row is taken into account}
+\item{location}{\code{SpatialPoints*} (sp package). Location from which the Least Cost Paths are calculated. If there are multiple SpatialPoints in the supplied data, only the first SpatialPoint is taken into account}
 
 \item{distance}{\code{numeric} value. Distance from centre location to the radial locations}
 
