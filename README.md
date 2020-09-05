@@ -162,6 +162,11 @@ Usage
     create_FETE_lcps(cost_surface = final_cost_cs, locations = locs,cost_distance = FALSE, parallel = FALSE) %>%
     create_cumulative_lcps(lcps = ., raster = r, rescale = FALSE)
     
+Case Studies Using _leastcostpath_
+--------
+
+Ludwig, B. Reconstructing the Ancient Route Network in Pergamon's Surroundings. Land 2020, 9, 241. [https://doi.org/10.3390/land9080241](https://doi.org/10.3390/land9080241)
+    
 Feedback
 --------
 
