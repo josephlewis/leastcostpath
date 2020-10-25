@@ -272,6 +272,7 @@ Versioning
       * Implemented geographical slant in create_slope_cs. See function documentation for more information.
 -   version 1.7.6    
     * Fixed issue in PDI_Validation where SpatialPolygon was not created properly due to SpatialPoints not being seen as identical. Corrected by removing header name via base::unname.
+    * Fixed issue in PDI_Validation where SpatialPolygon has an Area of Zero and so is not a 'true' Polygon. In the case, PDI_validation returns a SpatialPolygon with data.frame containing an Area and PDI value of Zero.
  
 Authors
 -------
