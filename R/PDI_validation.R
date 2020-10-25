@@ -62,13 +62,17 @@ PDI_validation <- function(lcp, comparison) {
     lcp_coords <- sp::coordinates(lcp_pts)
     comparison_coords <- sp::coordinates(comparison_pts)
     
-    if (!identical(lcp_coords[1, ], comparison_coords[1, ])) {
+    lcp_coords <- base::unname(lcp_coords)
+    comparison_coords <- base::unname(comparison_coords)
+    
+    if (base::identical(lcp_coords[1, ], comparison_coords[1, ])) {
         
-        # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates. This is ensure that the order of
-        # coordinates is correct when creating the polygon between the two SpatialLines
+        # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates. This is ensure that the order
+        # of coordinates is correct when creating the polygon between the two SpatialLines
         comparison_coords <- comparison_coords[nrow(comparison_coords):1, ]
         
     }
+    
     
     start <- lcp_coords[1, ]
     end <- lcp_coords[base::nrow(lcp_coords), ]
@@ -79,7 +83,7 @@ PDI_validation <- function(lcp, comparison) {
     ps = sp::Polygons(list(p), 1)
     sps = sp::SpatialPolygons(list(ps), proj4string = crs(lcp))
     
-    if (!suppressWarnings(gIsValid(sps))) {
+    if (!suppressWarnings(rgeos::gIsValid(sps))) {
         
         sps <- rgeos::gPolygonize(rgeos::gNode(rgeos::gBoundary(sps)))
         
@@ -89,15 +93,15 @@ PDI_validation <- function(lcp, comparison) {
     
     PDI_area <- rgeos::gArea(sps, byid = FALSE)
     
-    max_dist <- raster::pointDistance(p1 = start, p2 = end, type = "Euclidean", lonlat = FALSE)
+    max_distance <- raster::pointDistance(p1 = start, p2 = end, type = "Euclidean", lonlat = FALSE)
     
-    PDI <- PDI_area/max_dist
+    PDI <- PDI_area/max_distance
     
     sps$area <- PDI_area
     sps$PDI <- PDI
-    sps$max_dist <- max_dist
+    sps$max_distance <- max_distance
     
-    norm_PDI <- (PDI_area/max_dist)/max_dist * 100
+    norm_PDI <- (PDI_area/max_distance)/max_distance * 100
     
     sps$normalised_PDI <- norm_PDI
     

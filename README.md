@@ -1,4 +1,4 @@
-leastcostpath - version 1.7.5 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.7.6 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -125,7 +125,22 @@ Usage
     origin = locs[1,], destination = locs[2,], directional = FALSE))
     
     stochastic_lcp <- do.call(rbind, stochastic_lcp)
+    
+#### Probabilistic Least Cost Path
 
+    locs <- sp::spsample(as(raster::extent(r), 'SpatialPolygons'),n=2,'random')
+
+    RMSE <- 5
+    n <- 10
+    
+    for (i in 1:n) {
+    
+    lcps[[i]] <- leastcostpath::create_lcp(cost_surface = leastcostpath::create_slope_cs(dem = leastcostpath::add_dem_error(dem = r, rmse = RMSE, type = "autocorrelated"), cost_function = "tobler", neighbours = 16), origin = locs[1,], destination = locs[2,], directional = FALSE, cost_distance = TRUE)
+    
+    }
+    
+    lcps <- do.call(rbind, lcps)
+    
 #### Wide Least Cost Path
 
     n <- 3
@@ -255,6 +270,8 @@ Versioning
 -   version 1.7.5
       * Fixed issue with create_banded_lcps and create_CCP_lcps to filter to first SpatialPoint in the supplied SpatialPoints* 
       * Implemented geographical slant in create_slope_cs. See function documentation for more information.
+-   version 1.7.6    
+    * Fixed issue in PDI_Validation where SpatialPolygon was not created properly due to SpatialPoints not being seen as identical. Corrected by removing header name via base::unname.
  
 Authors
 -------
@@ -266,5 +283,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.5). 
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.6). 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html

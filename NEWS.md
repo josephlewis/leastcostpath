@@ -1,3 +1,6 @@
+# 1.7.6 (25th October 2020)
+* Fixed issue in PDI_Validation where SpatialPolygon was not created properly due to SpatialPoints not being seen as identical. Corrected by removing header name via base::unname.
+
 # 1.7.5 (4th September 2020)
 * Fixed issue with create_banded_lcps and create_CCP_lcps to filter to first SpatialPoint in the supplied SpatialPoints* 
 * Implemented geographical slant in create_slope_cs. See function documentation for more information.
