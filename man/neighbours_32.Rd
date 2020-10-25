@@ -5,7 +5,7 @@
 \alias{neighbours_32}
 \title{32 Neighbourhood matrices based on Kovanen and Sarjakoski (2015)}
 \format{
-An object of class \code{matrix} (inherits from \code{array}) with 7 rows and 7 columns.
+An object of class \code{matrix} with 7 rows and 7 columns.
 }
 \usage{
 neighbours_32
