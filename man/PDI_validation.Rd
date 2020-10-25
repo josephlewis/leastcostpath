@@ -4,12 +4,14 @@
 \alias{PDI_validation}
 \title{Calculate Path Deviation Index}
 \usage{
-PDI_validation(lcp, comparison)
+PDI_validation(lcp, comparison, snap = TRUE)
 }
 \arguments{
 \item{lcp}{\code{SpatialLines*} (sp package). Least Cost Path to assess the accuracy of. Expects object of class SpatialLines.}
 
 \item{comparison}{\code{SpatialLines*} to validate the Least Cost Path against. Expects object of class SpatialLines.}
+
+\item{snap}{\code{logical}. If TRUE (default) origin and destination points of the Least Cost path are snapped to the Origin and Destination points of the comparison SpatialLine. This ensures that the SpatialPolygon that is returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and Destination of the comparison SpatialLine is not restricted by the Raster Grid.}
 }
 \value{
 \code{SpatialPolygonsDataFrame} (sp package). Area between the lcp and comparison SpatialLines* with a data.frame containing the Area, PDI, normalised PDI and the distance of the shortest path (i.e. Euclidean) between the origin and destination

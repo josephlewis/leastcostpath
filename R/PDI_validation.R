@@ -6,6 +6,8 @@
 #'
 #' @param comparison \code{SpatialLines*} to validate the Least Cost Path against. Expects object of class SpatialLines.
 #'
+#' @param snap \code{logical}. If TRUE (default) origin and destination points of the Least Cost path are snapped to the Origin and Destination points of the comparison SpatialLine. This ensures that the SpatialPolygon that is returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and Destination of the comparison SpatialLine is not restricted by the Raster Grid.
+#'
 #' @details
 #'
 #' The Path Deviation Index measures the deviation (i.e. the spatial separation) between a pair of paths and aims to overcome the shortcomings of measuring the percentage of coverage of a least cost path from a comparison path (for example, the validation_lcp function).
@@ -46,7 +48,7 @@
 #'
 #'val_lcp <- PDI_validation(lcp = line1, line2)
 
-PDI_validation <- function(lcp, comparison) {
+PDI_validation <- function(lcp, comparison, snap = TRUE) {
     
     if (!inherits(lcp, "SpatialLines")) {
         stop("lcp argument is invalid. Expecting SpatialLines* object")
@@ -64,6 +66,13 @@ PDI_validation <- function(lcp, comparison) {
     
     lcp_coords <- base::unname(lcp_coords)
     comparison_coords <- base::unname(comparison_coords)
+    
+    if (snap) {
+        
+        lcp_coords[1, ] <- comparison_coords[1, ]
+        lcp_coords[nrow(lcp_coords), ] <- comparison_coords[nrow(comparison_coords), ]
+        
+    }
     
     if (base::identical(lcp_coords[1, ], comparison_coords[1, ])) {
         
