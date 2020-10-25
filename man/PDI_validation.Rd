@@ -12,19 +12,19 @@ PDI_validation(lcp, comparison)
 \item{comparison}{\code{SpatialLines*} to validate the Least Cost Path against. Expects object of class SpatialLines.}
 }
 \value{
-\code{SpatialPolygonsDataFrame} (sp package). Area between the lcp and comparison SpatialLines* with a data.frame containing the PDI, normalised PDI and the distance of the shortest path between the origin and destination
+\code{SpatialPolygonsDataFrame} (sp package). Area between the lcp and comparison SpatialLines* with a data.frame containing the Area, PDI, normalised PDI and the distance of the shortest path (i.e. Euclidean) between the origin and destination
 }
 \description{
 Calculates the Path Deviation Index of a Least Cost Path and a comparison SpatialLines using the method proposed by Jan et al. (1999).
 }
 \details{
-The Path Deviation Index measues the deviation (i.e. the spatial separation between paths) between a pair of paths and aims to overcome the shortcomings of measuring the percentage of coverage of a least cost path from a comparison path (for example, the validation_lcp function).
+The Path Deviation Index measures the deviation (i.e. the spatial separation) between a pair of paths and aims to overcome the shortcomings of measuring the percentage of coverage of a least cost path from a comparison path (for example, the validation_lcp function).
 
-The index is defined as the area between paths divided by the distance of the shortest path between an origin and destination. The index can be interpreted as the average distance between the paths.
+The index is defined as the area between paths divided by the distance of the shortest path (i.e. Euclidean) between an origin and destination. The index can be interpreted as the average distance between the paths.
 
 \code{Path Deviation Index  = Area between paths / length of shortest path}
 
-The value of the Path Deviation Index depends on the length of the path and makes comparison of PDIs difficult for paths with different origins and destinations. This can be overcome by normalising the Path Deviation Index by the distance of the shortest path between an origin and destination.
+The value of the Path Deviation Index depends on the length of the path and makes comparison of PDIs difficult for paths with different origins and destinations. This can be overcome by normalising the Path Deviation Index by the distance of the shortest path (i.e. Euclidean) between an origin and destination.
 
 \code{Normalised PDI = PDI / length of shortest path x 100}
 
