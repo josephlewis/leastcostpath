@@ -4,16 +4,18 @@
 \alias{create_barrier_cs}
 \title{Create Barrier Cost Surface}
 \usage{
-create_barrier_cs(raster, barrier, neighbours = 16, background = 1)
+create_barrier_cs(raster, barrier, neighbours = 16, field = 0, background = 1)
 }
 \arguments{
 \item{raster}{\code{RasterLayer} (raster package). The Resolution, Extent, and Spatial Reference System of the provided RasterLayer is used when creating the resultant Barrier Cost Surface}
 
-\item{barrier}{\code{Spatial*} (sp package). Areas within the landscape that movement is inhibited. See details for more}
+\item{barrier}{\code{Spatial*} (sp package). Area(s) within the landscape that movement is inhibited. See details for more}
 
 \item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected numeric values are 4, 8, 16, 32, 48 or a matrix object. Default is numeric value 16}
 
-\item{background}{\code{numeric} value. Value Value to put in the cells that are not covered by any of the features of barrier. Default is \code{numeric value 1}}
+\item{field}{\code{numeric} value. Value assigned to cells that coincide with the barrier SpatialObject. Default is \code{numeric value 0}}
+
+\item{background}{\code{numeric} value. Value assigned to cells that do not coincide with the barrier SpatialObject. Default is \code{numeric value 1}}
 }
 \value{
 \code{TransitionLayer} (gdistance package) numerically expressing the barriers to movement in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations
@@ -22,7 +24,7 @@ create_barrier_cs(raster, barrier, neighbours = 16, background = 1)
 Creates a cost surface that incorporates barriers that inhibit movement in the landscape.
 }
 \details{
-The resultant Barrier Cost Surface is produced by assessing which areas of the raster coincide with the Spatial object as specified in the barrier argument. The areas of raster that coincide with the Spatial object are given a conductance value of 0, with all other areas given a Conductance value of 1 (default value). The conductance value of 0 ensures that movement is inhibited within these areas. Examples of use include rivers, lakes, and taboo areas.
+The resultant Barrier Cost Surface is produced by assessing which areas of the raster coincide with the Spatial object as specified in the barrier argument. The areas of the raster that coincide with the Spatial object are given a conductance value of 0 (default value), with all other areas given a Conductance value of 1 (default value). The conductance value of 0 ensures that movement is inhibited within these areas. Examples of use include rivers, altitudes, and taboo areas.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))

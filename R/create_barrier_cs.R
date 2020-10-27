@@ -4,15 +4,17 @@
 #'
 #' @details
 #'
-#' The resultant Barrier Cost Surface is produced by assessing which areas of the raster coincide with the Spatial object as specified in the barrier argument. The areas of raster that coincide with the Spatial object are given a conductance value of 0, with all other areas given a Conductance value of 1 (default value). The conductance value of 0 ensures that movement is inhibited within these areas. Examples of use include rivers, lakes, and taboo areas.
+#' The resultant Barrier Cost Surface is produced by assessing which areas of the raster coincide with the Spatial object as specified in the barrier argument. The areas of the raster that coincide with the Spatial object are given a conductance value of 0 (default value), with all other areas given a Conductance value of 1 (default value). The conductance value of 0 ensures that movement is inhibited within these areas. Examples of use include rivers, altitudes, and taboo areas.
 #'
 #' @param raster \code{RasterLayer} (raster package). The Resolution, Extent, and Spatial Reference System of the provided RasterLayer is used when creating the resultant Barrier Cost Surface
 #'
-#' @param barrier \code{Spatial*} (sp package). Areas within the landscape that movement is inhibited. See details for more
+#' @param barrier \code{Spatial*} (sp package). Area(s) within the landscape that movement is inhibited. See details for more
 #'
 #' @param neighbours \code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected numeric values are 4, 8, 16, 32, 48 or a matrix object. Default is numeric value 16
 #'
-#' @param background \code{numeric} value. Value Value to put in the cells that are not covered by any of the features of barrier. Default is \code{numeric value 1}
+#' @param field \code{numeric} value. Value assigned to cells that coincide with the barrier SpatialObject. Default is \code{numeric value 0}
+#'
+#' @param background \code{numeric} value. Value assigned to cells that do not coincide with the barrier SpatialObject. Default is \code{numeric value 1}
 #'
 #' @return \code{TransitionLayer} (gdistance package) numerically expressing the barriers to movement in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations
 #'
@@ -33,7 +35,7 @@
 #'
 #' barrier <- create_barrier_cs(raster = r, barrier = loc1)
 
-create_barrier_cs <- function(raster, barrier, neighbours = 16, background = 1) {
+create_barrier_cs <- function(raster, barrier, neighbours = 16, field = 0, background = 1) {
     
     if (!inherits(raster, "RasterLayer")) {
         stop("raster argument is invalid. Expecting a RasterLayer object")
@@ -61,7 +63,7 @@ create_barrier_cs <- function(raster, barrier, neighbours = 16, background = 1) 
     barrier_cropped <- raster::crop(barrier, raster)
     
     # create raster based on supplied Spatial* object
-    barrier_raster <- raster::rasterize(x = barrier_cropped, y = raster, field = 0, background = background)
+    barrier_raster <- raster::rasterize(x = barrier_cropped, y = raster, field = field, background = background)
     
     barrier_cs <- gdistance::transition(barrier_raster, transitionFunction = min, neighbours)
     

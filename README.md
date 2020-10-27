@@ -274,7 +274,8 @@ Versioning
     * Fixed issue in PDI_Validation where SpatialPolygon was not created properly due to SpatialPoints not being seen as identical. Corrected by removing header name via base::unname.
     * Fixed issue in PDI_Validation where SpatialPolygon has an Area of Zero and so is not a 'true' Polygon. In the case, PDI_validation returns a SpatialPolygon with data.frame containing an Area and PDI value of Zero.
     * Implemented snap argument in PDI_validation. If TRUE, this snaps the Origin and Destination points of the Least Cost Path to the Origin and Destination points of the comparison SpatialLine. This ensures that the SpatialPolygon that is returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and Destination of the comparison SpatialLine is not restricted by the Raster Grid.
- 
+    * Added field argument to create_barrier_cs(). This now allows for the user to specify the conductivity of areas that coincide with the barrier SpatialObject.
+
 Authors
 -------
 
