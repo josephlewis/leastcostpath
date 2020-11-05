@@ -102,8 +102,8 @@ add_dem_error <- function(dem, rmse, type = "unfiltered", confidence_level) {
         rmse_lower <- error_mean - (rmse * z_score[cl_match])
         
         while (sum(raster::values(dem_error) > rmse_upper | raster::values(dem_error) < rmse_lower, na.rm = TRUE) != 0) {
-            dem_error[raster::values(dem_error) > rmse_upper | raster::values(dem_error) < rmse_lower] <- stats::rnorm(sum(raster::values(dem_error) > rmse_upper | 
-                raster::values(dem_error) < rmse_lower, na.rm = TRUE), mean = error_mean, sd = error_sd)
+            dem_error[raster::values(dem_error) > rmse_upper | raster::values(dem_error) < rmse_lower] <- stats::rnorm(sum(raster::values(dem_error) > 
+                rmse_upper | raster::values(dem_error) < rmse_lower, na.rm = TRUE), mean = error_mean, sd = error_sd)
             
         }
         

@@ -76,8 +76,8 @@ PDI_validation <- function(lcp, comparison, snap = TRUE) {
     
     if (base::identical(lcp_coords[1, ], comparison_coords[1, ])) {
         
-        # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates. This is ensure that the order
-        # of coordinates is correct when creating the polygon between the two SpatialLines
+        # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates. This is ensure that the
+        # order of coordinates is correct when creating the polygon between the two SpatialLines
         comparison_coords <- comparison_coords[nrow(comparison_coords):1, ]
         
     }

@@ -5,7 +5,7 @@
 \alias{neighbours_48}
 \title{48 Neighbourhood matrices based on Kovanen and Sarjakoski (2015)}
 \format{
-An object of class \code{matrix} with 9 rows and 9 columns.
+An object of class \code{matrix} (inherits from \code{array}) with 9 rows and 9 columns.
 }
 \usage{
 neighbours_48

@@ -1,3 +1,9 @@
+# 1.7.7 (4th November 2020)
+* Implemented Campbell (2019) crowdsourced GPS travel rate records. [Campbell (2019)](https://doi.org/10.1016/j.apgeog.2019.03.008)
+* Amended 'herzog' (2013) cost function to use absolute slope value. 
+* Amended cost surfaces for "tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", and "campbell 2019" to return speed values in seconds. 
+* lcp cost distance now reported in seconds when "tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", and "campbell 2019" cost functions are used. 
+
 # 1.7.6 (27th October 2020)
 * Fixed issue in PDI_Validation where SpatialPolygon was not created properly due to SpatialPoints not being seen as identical. Corrected by removing header name via base::unname.
 * Fixed issue in PDI_Validation where SpatialPolygon has an Area of Zero and so is not a 'true' Polygon. In the case, PDI_validation returns a SpatialPolygon with data.frame containing an Area and PDI value of Zero.

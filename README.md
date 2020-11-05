@@ -1,4 +1,4 @@
-leastcostpath - version 1.7.6 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.7.7 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -275,6 +275,11 @@ Versioning
     * Fixed issue in PDI_Validation where SpatialPolygon has an Area of Zero and so is not a 'true' Polygon. In the case, PDI_validation returns a SpatialPolygon with data.frame containing an Area and PDI value of Zero.
     * Implemented snap argument in PDI_validation. If TRUE, this snaps the Origin and Destination points of the Least Cost Path to the Origin and Destination points of the comparison SpatialLine. This ensures that the SpatialPolygon that is returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and Destination of the comparison SpatialLine is not restricted by the Raster Grid.
     * Added field argument to create_barrier_cs(). This now allows for the user to specify the conductivity of areas that coincide with the barrier SpatialObject.
+-   version 1.7.7     
+    * Implemented Campbell (2019) cost functions based on  crowdsourced GPS travel rate records. [Campbell (2019)](https://doi.org/10.1016/j.apgeog.2019.03.008)
+    * Amended 'herzog' (2013) cost function to use absolute slope value. 
+    * Amended cost surfaces for "tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", and "campbell 2019" to return speed values in seconds. 
+    * lcp cost distance now reported in seconds when "tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", and "campbell 2019" cost functions are used. 
 
 Authors
 -------
@@ -286,5 +291,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.6). 
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.7). 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html
