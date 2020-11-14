@@ -117,8 +117,8 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
     
     cost[adj] <- cf(slope)
     
-    speed_cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", 
-        "modified tobler", "campbell 2019")
+    speed_cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 
+        "campbell 2019")
     
     if (cost_function %in% speed_cfs) {
         
