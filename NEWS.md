@@ -3,7 +3,7 @@
 * Removed snap argument in PDI_validation. This is to reflect that the origin and destination coordinates of the two SpatialLines need to be identical for the method to work. 
 * Added reverse argument to PDI_validation. If reverse equals TRUE, then reverse order of comparison coordinates. This is ensure that the order of coordinates is correct when creating the polygon between the two SpatialLines. 
 * Added transitionFunction argument to create_barrier_cs. This is to allow users to specify how  transition values from centre cells to adjacent cells are calculated.
-* Simplified calculation in create_traversal_cs. 
+* Corrected create_traversal_cs to account for when traversal across slope angle is above 90 degrees. Rather than setting value to 1, the correct value is calculated.
 
 # 1.7.7 (4th November 2020)
 * Implemented Campbell (2019) cost functions based on  crowdsourced GPS travel rate records. [Campbell (2019)](https://doi.org/10.1016/j.apgeog.2019.03.008)
