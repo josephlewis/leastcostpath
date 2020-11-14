@@ -59,8 +59,7 @@ validate_lcp <- function(lcp, comparison, buffers = c(50, 100, 250, 500, 1000)) 
         buffer_output <- rgeos::gBuffer(comparison, byid = FALSE, width = buffers[1])
     }
     
-    buffer_output <- sp::SpatialPolygonsDataFrame(buffer_output, data = data.frame(ID = 1:length(buffers), row.names = 1:length(buffers)), 
-        match.ID = FALSE)
+    buffer_output <- sp::SpatialPolygonsDataFrame(buffer_output, data = data.frame(ID = 1:length(buffers), row.names = 1:length(buffers)), match.ID = FALSE)
     
     lcp_clipped <- rgeos::gIntersection(buffer_output, lcp, byid = TRUE)
     
