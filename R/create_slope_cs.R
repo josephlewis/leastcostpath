@@ -81,7 +81,16 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
     adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
     
     if (cost_function == "campbell 2019") {
-        max_slope <- 30
+        
+        if (is.null(max_slope)) {
+            message("max_slope argument set to 30 degrees slope to reflect the maximum slope that the cost function is parametised to")
+            max_slope <- 30
+        } else if (max_slope > 30) {
+            message("max_slope argument cannot be above 30 degree slope. max_slope argument set to 30 degrees slope to reflect the maximum slope that the cost function is parametised to")
+            max_slope <- 30
+        } else {
+            max_slope <- max_slope
+        }
     }
     
     if (inherits(max_slope, "numeric")) {
