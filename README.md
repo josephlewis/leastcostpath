@@ -1,4 +1,4 @@
-leastcostpath - version 1.7.7 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.7.8 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -280,6 +280,12 @@ Versioning
     * Amended 'herzog' (2013) cost function to use absolute slope value. 
     * Amended cost surfaces for "tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", and "campbell 2019" to return speed values in seconds. 
     * lcp cost distance now reported in seconds when "tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", and "campbell 2019" cost functions are used. 
+-   version 1.7.8  
+    * Fixed issue in PDI_validation where Area is zero. Now returns a SpatialLinesDataFrame. 
+    * Removed snap argument in PDI_validation. This is to reflect that the origin and destination coordinates of the two SpatialLines need to be identical for the method to work. 
+    * Added reverse argument to PDI_validation. If reverse equals TRUE, then reverse order of comparison coordinates. This is ensure that the order of coordinates is correct when creating the polygon between the two SpatialLines. 
+    * Added transitionFunction argument to create_barrier_cs. This is to allow users to specify how  transition values from centre cells to adjacent cells are calculated.
+    * Simplified calculation in create_traversal_cs. 
 
 Authors
 -------
@@ -291,5 +297,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.7). 
+    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.7.8). 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html
