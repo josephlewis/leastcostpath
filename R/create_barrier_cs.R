@@ -16,6 +16,8 @@
 #'
 #' @param background \code{numeric} value. Value assigned to cells that do not coincide with the barrier SpatialObject. Default is \code{numeric value 1}
 #'
+#' @param transitionFunction Function to calculate transition values from centre cells to adjacent cells
+#'
 #' @return \code{TransitionLayer} (gdistance package) numerically expressing the barriers to movement in the landscape. The resultant \code{TransitionLayer} can be incorporated with other \code{TransitionLayer} through Raster calculations
 #'
 #' @author Joseph Lewis
@@ -36,37 +38,37 @@
 #' barrier <- create_barrier_cs(raster = r, barrier = loc1)
 
 create_barrier_cs <- function(raster, barrier, neighbours = 16, field = 0, background = 1, transitionFunction = min) {
-
+    
     if (!inherits(raster, "RasterLayer")) {
         stop("raster argument is invalid. Expecting a RasterLayer object")
     }
-
+    
     if (!inherits(barrier, "Spatial")) {
         stop("barrier argument is invalid. Expecting a Spatial* object")
     }
-
+    
     if (any(!neighbours %in% c(4, 8, 16, 32, 48)) & (!inherits(neighbours, "matrix"))) {
         stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48, or matrix object")
     }
-
+    
     if (inherits(neighbours, "numeric")) {
         if (neighbours == 32) {
             neighbours <- neighbours_32
-
+            
         } else if (neighbours == 48) {
             neighbours <- neighbours_48
         }
-
+        
     }
-
+    
     # crop Spatial* object to raster extent
     barrier_cropped <- raster::crop(barrier, raster)
-
+    
     # create raster based on supplied Spatial* object
     barrier_raster <- raster::rasterize(x = barrier_cropped, y = raster, field = field, background = background)
-
+    
     barrier_cs <- gdistance::transition(barrier_raster, transitionFunction = transitionFunction, neighbours)
-
+    
     return(barrier_cs)
-
+    
 }
