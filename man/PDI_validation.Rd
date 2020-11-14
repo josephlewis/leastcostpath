@@ -4,17 +4,17 @@
 \alias{PDI_validation}
 \title{Calculate Path Deviation Index}
 \usage{
-PDI_validation(lcp, comparison, snap = TRUE)
+PDI_validation(lcp, comparison, reverse = FALSE)
 }
 \arguments{
 \item{lcp}{\code{SpatialLines*} (sp package). Least Cost Path to assess the accuracy of. Expects object of class SpatialLines.}
 
 \item{comparison}{\code{SpatialLines*} to validate the Least Cost Path against. Expects object of class SpatialLines.}
 
-\item{snap}{\code{logical}. If TRUE (default) origin and destination points of the Least Cost path are snapped to the Origin and Destination points of the comparison SpatialLine. This ensures that the SpatialPolygon that is returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and Destination of the comparison SpatialLine is not restricted by the Raster Grid.}
+\item{reverse}{\code{logical}. If TRUE (default is FALSE) then coordinates of the comparison SpatialLines is reversed. This is to ensure that the order of coordinates is correct when creating the SpatialPolygon/SpatialLine between the two SpatialLines.}
 }
 \value{
-\code{SpatialPolygonsDataFrame} (sp package). Area between the lcp and comparison SpatialLines* with a data.frame containing the Area, PDI, normalised PDI and the distance of the shortest path (i.e. Euclidean) between the origin and destination
+\code{SpatialPolygonsDataFrame} or \code{SpatialLinesDataFrame} (sp package). SpatialPolygonsDataFrame of Area between the LCP and comparison SpatialLines if LCP and comparison SpatialLines are not identical, else returns SpatialLinesDataFrame. Data frame containing Area, PDI, normalised PDI and the distance of the Euclidean shortest path between the origin and destination.
 }
 \description{
 Calculates the Path Deviation Index of a Least Cost Path and a comparison SpatialLines using the method proposed by Jan et al. (1999).
