@@ -70,22 +70,22 @@ PDI_validation <- function(lcp, comparison, reverse = FALSE) {
     
     if (reverse) {
         
-        # origin and destination points of the Least Cost path are snapped to the Origin and Destination points of the comparison SpatialLine. This ensures that the SpatialPolygon that is
-        # returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and Destination of the comparison SpatialLine is not
-        # restricted by the Raster Grid.
+        # origin and destination points of the Least Cost path are snapped to the Origin and Destination points of the comparison SpatialLine. This ensures that the
+        # SpatialPolygon that is returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and
+        # Destination of the comparison SpatialLine is not restricted by the Raster Grid.
         
         lcp_coords[1, ] <- comparison_coords[1, ]
         lcp_coords[nrow(lcp_coords), ] <- comparison_coords[nrow(comparison_coords), ]
         
-        # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates.  This is ensure that the order of coordinates is correct when
-        # creating the polygon between the two SpatialLines
+        # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates.  This is ensure that the order of
+        # coordinates is correct when creating the polygon between the two SpatialLines
         comparison_coords <- comparison_coords[nrow(comparison_coords):1, ]
         
     } else {
         
-        # origin and destination points of the Least Cost path are snapped to the Origin and Destination points of the comparison SpatialLine. This ensures that the SpatialPolygon that is
-        # returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and Destination of the comparison SpatialLine is not
-        # restricted by the Raster Grid.
+        # origin and destination points of the Least Cost path are snapped to the Origin and Destination points of the comparison SpatialLine. This ensures that the
+        # SpatialPolygon that is returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and
+        # Destination of the comparison SpatialLine is not restricted by the Raster Grid.
         
         lcp_coords[1, ] <- comparison_coords[nrow(comparison_coords), ]
         lcp_coords[nrow(lcp_coords), ] <- comparison_coords[1, ]

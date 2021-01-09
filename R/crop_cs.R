@@ -43,15 +43,13 @@ crop_cs <- function(cost_surface, boundary) {
         stop("boundary argument is invalid. Expecting a SpatialPolygons* object")
     }
     
-    boundary <- methods::as(boundary, "SpatialPolygons")
+    ras <- raster::raster(ncol = cost_surface@ncols, nrow = cost_surface@nrows, ext = cost_surface@extent, crs = cost_surface@crs, vals = 0)
     
-    ras <- raster::raster(ncol = cost_surface@ncols, nrow = cost_surface@nrows, ext = cost_surface@extent, crs = cost_surface@crs)
+    boundary_cells <- raster::cellFromPolygon(object = ras, p = boundary)[[1]]
     
-    ras_pts <- raster::rasterToPoints(x = ras, spatial = TRUE)
+    adj <- gdistance::adjacencyFromTransition(cost_surface)
     
-    pts_not_over_boundary <- base::which(is.na(sp::over(ras_pts, boundary)))
-    
-    cost_surface@transitionMatrix[, pts_not_over_boundary] <- 0
+    cost_surface[adj[!adj[, 2] %in% boundary_cells, ]] <- 0
     
     cost_surface@transitionMatrix <- Matrix::drop0(cost_surface@transitionMatrix)
     

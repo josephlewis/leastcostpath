@@ -1,3 +1,12 @@
+# 1.7.9 (9th January 2021)
+* Optimised create_slope_cs() - speed increased by 700%:
+  * Vectorised the calculation of slope (rise / run). Function no longer relies on apply() to calculate the difference in elevation.
+  * Replacement of values in TransitionMatrix above/below max_slope now calculated using logical booleans
+* Optimised create_barrier_cs() - speed increased by 200%
+  * Used raster::cellFromPolygon and assigned values by Indexing rather than creating TransitionMatrix from rasterised Polygon (via raster::rasterize)
+* Optimise crop_cs() - speed increased by 111,439%
+  * Used raster::cellFromPolygon and assigned values by Indexing based on adjacency rather than the total TransitionMatrix columns
+
 # 1.7.8 (13th November 2020)
 * Fixed issue in PDI_validation where Area is zero. Now returns a SpatialLinesDataFrame. 
 * Removed snap argument in PDI_validation. This is to reflect that the origin and destination coordinates of the two SpatialLines need to be identical for the method to work. 

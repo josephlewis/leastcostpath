@@ -19,11 +19,7 @@
 
 calculate_slope <- function(dem, neighbours, exaggeration = exaggeration) {
     
-    altDiff_slope <- function(x) {
-        x[2] - x[1]
-    }
-    
-    hd <- suppressWarnings(gdistance::transition(x = dem, transitionFunction = altDiff_slope, directions = neighbours, symm = FALSE))
+    hd <- transition_slope(x = dem, neighbours = neighbours)
     
     slope <- gdistance::geoCorrection(hd, scl = FALSE)
     

@@ -22,7 +22,7 @@
 #'
 #' Exaggeration
 #'
-#' When observers face directly toward a hill, their awareness of the slant of the hill is greatly overestimated (Pingel, 2009;  Proffitt, 1995; Proffitt, 2001). Pingel (2009) identified that downhill slopes are overestimated at approximately 2.3 times, whilst uphill slopes are overestimated at 2 times.
+#' When observers face directly toward a hill, their awareness of the slant of the hill is greatly overestimated (Pingel, 2009; Proffitt, 1995; Proffitt, 2001). Pingel (2009) identified that downhill slopes are overestimated at approximately 2.3 times, whilst uphill slopes are overestimated at 2 times.
 #'
 #'
 #' @param dem \code{RasterLayer} (raster package). Digital Elevation Model
@@ -48,7 +48,6 @@
 #' @import sp
 #' @import raster
 #' @import gdistance
-#' @importFrom stats runif
 #'
 #' @export
 #'
@@ -66,19 +65,30 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48, or matrix object")
     }
     
-    if (inherits(neighbours, "numeric")) {
-        if (neighbours == 32) {
-            neighbours <- neighbours_32
-            
-        } else if (neighbours == 48) {
-            neighbours <- neighbours_48
-        }
-        
-    }
-    
     slope <- calculate_slope(dem = dem, neighbours = neighbours, exaggeration = exaggeration)
     
     adj <- raster::adjacent(dem, cells = 1:raster::ncell(dem), pairs = TRUE, directions = neighbours)
+    
+    cf <- cost(cost_function = cost_function, adj = adj, crit_slope = crit_slope, percentile = percentile)
+    
+    cost <- slope
+    
+    cost[adj] <- cf(slope)
+    
+    speed_cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", 
+        "modified tobler", "campbell 2019")
+    
+    if (cost_function %in% speed_cfs) {
+        
+        cost[adj] <- cost[adj] * 0.278
+        
+        Conductance <- gdistance::geoCorrection(cost, scl = FALSE)
+        
+    } else {
+        
+        Conductance <- gdistance::geoCorrection(cost, scl = FALSE)
+        
+    }
     
     if (cost_function == "campbell 2019") {
         
@@ -99,40 +109,9 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
             stop("max_slope argument is invalid. Expecting numeric value above 0")
         }
         
-        rand <- stats::runif(1, min = 0.01, max = 1)
-        
         max_slope <- max_slope/100
         
-        slope[adj] <- ifelse(slope[adj] >= max_slope, rand, slope[adj])
-        
-        slope[adj] <- ifelse(slope[adj] <= -max_slope, rand, slope[adj])
-        
-        index <- which(slope[adj] == rand)
-        
-    }
-    
-    cf <- cost(cost_function = cost_function, adj = adj, crit_slope = crit_slope, percentile = percentile)
-    
-    cost <- slope
-    
-    cost[adj] <- cf(slope)
-    
-    speed_cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 
-        "campbell 2019")
-    
-    if (cost_function %in% speed_cfs) {
-        
-        cost[adj] <- cost[adj] * 0.278
-        
-        Conductance <- gdistance::geoCorrection(cost, scl = FALSE)
-        
-    } else {
-        
-        Conductance <- gdistance::geoCorrection(cost, scl = FALSE)
-        
-    }
-    
-    if (inherits(max_slope, "numeric")) {
+        index <- abs(slope[adj]) >= max_slope
         
         Conductance[adj][index] <- 0
         

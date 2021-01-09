@@ -62,6 +62,8 @@ create_feature_cs <- function(raster, locations, x, neighbours = 16) {
         
     }
     
+    locations <- as(locations, "SpatialPoints")
+    
     r <- raster::rasterize(locations, raster)
     
     r <- raster::distance(r)

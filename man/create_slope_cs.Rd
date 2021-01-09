@@ -54,7 +54,7 @@ Campbell (2019) cost function (Lorentz distribution) approximates the time taken
 
 Exaggeration
 
-When observers face directly toward a hill, their awareness of the slant of the hill is greatly overestimated (Pingel, 2009;  Proffitt, 1995; Proffitt, 2001). Pingel (2009) identified that downhill slopes are overestimated at approximately 2.3 times, whilst uphill slopes are overestimated at 2 times.
+When observers face directly toward a hill, their awareness of the slant of the hill is greatly overestimated (Pingel, 2009; Proffitt, 1995; Proffitt, 2001). Pingel (2009) identified that downhill slopes are overestimated at approximately 2.3 times, whilst uphill slopes are overestimated at 2 times.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
