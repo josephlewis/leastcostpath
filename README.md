@@ -13,8 +13,10 @@ Lastly, the library provides functionality to validate the accuracy of computed 
 This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
 *Functions currently in development:*
-
 * force_isotropy()
+
+*Functions recently added:*
+* create_distance_cs()
 
 Getting Started
 ---------------
