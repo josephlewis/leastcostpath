@@ -58,7 +58,8 @@ When observers face directly toward a hill, their awareness of the slant of the 
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-slope_cs <- create_slope_cs(r, cost_function = 'tobler', neighbours = 16, max_slope = NULL)
+slope_cs_16 <- create_slope_cs(r, cost_function = 'tobler', neighbours = 16, max_slope = NULL)
+slope_cs_48 <- create_slope_cs(r, cost_function = 'tobler', neighbours = 48, max_slope = NULL)
 }
 \author{
 Joseph Lewis

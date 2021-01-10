@@ -23,42 +23,44 @@
 #' distance_cs <- create_distance_cs(r, neighbours = 16)
 
 create_distance_cs <- function(raster, neighbours = 16) {
-
+    
+    neighbour_correction <- neighbours > 4
+    
     if (!inherits(raster, "RasterLayer")) {
         stop("raster argument is invalid. Expecting a RasterLayer object")
     }
-
+    
     if (any(!neighbours %in% c(4, 8, 16, 32, 48)) & (!inherits(neighbours, "matrix"))) {
         stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48, or matrix object")
     }
-
-    tr <- new("TransitionLayer", nrows = as.integer(nrow(raster)), ncols = as.integer(ncol(raster)), extent = extent(raster), crs = projection(raster, asText = FALSE),
+    
+    tr <- new("TransitionLayer", nrows = as.integer(nrow(raster)), ncols = as.integer(ncol(raster)), extent = extent(raster), crs = projection(raster, asText = FALSE), 
         transitionMatrix = Matrix(0, ncell(raster), ncell(raster)), transitionCells = 1:ncell(raster))
     transitionMatr <- transitionMatrix(tr)
     Cells <- which(!is.na(getValues(raster)))
-
+    
     if (inherits(neighbours, "numeric")) {
         if (neighbours == 32) {
-            neighbours_matrix <- neighbours_32
-
+            neighbours <- neighbours_32
+            
         } else if (neighbours == 48) {
-          neighbours_matrix <- neighbours_48
+            neighbours <- neighbours_48
         }
-
+        
     }
-
-    adj <- adjacent(raster, cells = Cells, pairs = TRUE, target = Cells, directions = neighbours_matrix)
+    
+    adj <- adjacent(raster, cells = Cells, pairs = TRUE, target = Cells, directions = neighbours)
     adj <- adj[adj[, 1] < adj[, 2], ]
     transition.values <- 1
     transitionMatr[adj] <- as.vector(transition.values)
     transitionMatr <- forceSymmetric(transitionMatr)
     transitionMatrix(tr) <- transitionMatr
     matrixValues(tr) <- "conductance"
-
-    if (neighbours > 4) {
+    
+    if (neighbour_correction) {
         tr <- gdistance::geoCorrection(tr)
     }
-
+    
     return(tr)
-
+    
 }

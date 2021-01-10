@@ -53,7 +53,8 @@
 #'
 #' @examples
 #' r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-#' slope_cs <- create_slope_cs(r, cost_function = 'tobler', neighbours = 16, max_slope = NULL)
+#' slope_cs_16 <- create_slope_cs(r, cost_function = 'tobler', neighbours = 16, max_slope = NULL)
+#' slope_cs_48 <- create_slope_cs(r, cost_function = 'tobler', neighbours = 48, max_slope = NULL)
 
 create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit_slope = 12, max_slope = NULL, percentile = 0.5, exaggeration = FALSE) {
     
@@ -63,6 +64,16 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
     
     if (any(!neighbours %in% c(4, 8, 16, 32, 48)) & (!inherits(neighbours, "matrix"))) {
         stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48, or matrix object")
+    }
+    
+    if (inherits(neighbours, "numeric")) {
+        if (neighbours == 32) {
+            neighbours <- neighbours_32
+            
+        } else if (neighbours == 48) {
+            neighbours <- neighbours_48
+        }
+        
     }
     
     slope <- calculate_slope(dem = dem, neighbours = neighbours, exaggeration = exaggeration)
