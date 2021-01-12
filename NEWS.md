@@ -7,6 +7,7 @@
   * Used raster::cellFromPolygon and assigned values by Indexing rather than creating TransitionMatrix from rasterised Polygon (via raster::rasterize)
 * Optimise crop_cs() - speed increased by 111,439%
   * Used raster::cellFromPolygon and assigned values by Indexing based on adjacency rather than the total TransitionMatrix columns
+  * create_barrier_cs and crop_cs now allow SpatialPoints, SpatialLines, SpatialPolygons, and RasterLayer objects as barriers/boundaries
 
 # 1.7.8 (13th November 2020)
 * Fixed issue in PDI_validation where Area is zero. Now returns a SpatialLinesDataFrame. 
