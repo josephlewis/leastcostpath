@@ -165,7 +165,6 @@ Error caused when trying to calculate a Least Cost Path using SpatialPoints outs
   
   
     Error in get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal) : 
-    
     At structural_properties.c:4521 : Weight vector must be non-negative, Invalid value 
     
 Error caused when calculating a Least Cost Path using a  Cost Surface that contains negative values. Error due to Djikstra's algorithm requiring non-negative values
