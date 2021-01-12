@@ -9,7 +9,7 @@ crop_cs(cost_surface, boundary)
 \arguments{
 \item{cost_surface}{\code{TransitionLayer} (gdistance package). Cost surface to crop}
 
-\item{boundary}{\code{SpatialPolygons*} (sp package). Boundary used when cropping Cost Surface}
+\item{boundary}{\code{Spatial*} (sp package) or \code{RasterLayer} (raster package). Boundary used when cropping Cost Surface. See details for more}
 }
 \value{
 \code{TransitionLayer} (gdistance package). Cropped Cost Surface
@@ -18,18 +18,28 @@ crop_cs(cost_surface, boundary)
 Crops Cost Surfaces to the supplied SpatialPolygon* boundary
 }
 \details{
-The resultant Cost Surface is cropped to the SpatialPolygons* boundary. All areas of the Cost Surface that are outside the supplied boundary are given a conductance value of 0. The conductance value of 0 ensures that movement is inhibited within these areas.
+The resultant Cost Surface is cropped to the Spatial* or RasterLayer object. All areas of the Cost Surface that are outside the supplied boundary are given a conductance value of 0. The conductance value of 0 ensures that movement is inhibited within these areas. If a RasterLayer object is supplied in the boundary argument then all cells with a value of \code{NA} will be given a Conductance value of 0.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-loc1 = cbind(2667670, 6479000)
-loc1 = sp::SpatialPoints(loc1)
-loc1 <- rgeos::gBuffer(spgeom = loc1, width = 200)
-raster::crs(loc1) <- raster::crs(r)
+
+pt = cbind(2667670, 6479000)
+pt = sp::SpatialPoints(pt)
+polygon <- rgeos::gBuffer(spgeom = pt, width = 200)
+raster::crs(pt) <- raster::crs(r)
+raster::crs(polygon) <- raster::crs(r)
 
 slope_cs <- create_slope_cs(r, cost_function = 'tobler', neighbours = 16, max_slope = NULL)
 
-slope_cs_cropped <- crop_cs(cost_surface = slope_cs, boundary = loc1)
+slope_cs_pt <- crop_cs(cost_surface = slope_cs, boundary = pt)
+slope_cs_polygon <- crop_cs(cost_surface = slope_cs, boundary = polygon)
+
+r2 <- r
+ext <- raster::extent(2667500, 2667900, 6478800, 6479500)
+cells <- unlist(raster::cellFromPolygon(object = r, p = as(ext, 'SpatialPolygons')))
+r2[-cells] <- NA
+
+slope_cs_raster <- crop_cs(cost_surface = slope_cs, boundary = r2)
 }
 \author{
 Joseph Lewis

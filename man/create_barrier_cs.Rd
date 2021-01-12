@@ -9,7 +9,7 @@ create_barrier_cs(raster, barrier, neighbours = 16, field = 0, background = 1)
 \arguments{
 \item{raster}{\code{RasterLayer} (raster package). The Resolution, Extent, and Spatial Reference System of the provided RasterLayer is used when creating the resultant Barrier Cost Surface}
 
-\item{barrier}{\code{SpatialPolygons} (sp package). Area within the landscape that movement is inhibited. See details for more}
+\item{barrier}{\code{Spatial*} (sp package) or \code{RasterLayer} (raster package). Area within the landscape that movement is inhibited. See details for more}
 
 \item{neighbours}{\code{numeric} value. Number of directions used in the Least Cost Path calculation. See Huber and Church (1985) for methodological considerations when choosing number of neighbours. Expected numeric values are 4, 8, 16, 32, 48 or a matrix object. Default is numeric value 16}
 
@@ -24,16 +24,26 @@ create_barrier_cs(raster, barrier, neighbours = 16, field = 0, background = 1)
 Creates a cost surface that incorporates barriers that inhibit movement in the landscape.
 }
 \details{
-The resultant Barrier Cost Surface is produced by assessing which areas of the raster coincide with the SpatialPolygons as specified in the barrier argument. The areas of the raster that coincide with the SpatialPolygons are given a conductance value of 0 (default value), with all other areas given a Conductance value of 1 (default value). The conductance value of 0 ensures that movement is inhibited within these areas. Examples of use include rivers, altitudes, and taboo areas.
+The resultant Barrier Cost Surface is produced by assessing which areas of the raster coincide with the Spatial* or RasterLayer object as specified in the barrier argument. The areas of the raster that coincide with the barrier are given a conductance value of 0 (default value, with all other areas given a Conductance value of 1 (default value). The conductance value of 0 ensures that movement is inhibited within these areas. Examples of use include rivers, altitudes, and taboo areas. If a RasterLayer object is supplied in the barrier argument then all cells with a value NOT \code{NA} will be used as the barrier.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-loc1 = cbind(2667670, 6479000)
-loc1 = sp::SpatialPoints(loc1)
 
-loc1 <- rgeos::gBuffer(loc1, width = 50)
+pt = cbind(2667670, 6479000)
+pt = sp::SpatialPoints(pt)
+polygon <- rgeos::gBuffer(spgeom = pt, width = 200)
+raster::crs(pt) <- raster::crs(r)
+raster::crs(polygon) <- raster::crs(r)
 
-barrier <- create_barrier_cs(raster = r, barrier = loc1)
+barrier_pt <- create_barrier_cs(raster = r, barrier = pt)
+barrier_polygon <- create_barrier_cs(raster = r, barrier = polygon)
+
+r2 <- r
+ext <- raster::extent(2667500, 2667900, 6478800, 6479500)
+cells <- unlist(raster::cellFromPolygon(object = r, p = as(ext, 'SpatialPolygons')))
+r2[-cells] <- NA
+
+barrier_ras <- create_barrier_cs(raster = r, barrier = r2)
 }
 \author{
 Joseph Lewis
