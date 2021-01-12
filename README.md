@@ -4,7 +4,9 @@ leastcostpath - version 1.7.9 [![Build Status](https://travis-ci.org/josephlewis
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
 =============================
 
-The R library <b>leastcostpath</b> provides the functionality to calculate Cost Surfaces based on multiple cost functions that approximate the difficulty of moving across a landscape. Furthermore, the attraction/repulsion of landscape features can be incorporated into the Cost Surfaces, as well as barriers that inhibit movement. 
+The R library <b>leastcostpath</b> provides the functionality to calculate Cost Surfaces based on multiple cost functions that approximate the difficulty of moving across a landscape. Furthermore, the attraction/repulsion of landscape features can be incorporated into the Cost Surfaces, as well as barriers that inhibit movement.
+
+**NOTE:** The R library <b>leastcostpath</b> requires the use of projected coordinate systems. The package does not account for geographic coordinate systems.
 
 Cost Surfaces can be used to calculate Least Cost Paths, which are often, but not exclusively, used in archaeological research. <b>leastcostpath</b> also provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (FETE) (White and Barber, 2012), Cumulative Cost Paths (Verhagen, 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015). Furthermore, the library allows for the calculation of stochastic least cost paths and wide least cost paths.
 
@@ -150,6 +152,22 @@ Usage
 
     lcps <- create_wide_lcp(cost_surface = slope_cs, origin = loc1,
     destination = loc2, path_ncells = n)
+    
+Common Errors
+---------------
+
+    Error in if (is.numeric(v) && any(v < 0)) { : 
+    missing value where TRUE/FALSE needed
+    
+Error caused when trying to calculate a Least Cost Path using SpatialPoints outside of the Cost Surface Extent
+  * Check SpatialPoints used in the LCP calculation coincide with Raster / Cost Surface
+  * Check coordinate systems of the Raster/Cost Surface is the same as the SpatialPoints
+  
+    Error in get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal) : 
+    At structural_properties.c:4521 : Weight vector must be non-negative, Invalid value 
+    
+Error caused when calculating a Least Cost Path using a  Cost Surface that contains negative values. Error due to Djikstra's algorithm requiring non-negative values
+  * Check if there are negative values via: quantile(*your_cost_surface*@transitionMatrix@x)
 
 Case Studies Using _leastcostpath_
 --------
