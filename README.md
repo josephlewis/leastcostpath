@@ -163,6 +163,7 @@ Error caused when trying to calculate a Least Cost Path using SpatialPoints outs
   * Check SpatialPoints used in the LCP calculation coincide with Raster / Cost Surface
   * Check coordinate systems of the Raster/Cost Surface is the same as the SpatialPoints
   
+  
     Error in get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal) : 
     At structural_properties.c:4521 : Weight vector must be non-negative, Invalid value 
     
