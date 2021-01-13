@@ -1,6 +1,6 @@
 #' Create a Distance based cost surface
 #'
-#' Creates a cost surface based on the distance between neighbouring cells. Distance corrected for if neighbours value greater than 4 (diagonal distance greater than straight line distance)
+#' Creates a cost surface based on the distance between neighbouring cells. Distance corrected for if neighbours value greater than 4 (diagonal distance greater than straight line distance). Distance units are derived from the maximum resolution of the supplied RasterLayer.
 #'
 #' @param raster \code{RasterLayer} (raster package).
 #'
@@ -24,7 +24,7 @@
 
 create_distance_cs <- function(raster, neighbours = 16) {
     
-    neighbour_correction <- neighbours > 4
+    distance_correction <- neighbours > 4
     
     if (!inherits(raster, "RasterLayer")) {
         stop("raster argument is invalid. Expecting a RasterLayer object")
@@ -51,14 +51,15 @@ create_distance_cs <- function(raster, neighbours = 16) {
     
     adj <- adjacent(raster, cells = Cells, pairs = TRUE, target = Cells, directions = neighbours)
     adj <- adj[adj[, 1] < adj[, 2], ]
-    transition.values <- 1
+    max_res <- base::max(raster::res(raster))
+    transition.values <- (max_res/max_res) * (max_res * max_res)
     transitionMatr[adj] <- as.vector(transition.values)
     transitionMatr <- forceSymmetric(transitionMatr)
     transitionMatrix(tr) <- transitionMatr
     matrixValues(tr) <- "conductance"
     
-    if (neighbour_correction) {
-        tr <- gdistance::geoCorrection(tr)
+    if (distance_correction) {
+        tr <- gdistance::geoCorrection(tr, scl = FALSE)
     }
     
     return(tr)

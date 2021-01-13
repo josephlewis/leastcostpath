@@ -15,7 +15,7 @@ create_distance_cs(raster, neighbours = 16)
 \code{TransitionLayer} (gdistance package) numerically expressing the distance between neighbouring cells
 }
 \description{
-Creates a cost surface based on the distance between neighbouring cells. Distance corrected for if neighbours value greater than 4 (diagonal distance greater than straight line distance)
+Creates a cost surface based on the distance between neighbouring cells. Distance corrected for if neighbours value greater than 4 (diagonal distance greater than straight line distance). Distance units are derived from the maximum resolution of the supplied RasterLayer.
 }
 \examples{
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
