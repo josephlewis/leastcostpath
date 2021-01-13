@@ -43,6 +43,8 @@ Usage
     slope_cs_10 <- create_slope_cs(r, cost_function = 'tobler', max_slope = 10)
     slope_cs_exagg <- create_slope_cs(r, cost_function = 'tobler', exaggeration = TRUE)
     
+    distance_cs <- create_distance_cs(r, neighbours = 16)
+    
 #### Least Cost Path computation
 
     loc1 = cbind(2667670, 6479000)
@@ -171,6 +173,24 @@ Error caused when calculating a Least Cost Path using a  Cost Surface that conta
   * Check if there are negative values via: 
   
       ```quantile(*your_cost_surface*@transitionMatrix@x)```
+      
+Contributing
+--------
+
+If you would like to contribute to the R Package <b>leastcostpath</b>, please follow the "fork-and-pull" Git workflow:
+
+1. <b>Fork</b> the rep on Github
+2. <b>Clone</b> the project to your own machine
+3. <b>Commit</b> the changes to your own branch
+4. <b>Push</b> your work back to your fork
+5. Submit a <b>pull request</b> so that the changes can be reviewed
+
+Issues
+--------
+
+Please submit issues and enhancement requests via github Issues
+  * If submitting an issue, please clearly describe the issue, including steps to reproduce when it is a bug, or a justification for the proposed enhancement request
+
 
 Case Studies Using _leastcostpath_
 --------
@@ -179,11 +199,6 @@ Lewis, J. Probabilistic Modelling using Monte Carlo Simulation for Incorporating
 
 Ludwig, B. Reconstructing the Ancient Route Network in Pergamon's Surroundings. Land 2020, 9, 241. [https://doi.org/10.3390/land9080241](https://doi.org/10.3390/land9080241)
     
-Feedback
---------
-
-Please email josephlewis1992\[at\]gmail.com to provide your feedback or suggest functionality that you would like implemented.
-
 Versioning
 ----------
 
