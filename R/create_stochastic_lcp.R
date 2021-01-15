@@ -89,8 +89,8 @@ create_stochastic_lcp <- function(cost_surface, origin, destination, directional
             threshold_val <- stats::runif(1, min_val, quantile_val)
         }
         
-        # replace values lower than threshold_val with 0. Neighbours with higher costs are more likely to be maintained. This is the inverse of stochastic rule
-        # noted in Pinto and Keitt (2009) and reflects the cost surface representing conductivity rather than resistance.
+        # replace values lower than threshold_val with 0. Neighbours with higher costs are more likely to be maintained. This is the inverse of stochastic rule noted in Pinto and
+        # Keitt (2009) and reflects the cost surface representing conductivity rather than resistance.
         
         cost[adj] <- base::ifelse(cost[adj] < threshold_val, 0, cost[adj])
         

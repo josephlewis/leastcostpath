@@ -73,8 +73,8 @@ create_barrier_cs <- function(raster, barrier, neighbours = 16, field = 0, backg
     }
     
     # create TransitionLayer of zeroes based on raster dimensions
-    barrier_cs <- new("TransitionLayer", nrows = as.integer(nrow(raster)), ncols = as.integer(ncol(raster)), extent = extent(raster), crs = projection(raster, 
-        asText = FALSE), transitionMatrix = Matrix(0, ncell(raster), ncell(raster)), transitionCells = 1:ncell(raster))
+    barrier_cs <- new("TransitionLayer", nrows = as.integer(nrow(raster)), ncols = as.integer(ncol(raster)), extent = extent(raster), crs = projection(raster, asText = FALSE), 
+        transitionMatrix = Matrix(0, ncell(raster), ncell(raster)), transitionCells = 1:ncell(raster))
     
     if (inherits(barrier, "SpatialPoints")) {
         

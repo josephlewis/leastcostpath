@@ -7,8 +7,8 @@
 
 cost <- function(cost_function, adj, crit_slope, percentile) {
     
-    cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", 
-        "modified tobler", "wheeled transport", "herzog", "llobera-sluckin", "campbell 2019")
+    cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 
+        "wheeled transport", "herzog", "llobera-sluckin", "campbell 2019")
     
     if (!cost_function %in% cfs) {
         stop("cost_function argument is invalid. See details for accepted cost functions")
@@ -82,8 +82,8 @@ cost <- function(cost_function, adj, crit_slope, percentile) {
         
         cf <- function(x) {
             
-            (1/((1337.8 * abs(x[adj])^6) + (278.19 * abs(x[adj])^5) - (517.39 * abs(x[adj])^4) - (78.199 * abs(x[adj])^3) + (93.419 * abs(x[adj])^2) + (19.825 * 
-                abs(x[adj])) + 1.64))
+            (1/((1337.8 * abs(x[adj])^6) + (278.19 * abs(x[adj])^5) - (517.39 * abs(x[adj])^4) - (78.199 * abs(x[adj])^3) + (93.419 * abs(x[adj])^2) + (19.825 * abs(x[adj])) + 
+                1.64))
             
         }
         
@@ -106,13 +106,12 @@ cost <- function(cost_function, adj, crit_slope, percentile) {
         0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95 or 0.99")
         }
         
-        lorentz_function_terms <- data.frame(percentile = percentile_choice, term_a = c(-2.1, -1.527, -1.568, -1.626, -1.71, -1.822, -1.858, -1.891, -1.958, 
-            -2.05, -2.171, -2.317, -2.459, -2.647, -2.823, -3.067, -3.371, -3.661, -3.06, -3.485, -4), term_b = c(12.273, 14.041, 13.328, 11.847, 10.154, 
-            8.827, 8.412, 8.584, 8.96, 9.402, 10.064, 10.712, 11.311, 12.089, 12.784, 13.888, 15.395, 17.137, 16.653, 17.033, 13.903), term_c = c(21.816, 
-            36.813, 38.8, 38.231, 36.905, 37.111, 39.995, 44.852, 50.34, 56.172, 63.66, 71.572, 79.287, 89.143, 98.697, 113.655, 134.409, 159.027, 138.875, 
-            138.04, 123.515), term_d = c(0.263, 0.32, 0.404, 0.481, 0.557, 0.616, 0.645, 0.649, 0.649, 0.646, 0.628, 0.608, 0.599, 0.576, 0.566, 0.518, 0.443, 
-            0.385, 0.823, 1.179, 1.961), term_e = c(-0.001, -0.00273, -0.00323, -0.00356, -0.00389, -0.00402, -0.0043, -0.00443, -0.00457, -0.0046, -0.00463, 
-            -0.00451, -0.00461, -0.00465, -0.004, -0.00488, -0.00472, -0.00534, -0.01386, -0.01252, -0.01081))
+        lorentz_function_terms <- data.frame(percentile = percentile_choice, term_a = c(-2.1, -1.527, -1.568, -1.626, -1.71, -1.822, -1.858, -1.891, -1.958, -2.05, -2.171, 
+            -2.317, -2.459, -2.647, -2.823, -3.067, -3.371, -3.661, -3.06, -3.485, -4), term_b = c(12.273, 14.041, 13.328, 11.847, 10.154, 8.827, 8.412, 8.584, 8.96, 9.402, 
+            10.064, 10.712, 11.311, 12.089, 12.784, 13.888, 15.395, 17.137, 16.653, 17.033, 13.903), term_c = c(21.816, 36.813, 38.8, 38.231, 36.905, 37.111, 39.995, 44.852, 
+            50.34, 56.172, 63.66, 71.572, 79.287, 89.143, 98.697, 113.655, 134.409, 159.027, 138.875, 138.04, 123.515), term_d = c(0.263, 0.32, 0.404, 0.481, 0.557, 0.616, 
+            0.645, 0.649, 0.649, 0.646, 0.628, 0.608, 0.599, 0.576, 0.566, 0.518, 0.443, 0.385, 0.823, 1.179, 1.961), term_e = c(-0.001, -0.00273, -0.00323, -0.00356, -0.00389, 
+            -0.00402, -0.0043, -0.00443, -0.00457, -0.0046, -0.00463, -0.00451, -0.00461, -0.00465, -0.004, -0.00488, -0.00472, -0.00534, -0.01386, -0.01252, -0.01081))
         
         terms <- lorentz_function_terms[lorentz_function_terms$percentile == percentile, ]
         
