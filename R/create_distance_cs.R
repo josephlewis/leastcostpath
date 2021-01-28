@@ -34,8 +34,8 @@ create_distance_cs <- function(raster, neighbours = 16) {
         stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48, or matrix object")
     }
     
-    tr <- new("TransitionLayer", nrows = as.integer(nrow(raster)), ncols = as.integer(ncol(raster)), extent = extent(raster), crs = projection(raster, asText = FALSE), transitionMatrix = Matrix(0, 
-        ncell(raster), ncell(raster)), transitionCells = 1:ncell(raster))
+    tr <- new("TransitionLayer", nrows = as.integer(nrow(raster)), ncols = as.integer(ncol(raster)), extent = extent(raster), crs = projection(raster, asText = FALSE), 
+        transitionMatrix = Matrix(0, ncell(raster), ncell(raster)), transitionCells = 1:ncell(raster))
     transitionMatr <- transitionMatrix(tr)
     Cells <- which(!is.na(getValues(raster)))
     

@@ -4,7 +4,7 @@
 \alias{add_dem_error}
 \title{Incorporate vertical error into Digital Elevation Model}
 \usage{
-add_dem_error(dem, rmse, type = "unfiltered", confidence_level)
+add_dem_error(dem, rmse, type = "unfiltered", size = 3, confidence_level)
 }
 \arguments{
 \item{dem}{\code{RasterLayer} (raster package). Digital Elevation Model}
@@ -12,6 +12,8 @@ add_dem_error(dem, rmse, type = "unfiltered", confidence_level)
 \item{rmse}{\code{numeric}. Vertical Root Mean Square Error of the Digital Elevation Model}
 
 \item{type}{\code{character}. Methods for creating random fields. Argument currently accepts 'unfiltered' or 'autocorrelated'. Default is 'autocorrelated'. See details for more information}
+
+\item{size}{\code{numeric}. Size of window when applying mean filter to random error fields. Increasing the size of the window increases the spatial autocorreltion in the random error field. Default size of window is 3x3.}
 
 \item{confidence_level}{\code{numeric}. Assuming a normal distribution of vertical error, the supplied rmse can be multipled by the confidence level z score in order to calculate confidence intervals that are used when generating the random error field. The confidence level denotes the probability that the true elevation value for each cell falls within a range of values (i.e. the confidence interval).}
 }
@@ -26,7 +28,7 @@ Digital Elevation Models are representations of the earth's surface (DEM) and ar
 
 The add_dem_error function with the type argument as 'unfiltered' incorporates vertical error into the supplied Digital Elevation Model by assuming that the error for each cell follows a gaussian (normal) distribution around the measured elevation value and the global Root Mean Square Error (RMSE) estimating the local error variance around this values (Fisher and Tate, 2006). However, this assumes that the vertical error is random and does not show spatial autocorrelation.
 
-The type argument 'autocorrelated' (default) increases the spatial autocorrelation by applying a mean-low-pass 3x3 filter over the surface (Wechsler and Kroll, 2006).
+The type argument 'autocorrelated' (default) increases the spatial autocorrelation by applying a users-specific filter over the surface (Wechsler and Kroll, 2006).
 
 Examples of RMSE for various datasets:
 
