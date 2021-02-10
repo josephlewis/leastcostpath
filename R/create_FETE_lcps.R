@@ -41,60 +41,76 @@
 #'cost_distance = FALSE, parallel = FALSE)
 
 create_FETE_lcps <- function(cost_surface, locations, cost_distance = FALSE, parallel = FALSE) {
-    
+
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
-    
+
     if (!inherits(locations, c("SpatialPoints", "SpatialPointsDataFrame"))) {
         stop("Locations argument is invalid. Expecting SpatialPoints* object")
     }
-    
-    if (length(locations) < 2) 
+
+    if (length(locations) < 2)
         stop("Number of locations invalid. Expecting more than one location")
-    
+
     network <- (expand.grid(seq_along(locations), seq_along(locations)))
-    
+
     network <- network[network[, 1] != network[, 2], ]
-    
+
     if (parallel) {
-        
+
         no_cores <- parallel::detectCores() - 1
-        
+
         cl <- parallel::makeCluster(no_cores)
-        
+
         parallel::clusterExport(cl, varlist = c("cost_surface", "locations"), envir = environment())
-        
+
         lcp_network <- pbapply::pbapply(network, MARGIN = 1, function(x) {
             gdistance::shortestPath(cost_surface, locations[x[1], ], locations[x[2], ], output = "SpatialLines")
         }, cl = cl)
-        
+
         parallel::stopCluster(cl)
-        
+
     } else {
-        
+
         lcp_network <- pbapply::pbapply(network, MARGIN = 1, function(x) {
             gdistance::shortestPath(cost_surface, locations[x[1], ], locations[x[2], ], output = "SpatialLines")
         })
-        
+
     }
-    
+
+    lcps_issue <- which(sapply(1:nrow(network), FUN = function(x) { nrow(lcp_network[[x]]@lines[[1]]@Lines[[1]]@coords)}) == 1)
+
+    check_pts <- unique(network[lcps_issue,1][duplicated(network[lcps_issue,1])])
+
+    if (length(lcps_issue) != 0) {
+        warning(length(lcps_issue), " lcps could not be calculated. Please check the supplied location points to ensure they are not in areas in which movement is prohibited.")
+    }
+
     lcp_network <- do.call(rbind, lcp_network)
-    
+
+    if (length(lcps_issue) != 0) {
+
+        lcp_network <- lcp_network[-lcps_issue,]
+
+        network <- network[-lcps_issue,]
+
+    }
+
     lcp_network <- SpatialLinesDataFrame(lcp_network, data.frame(from = network[, 1], to = network[, 2]), match.ID = FALSE)
-    
+
     if (cost_distance) {
-        
+
         cost_dist <- apply(network, MARGIN = 1, function(x) {
             gdistance::costDistance(cost_surface, locations[x[1], ], locations[x[2], ])
         })
-        
+
         lcp_network$cost <- cost_dist
-        
+
         lcp_network <- lcp_network[order(lcp_network$cost), ]
-        
+
     }
-    
+
     return(lcp_network)
-    
+
 }

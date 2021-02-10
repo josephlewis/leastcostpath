@@ -1,3 +1,7 @@
+# 1.8.0 (9th February 2021)
+* Modified create_FETE_lcps(), create_CCP_lcps(), create_banded_lcps(), create_lcp_network() and to only return LCPs that can be calculated. This ensures there are no SpatialLines with zero length. Number of LCPs removed and supplied locations with issues are indicated to the user. 
+* Updated leastcostpath-1 vignette
+
 # 1.7.9 (9th January 2021)
 * Implemented create_distance_cs(). Cost Surface based on distance between neighbouring cells. 
 * Optimised create_slope_cs() - speed increased by 700%:
