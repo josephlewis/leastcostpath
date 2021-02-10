@@ -18,7 +18,7 @@
 #'
 #'Hunter, G. J., Goodchild, M. F. (1997). Modeling the uncertainty of slope and aspect estimates derived from spatial databases. Geographical Analysis, 29: 35-49.
 #'
-#' Wechsler, S. P. (1999) Digital Elevation Model (DEM) uncertainty: evaluation and effect on topographic parameters In Proceedings of the 1999 ESRI User Conference (available at: \url{https://ibis.geog.ubc.ca/courses/geob370/notes/uncertainty/DEM_uncertainty_wechsler_dissertation.html})
+#' Wechsler, S. P. (1999) Digital Elevation Model (DEM) uncertainty: evaluation and effect on topographic parameters In Proceedings of the 1999 ESRI User Conference (available at: \url{https://proceedings.esri.com/library/userconf/proc99/proceed/papers/pap262/p262.htm})
 #'
 #' Wechsler, S. P. (2003). Perceptions of Digital Elevation Model Uncertainty by DEM Users, URISA Journal, 15, 57-64.
 #'
