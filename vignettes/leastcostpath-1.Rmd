@@ -1,5 +1,5 @@
 <style type="text/css">
-.main-container {
+div.main-container {
   max-width: 1800px;
   margin-left: auto;
   margin-right: auto;
@@ -11,10 +11,9 @@
 title: "leastcostpath-1"
 author: "Joseph Lewis"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette:
-    toc: true # table of content true
-    toc_depth: 3
+    toc: false
 vignette: >
   %\VignetteIndexEntry{leastcostpath-1}
   %\VignetteEngine{knitr::rmarkdown}
@@ -23,7 +22,7 @@ vignette: >
 
 # 1. Introducing leastcostpath
 
-This vignette describes <b>leastcostpath</b>, a package written for use in the R environment (R Core Team, 2016) and built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
+This vignette describes <b>leastcostpath</b>, a package written for use in the R environment (R Core Team, 2018) and built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) using numerous cost functions (time- and energy-based) that approximate the difficulty of moving across a landscapee. Furthermore, additional cost surfaces can be incorporated into the analysis via create_barrier_cs() or create_feature_cs(). 
 
 Secondly, <b>leastcostpath</b> provides the functionality to calculate Stochastic Least Cost Paths (Pinto and Keitt, 2009); and Probabilistic Least Cost Paths (Lewis, 2020). 
@@ -189,3 +188,22 @@ plot(A, add = T, col = "white", pch = 16)
 plot(B, add = T, col = "white", pch = 16)
 ```
 
+# References
+
+Goodchild, M. F., & Hunter, G. J. (1997). A simple positional accuracy measure for linear features. International Journal of Geographical Information Science, 11(3), 299–306. https://doi.org/10.1080/136588197242419
+
+Jan, O., Horowitz, A., & Peng, Z. (1999). Using GPS Data to Understand Variations in Path Choice.
+
+Lewis, J. (2020). Probabilistic Modelling using Monte Carlo Simulation for Incorporating Uncertainty in Least Cost Path Results: a Postdictive Roman Road Case Study (preprint). SocArXiv. https://doi.org/10.31235/osf.io/mxas2
+
+Llobera, M. (2015). Working the digital: some thoughts from landscape archaeology. Material evidence: learning from archaeological practice. Routledge, Abingdon, 173–188.
+
+Pinto, N., & Keitt, T. H. (2009). Beyond the least-cost path: evaluating corridor redundancy using a graph-theoretic approach. Landscape Ecology, 24(2), 253–266. https://doi.org/10.1007/s10980-008-9303-y
+
+R Core Team. (2018). R: A language and environment for statistical computing. Viena, Austria: R Foundation for Statistical Computing. https://www.R-project.org/
+
+van Etten, J. (2017). R Package gdistance: Distances and Routes on Geographical Grids. Journal of Statistical Software, 76(13). https://doi.org/10.18637/jss.v076.i13
+
+Verhagen, P. (2013). On the Road to Nowhere?: Least Cost Paths, Accessibility and the Predictive Modelling Perspective (pp. 383–389). Presented at the CAA2010: fusion of cultures: proceedings of the 38th Annual Conference on Computer Applications and Quantitative Methods in Archaeology, Granada, Spain, April 2010, Archaeopress.
+
+White, D., & Barber, S. L. (2012). Geospatial modeling of pedestrian transportation networks: a case study from precolumbian Oaxaca, Mexico. Journal of Archaeological Science, 39(8), 2684–2696. https://doi.org/10.1016/j.jas.2012.04.017
