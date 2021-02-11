@@ -14,7 +14,7 @@
 #'
 #'@references
 #'
-#'Fisher, P. F., Tate, N. J. (2006). Causes and consequences of error in digital elevation models. Progress in Physical Geography, 30(4), 467-489. \url{https://doi.org/10.1191/0309133306pp492ra}
+#'Fisher, P. F., Tate, N. J. (2006). Causes and consequences of error in digital elevation models. Progress in Physical Geography, 30(4), 467-489. \doi{10.1191/0309133306pp492ra}
 #'
 #'Hunter, G. J., Goodchild, M. F. (1997). Modeling the uncertainty of slope and aspect estimates derived from spatial databases. Geographical Analysis, 29: 35-49.
 #'
@@ -22,9 +22,9 @@
 #'
 #' Wechsler, S. P. (2003). Perceptions of Digital Elevation Model Uncertainty by DEM Users, URISA Journal, 15, 57-64.
 #'
-#' Wechsler, S. P., Kroll, C. N. (2006). Quantifying DEM Uncertainty and its Effect on Topographic Parameters. Photogrammetric Engineering & Remote Sensing, 72(9), 1081-1090. \url{https://doi.org/10.14358/pers.72.9.1081}
+#' Wechsler, S. P., Kroll, C. N. (2006). Quantifying DEM Uncertainty and its Effect on Topographic Parameters. Photogrammetric Engineering & Remote Sensing, 72(9), 1081-1090. \doi{10.14358/pers.72.9.1081}
 #'
-#' Wechsler, S. P. (2007). Uncertainties associated with digital elevation models for hydrologic applications: a review. Hydrology and Earth System Sciences, 11, 4, 1481-1500. \url{https://doi.org/10.5194/hess-11-1481-2007}
+#' Wechsler, S. P. (2007). Uncertainties associated with digital elevation models for hydrologic applications: a review. Hydrology and Earth System Sciences, 11, 4, 1481-1500. \doi{10.5194/hess-11-1481-2007}
 #'
 #' @return \code{raster} (raster package). Digital Elevation Model with a single realisation of vertical error incorporated
 #'

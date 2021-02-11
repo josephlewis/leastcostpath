@@ -24,7 +24,7 @@
 #'
 #' @references
 #'
-#' Jan, O., Horowitz, A.J., Peng, Z,R. 1999. Using GPS data to understand variations in path choice. Paper presented at the 78th meeting of the Transportation Research Board, Washington. Available at: \url{https://pdfs.semanticscholar.org/22bb/3ae1c37632eeee7b6e3b8d973fdaf534f9ab.pdf?_ga=2.242461442.1085768207.1593946556-1126142591.1590329375}
+#' Jan, O., Horowitz, A.J., Peng, Z,R. 1999. Using GPS data to understand variations in path choice. Paper presented at the 78th meeting of the Transportation Research Board, Washington. Available at: \url{https://www.semanticscholar.org/paper/Using-GPS-Data-to-Understand-Variations-in-Path-Jan-Horowitz/22bb3ae1c37632eeee7b6e3b8d973fdaf534f9ab?p2df}
 #'
 #' @return \code{SpatialPolygonsDataFrame} or \code{SpatialLinesDataFrame} (sp package). SpatialPolygonsDataFrame of Area between the LCP and comparison SpatialLines if LCP and comparison SpatialLines are not identical, else returns SpatialLinesDataFrame. Data frame containing Area, PDI, normalised PDI and the distance of the Euclidean shortest path between the origin and destination.
 #'
@@ -50,92 +50,92 @@
 #'val_lcp <- PDI_validation(lcp = line1, line2)
 
 PDI_validation <- function(lcp, comparison, reverse = FALSE) {
-    
+
     if (!inherits(lcp, "SpatialLines")) {
         stop("lcp argument is invalid. Expecting SpatialLines* object")
     }
-    
+
     if (!inherits(comparison, "SpatialLines")) {
         stop("Comparison argument is invalid. Expecting a SpatialLines* object")
     }
-    
+
     lcp_pts <- methods::as(lcp, "SpatialPoints")
     comparison_pts <- methods::as(comparison, "SpatialPoints")
-    
+
     lcp_coords <- sp::coordinates(lcp_pts)
     comparison_coords <- sp::coordinates(comparison_pts)
-    
+
     lcp_coords <- base::unname(lcp_coords)
     comparison_coords <- base::unname(comparison_coords)
-    
+
     if (reverse) {
-        
+
         # origin and destination points of the Least Cost path are snapped to the Origin and Destination points of the comparison SpatialLine. This ensures that the
         # SpatialPolygon that is returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and
         # Destination of the comparison SpatialLine is not restricted by the Raster Grid.
-        
+
         lcp_coords[1, ] <- comparison_coords[1, ]
         lcp_coords[nrow(lcp_coords), ] <- comparison_coords[nrow(comparison_coords), ]
-        
+
         # if the origin location of the lcp is the same as the origin of the comparison, reverse order of comparison coordinates.  This is ensure that the order of
         # coordinates is correct when creating the polygon between the two SpatialLines
         comparison_coords <- comparison_coords[nrow(comparison_coords):1, ]
-        
+
     } else {
-        
+
         # origin and destination points of the Least Cost path are snapped to the Origin and Destination points of the comparison SpatialLine. This ensures that the
         # SpatialPolygon that is returned is valid as the Origin and Destination points of the Least Cost Path is the centre of the Raster cell whilst the Origin and
         # Destination of the comparison SpatialLine is not restricted by the Raster Grid.
-        
+
         lcp_coords[1, ] <- comparison_coords[nrow(comparison_coords), ]
         lcp_coords[nrow(lcp_coords), ] <- comparison_coords[1, ]
-        
+
     }
-    
+
     start <- lcp_coords[1, ]
     end <- lcp_coords[base::nrow(lcp_coords), ]
-    
+
     coords <- base::rbind(lcp_coords, comparison_coords)
-    
+
     p = sp::Polygon(coords)
     ps = sp::Polygons(list(p), 1)
     sps = sp::SpatialPolygons(list(ps), proj4string = crs(comparison))
-    
+
     if (!suppressWarnings(rgeos::gIsValid(sps))) {
-        
+
         # check if SpatialPolygons (sps) is invalid
-        
+
         if (any(identical(coordinates(lcp), coordinates(comparison)), identical(lcp_coords, comparison_coords[nrow(comparison_coords):1, ]))) {
-            
+
             # if invalid and lcp_coords and comparison_coords of provided lcp and comparison SpatialLines equal then coerce to SpatialLines
-            
+
             sps <- as(sps, "SpatialLines")
-            
+
         } else {
-            
+
             # if lcp and comparison SpatialLines not equal then correct SpatialPolygon
-            
+
             sps <- rgeos::gPolygonize(rgeos::gNode(rgeos::gBoundary(sps)))
             sps <- rgeos::gUnaryUnion(spgeom = sps)
-            
+
         }
-        
+
     }
-    
+
     PDI_area <- rgeos::gArea(sps, byid = FALSE)
-    
+
     max_distance <- raster::pointDistance(p1 = start, p2 = end, type = "Euclidean", lonlat = FALSE)
-    
+
     PDI <- PDI_area/max_distance
-    
+
     sps$area <- PDI_area
     sps$PDI <- PDI
     sps$max_distance <- max_distance
-    
+
     norm_PDI <- (PDI_area/max_distance)/max_distance * 100
-    
+
     sps$normalised_PDI <- norm_PDI
-    
+
     return(sps)
-    
+
 }

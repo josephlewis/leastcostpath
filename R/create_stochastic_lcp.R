@@ -32,7 +32,7 @@
 #'
 #' Dijkstra, E. W. (1959). A note on two problems in connexion with graphs. Numerische Mathematik. 1: 269-271.
 #'
-#' Pinto, N., Keitt, T.H. (2009) Beyond the least-cost path: evaluating corridor redundancy using a graph-theoretic approach. Landscape Ecol 24, 253-266 \url{https://doi.org/10.1007/s10980-008-9303-y}
+#' Pinto, N., Keitt, T.H. (2009) Beyond the least-cost path: evaluating corridor redundancy using a graph-theoretic approach. Landscape Ecol 24, 253-266 \doi{10.1007/s10980-008-9303-y}
 #'
 #' @return \code{SpatialLinesDataFrame} (sp package) of length 1 if directional argument is TRUE or 2 if directional argument is FALSE. The resultant object is the shortest route (i.e. least cost) between origin and destination after a random threshold has been applied to the supplied \code{TransitionLayer}.
 #'
@@ -61,60 +61,60 @@
 #'origin = locs[1,], destination = locs[2,], directional = FALSE)
 
 create_stochastic_lcp <- function(cost_surface, origin, destination, directional = FALSE, percent_quantile) {
-    
+
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
-    
+
     done = FALSE
-    
+
     while (!done) {
-        
+
         adj <- gdistance::adjacencyFromTransition(cost_surface)
-        
+
         min_val <- base::min(cost_surface[adj])
         max_val <- base::max(cost_surface[adj])
-        
+
         cost <- cost_surface
-        
+
         if (missing(percent_quantile)) {
-            
+
             # random value between minimum and maximum value in cost surface
             threshold_val <- stats::runif(1, min_val, max_val)
         } else {
-            
+
             quantile_val <- stats::quantile(cost[adj], percent_quantile)
-            
+
             # random value between minimum and threshold quantile value in cost surface
             threshold_val <- stats::runif(1, min_val, quantile_val)
         }
-        
+
         # replace values lower than threshold_val with 0. Neighbours with higher costs are more likely to be maintained. This is the inverse of stochastic rule noted
         # in Pinto and Keitt (2009) and reflects the cost surface representing conductivity rather than resistance.
-        
+
         cost[adj] <- base::ifelse(cost[adj] < threshold_val, 0, cost[adj])
-        
+
         stochastic_lcp <- suppressWarnings(create_lcp(cost_surface = cost, origin = origin, destination = destination, directional = directional, cost_distance = TRUE))
-        
+
         # check to see if nrow of coordinates greater than 1. This check ensures that the LCP between origin and destination was feasible
         if (directional) {
             if (base::nrow(stochastic_lcp@lines[[1]]@Lines[[1]]@coords) > 1) {
-                
+
             }
         } else if (directional == FALSE) {
             if (all((base::nrow(stochastic_lcp@lines[[1]]@Lines[[1]]@coords) > 1) & (base::nrow(stochastic_lcp@lines[[2]]@Lines[[1]]@coords) > 1))) {
             }
         }
-        
+
         # check to see if costs are not infinite
         if (base::all(!is.infinite(stochastic_lcp$cost))) {
-            
+
             done = TRUE
-            
+
             return(stochastic_lcp)
-            
+
         }
-        
+
     }
-    
+
 }
