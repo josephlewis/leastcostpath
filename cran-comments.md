@@ -10,4 +10,4 @@ Running under: Windows 10 x64 (build 19041)
 ## R CMD check results - 2021-02-10
 There were no ERRORs, WARNINGs or NOTES.
 
-0 errors √ | 0 warnings √ | 0 notes √
+0 errors | 0 warnings | 0 notes
