@@ -14,7 +14,7 @@ neighbours_32
 see leastcostpath::neighbours_32 for layout
 }
 \references{
-Kovanen, J., Sarjakoski, T. (2015). Tilewise Accumulated Cost Surface Computation with Graphics Processing Units. ACM Transactions on Spatial Algorithms and Systems 1, 1-27. \url{https://doi.org/10.1145/2803172}
+Kovanen, J., Sarjakoski, T. (2015). Tilewise Accumulated Cost Surface Computation with Graphics Processing Units. ACM Transactions on Spatial Algorithms and Systems 1, 1-27. \doi{10.1145/2803172}
 }
 \author{
 Joseph Lewis

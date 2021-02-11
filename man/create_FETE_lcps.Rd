@@ -41,7 +41,7 @@ lcp_network <- create_FETE_lcps(cost_surface = slope_cs, locations = locs,
 cost_distance = FALSE, parallel = FALSE)
 }
 \references{
-White, DA. Barber, SB. (2012). Geospatial modeling of pedestrian transportation networks: a case study from precolumbian Oaxaca, Mexico. J Archaeol Sci 39:2684-2696. \url{https://doi.org/10.1016/j.jas.2012.04.017}
+White, DA. Barber, SB. (2012). Geospatial modeling of pedestrian transportation networks: a case study from precolumbian Oaxaca, Mexico. J Archaeol Sci 39:2684-2696. \doi{10.1016/j.jas.2012.04.017}
 }
 \author{
 Joseph Lewis

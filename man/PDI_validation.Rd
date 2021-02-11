@@ -43,7 +43,7 @@ line2 <- sp::SpatialLines(list(sp::Lines(sp::Line(cbind(x2,y2)), ID='b')))
 val_lcp <- PDI_validation(lcp = line1, line2)
 }
 \references{
-Jan, O., Horowitz, A.J., Peng, Z,R. 1999. Using GPS data to understand variations in path choice. Paper presented at the 78th meeting of the Transportation Research Board, Washington. Available at: \url{https://pdfs.semanticscholar.org/22bb/3ae1c37632eeee7b6e3b8d973fdaf534f9ab.pdf?_ga=2.242461442.1085768207.1593946556-1126142591.1590329375}
+Jan, O., Horowitz, A.J., Peng, Z,R. 1999. Using GPS data to understand variations in path choice. Paper presented at the 78th meeting of the Transportation Research Board, Washington. Available at: \url{https://www.semanticscholar.org/paper/Using-GPS-Data-to-Understand-Variations-in-Path-Jan-Horowitz/22bb3ae1c37632eeee7b6e3b8d973fdaf534f9ab?p2df}
 }
 \author{
 Joseph Lewis
