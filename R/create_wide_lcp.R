@@ -24,7 +24,7 @@
 #'
 #' @references Dijkstra, E. W. (1959). A note on two problems in connexion with graphs. Numerische Mathematik. 1: 269-271.
 #'
-#' Shirabe, T. (2015). A method for finding a least-cost wide path in raster space. International Journal of Geographical Information Science 30, 1469-1485. \url{https://doi.org/10.1080/13658816.2015.1124435}
+#' Shirabe, T. (2015). A method for finding a least-cost wide path in raster space. International Journal of Geographical Information Science 30, 1469-1485. \doi{10.1080/13658816.2015.1124435}
 #'
 #' @author Joseph Lewis
 #'
@@ -55,43 +55,43 @@
 #' destination = loc2, path_ncells = n)
 
 create_wide_lcp <- function(cost_surface, origin, destination, neighbours = 16, path_ncells) {
-    
+
     if (inherits(neighbours, "numeric")) {
         if (neighbours == 32) {
             neighbours <- neighbours_32
-            
+
         } else if (neighbours == 48) {
             neighbours <- neighbours_48
         }
-        
+
     }
-    
+
     window <- wide_path_matrix(ncells = path_ncells)
-    
+
     accumulated_wide_path <- raster(cost_surface, "colSums")
-    
+
     tf <- function(x) {
         x[1]
     }
-    
+
     wide_Conductance <- gdistance::transition(x = accumulated_wide_path, transitionFunction = tf, neighbours)
-    
+
     wide_Conductance <- gdistance::geoCorrection(wide_Conductance, scl = FALSE)
-    
+
     sPath <- gdistance::shortestPath(wide_Conductance, origin, destination, output = "TransitionLayer")
-    
+
     sPath_raster <- raster(sPath)
-    
+
     index <- raster::Which(x = sPath_raster, cells = TRUE)
-    
+
     sPath_adj <- adjacent(sPath, cells = index, directions = window, sorted = TRUE)
-    
+
     sPath_raster[sPath_adj[, 2]] <- 1
-    
+
     sPath_polygon <- raster::rasterToPolygons(x = sPath_raster, dissolve = TRUE, n = 16, fun = function(x) {
         x == 1
     })
-    
+
     return(sPath_polygon)
-    
+
 }
