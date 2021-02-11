@@ -57,7 +57,7 @@ destination = loc2, path_ncells = n)
 \references{
 Dijkstra, E. W. (1959). A note on two problems in connexion with graphs. Numerische Mathematik. 1: 269-271.
 
-Shirabe, T. (2015). A method for finding a least-cost wide path in raster space. International Journal of Geographical Information Science 30, 1469-1485. \url{https://doi.org/10.1080/13658816.2015.1124435}
+Shirabe, T. (2015). A method for finding a least-cost wide path in raster space. International Journal of Geographical Information Science 30, 1469-1485. \doi{10.1080/13658816.2015.1124435}
 }
 \author{
 Joseph Lewis
