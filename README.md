@@ -195,6 +195,8 @@ Please submit issues and enhancement requests via github Issues
 Case Studies Using _leastcostpath_
 --------
 
+Lewis, J., 2021. Probabilistic Modelling for Incorporating Uncertainty in Least Cost Path Results: a Postdictive Roman Road Case Study. Journal of Archaeological Method and Theory. https://doi.org/10.1007/s10816-021-09522-w
+
 Lewis, J. Probabilistic Modelling using Monte Carlo Simulation for Incorporating Uncertainty in Least Cost Path Results: a Roman Road Case Study, Peer Community in Archaeology, 100005. [10.24072/pci.archaeo.100005](https://doi.org/10.24072/pci.archaeo.100005)
 
 Ludwig, B. Reconstructing the Ancient Route Network in Pergamon's Surroundings. Land 2020, 9, 241. [https://doi.org/10.3390/land9080241](https://doi.org/10.3390/land9080241)
