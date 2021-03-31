@@ -4,7 +4,7 @@
 \alias{add_dem_error}
 \title{Incorporate vertical error into Digital Elevation Model}
 \usage{
-add_dem_error(dem, rmse, type = "unfiltered", size = 3, confidence_level)
+add_dem_error(dem, rmse, type = "autocorrelated", size = 3, confidence_level)
 }
 \arguments{
 \item{dem}{\code{RasterLayer} (raster package). Digital Elevation Model}

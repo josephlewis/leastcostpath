@@ -61,7 +61,7 @@
 #'
 #'r_error <- add_dem_error(r, rmse = 9.73)
 
-add_dem_error <- function(dem, rmse, type = "unfiltered", size = 3, confidence_level) {
+add_dem_error <- function(dem, rmse, type = "autocorrelated", size = 3, confidence_level) {
 
     if (!inherits(dem, "RasterLayer")) {
         stop("dem argument is invalid. Expecting a RasterLayer object")
