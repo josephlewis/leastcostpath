@@ -1,6 +1,7 @@
-# 1.8.1 (31st March 2021)
+# 1.8.1 (1st April 2021)
 * Corrected default type in add_dem() to be 'autocorrelated'. 
 * Exported calculate_slope() to be a user-visible function.
+* Exported apply_cost() to be a user-visible function. 
 
 # 1.8.0 (9th February 2021)
 * Modified create_FETE_lcps(), create_CCP_lcps(), create_banded_lcps(), create_lcp_network() and to only return LCPs that can be calculated. This ensures there are no SpatialLines with zero length. Number of LCPs removed and supplied locations with issues are indicated to the user. 
