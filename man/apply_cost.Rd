@@ -6,11 +6,11 @@
 \usage{
 apply_cost(
   slope = slope,
-  cost_function = cost_function,
-  neighbours = neighbours,
-  crit_slope = crit_slope,
-  max_slope = max_slope,
-  percentile = percentile
+  cost_function = "tobler",
+  neighbours = 16,
+  crit_slope = 12,
+  max_slope = NULL,
+  percentile = 0.5
 )
 }
 \arguments{
