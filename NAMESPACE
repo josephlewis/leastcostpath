@@ -2,6 +2,7 @@
 
 export(PDI_validation)
 export(add_dem_error)
+export(apply_cost)
 export(calculate_slope)
 export(cost_matrix)
 export(create_CCP_lcps)
