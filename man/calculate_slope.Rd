@@ -4,7 +4,7 @@
 \alias{calculate_slope}
 \title{calculate slope (rise over run) from supplied digital elevation model (DEM)}
 \usage{
-calculate_slope(dem, neighbours, exaggeration = exaggeration)
+calculate_slope(dem, neighbours, exaggeration)
 }
 \arguments{
 \item{dem}{\code{RasterLayer} (raster package). Digital Elevation Model}

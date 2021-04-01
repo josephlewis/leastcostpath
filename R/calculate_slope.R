@@ -19,9 +19,9 @@
 #'
 #' @export
 
-calculate_slope <- function(dem, neighbours, exaggeration = exaggeration) {
+calculate_slope <- function(dem, neighbours, exaggeration) {
 
-    hd <- transition_slope(x = dem, neighbours)
+    hd <- transition_slope(x = dem, neighbours = neighbours)
 
     slope <- gdistance::geoCorrection(hd, scl = FALSE)
 
