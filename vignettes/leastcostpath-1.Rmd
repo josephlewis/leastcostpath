@@ -159,7 +159,7 @@ for (i in 1:n) {
   
   print(i)
 
-lcps[[i]] <- leastcostpath::create_lcp(cost_surface = leastcostpath::create_slope_cs(dem = leastcostpath::add_dem_error(dem = dem, rmse = RMSE, type = "autocorrelated"), cost_function = "tobler", neighbours = neigh) * altitude_cs, origin = A, destination = B, directional = FALSE)
+lcps[[i]] <- leastcostpath::create_lcp(cost_surface = leastcostpath::create_slope_cs(dem = leastcostpath::add_dem_error(dem = dem, rmse = RMSE, size = "auto", vgm_model = "Sph"), cost_function = "tobler", neighbours = neigh) * altitude_cs, origin = A, destination = B, directional = FALSE)
 
 }
 
