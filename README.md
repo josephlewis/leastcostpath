@@ -15,9 +15,9 @@ Lastly, the library provides functionality to validate the accuracy of computed 
 This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
 *Functions currently in development:*
-* force_isotropy()
 
 *Functions recently added:*
+* force_isotropy()
 * create_distance_cs()
 
 Getting Started
@@ -165,7 +165,7 @@ Error caused when trying to calculate a Least Cost Path using SpatialPoints outs
   * Check SpatialPoints used in the LCP calculation coincide with Raster / Cost Surface
   * Check coordinate systems of the Raster/Cost Surface is the same as the SpatialPoints
   
-  
+
     Error in get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal):
     At structural_properties.c:4521 :
     Weight vector must be non-negative, Invalid value
@@ -173,7 +173,7 @@ Error caused when trying to calculate a Least Cost Path using SpatialPoints outs
 Error caused when calculating a Least Cost Path using a  Cost Surface that contains negative values. Error due to Djikstra's algorithm requiring non-negative values
   * Check if there are negative values via: 
   
-  
+    
     quantile(*your_cost_surface*@transitionMatrix@x)
       
 Contributing
