@@ -1,3 +1,8 @@
+# 1.8.2 (15th May 2021)
+* Added force_isotropy() function to force anisotropic cost surfaces to isotropic 
+* size of window in add_dem_error() can now be automatically calculated using the "auto" argument in size
+* Removed 'unfiltered' autocorrelation type in add_dem_error()
+
 # 1.8.1 (1st April 2021)
 * Corrected default type in add_dem() to be 'autocorrelated'. 
 * Exported calculate_slope() to be a user-visible function.
