@@ -163,9 +163,9 @@ Common Errors
     
 Error caused when trying to calculate a Least Cost Path using SpatialPoints outside of the Cost Surface Extent:
   
-  Check SpatialPoints used in the LCP calculation coincide with Raster / Cost Surface
+  1. Check SpatialPoints used in the LCP calculation coincide with Raster / Cost Surface
   
-  Check coordinate systems of the Raster/Cost Surface is the same as the SpatialPoints
+  2. Check coordinate system of the Raster/Cost Surface is the same as the SpatialPoints
   
 
     Error in get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal):
@@ -174,7 +174,7 @@ Error caused when trying to calculate a Least Cost Path using SpatialPoints outs
     
 Error caused when calculating a Least Cost Path using a  Cost Surface that contains negative values. Error due to Djikstra's algorithm requiring non-negative values:
 
-  Check if there are negative values via: 
+  1. Check if there are negative values via: 
   
     
     quantile(*your_cost_surface*@transitionMatrix@x)
