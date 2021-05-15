@@ -1,4 +1,4 @@
-leastcostpath - version 1.8.1 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.8.2 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -134,7 +134,7 @@ Usage
     
     for (i in 1:n) {
     
-    lcps[[i]] <- leastcostpath::create_lcp(cost_surface = leastcostpath::create_slope_cs(dem = leastcostpath::add_dem_error(dem = r, rmse = RMSE, type = "autocorrelated"), cost_function = "tobler", neighbours = 16), origin = locs[1,], destination = locs[2,], directional = FALSE, cost_distance = TRUE)
+    lcps[[i]] <- leastcostpath::create_lcp(cost_surface = leastcostpath::create_slope_cs(dem = leastcostpath::add_dem_error(dem = r, rmse = RMSE, size = "auto", vgm_model = "Sph"), cost_function = "tobler", neighbours = 16), origin = locs[1,], destination = locs[2,], directional = FALSE, cost_distance = TRUE)
     
     }
     
@@ -165,14 +165,16 @@ Error caused when trying to calculate a Least Cost Path using SpatialPoints outs
   * Check SpatialPoints used in the LCP calculation coincide with Raster / Cost Surface
   * Check coordinate systems of the Raster/Cost Surface is the same as the SpatialPoints
   
-    ```Error in get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal):```
-    ```At structural_properties.c:4521 :```
-    ```Weight vector must be non-negative, Invalid value```
+  
+    Error in get.shortest.paths(adjacencyGraph, indexOrigin, indexGoal):
+    At structural_properties.c:4521 :
+    Weight vector must be non-negative, Invalid value
     
 Error caused when calculating a Least Cost Path using a  Cost Surface that contains negative values. Error due to Djikstra's algorithm requiring non-negative values
   * Check if there are negative values via: 
   
-      ```quantile(*your_cost_surface*@transitionMatrix@x)```
+  
+    quantile(*your_cost_surface*@transitionMatrix@x)
       
 Contributing
 --------
@@ -216,5 +218,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2020) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.1). 
+    Lewis, J. (2021) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.2). 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html
