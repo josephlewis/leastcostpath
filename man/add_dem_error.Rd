@@ -4,18 +4,16 @@
 \alias{add_dem_error}
 \title{Incorporate vertical error into Digital Elevation Model}
 \usage{
-add_dem_error(dem, rmse, type = "autocorrelated", size = 3, confidence_level)
+add_dem_error(dem, rmse, size = "auto", vgm_model = "Sph")
 }
 \arguments{
 \item{dem}{\code{RasterLayer} (raster package). Digital Elevation Model}
 
 \item{rmse}{\code{numeric}. Vertical Root Mean Square Error of the Digital Elevation Model}
 
-\item{type}{\code{character}. Methods for creating random fields. Argument currently accepts 'unfiltered' or 'autocorrelated'. Default is 'autocorrelated'. See details for more information}
+\item{size}{\code{character} or \code{numeric}. Size of window when applying mean filter to random error fields. Increasing the size of the window increases the spatial autocorreltion in the random error field. Size of window is automatically calculated via a variogram when argument is "auto" (default). If size of window is user-supplied, then numeric value must be odd.}
 
-\item{size}{\code{numeric}. Size of window when applying mean filter to random error fields. Increasing the size of the window increases the spatial autocorreltion in the random error field. Default size of window is 3x3.}
-
-\item{confidence_level}{\code{numeric}. Assuming a normal distribution of vertical error, the supplied rmse can be multipled by the confidence level z score in order to calculate confidence intervals that are used when generating the random error field. The confidence level denotes the probability that the true elevation value for each cell falls within a range of values (i.e. the confidence interval).}
+\item{vgm_model}{\code{character}. Variogram model type when determining window size. Accepted values are "Sph" (default), "Exp", "Gau", "Mat". See details for more information}
 }
 \value{
 \code{raster} (raster package). Digital Elevation Model with a single realisation of vertical error incorporated
@@ -24,11 +22,11 @@ add_dem_error(dem, rmse, type = "autocorrelated", size = 3, confidence_level)
 Incorporates vertical error into the supplied Digital Elevation Model.
 }
 \details{
-Digital Elevation Models are representations of the earth's surface (DEM) and are subject to error (Wechsler, 1999). However the impact of the error on the results of analyses is often not evaluated (Hunter and Goodchild, 1997; Wechsler, 1999).
+Digital Elevation Models (DEMs) are representations of the earth's surface and are subject to error (Wechsler, 1999). However the impact of the error on the results of analyses is often not evaluated (Hunter and Goodchild, 1997; Wechsler, 1999).
 
-The add_dem_error function with the type argument as 'unfiltered' incorporates vertical error into the supplied Digital Elevation Model by assuming that the error for each cell follows a gaussian (normal) distribution around the measured elevation value and the global Root Mean Square Error (RMSE) estimating the local error variance around this values (Fisher and Tate, 2006). However, this assumes that the vertical error is random and does not show spatial autocorrelation.
+The add_dem_error function incorporates vertical error into the supplied Digital Elevation Model by assuming that the error for each cell follows a gaussian (normal) distribution around the measured elevation value and the global Root Mean Square Error (RMSE) estimating the local error variance around this values (Fisher and Tate, 2006). Addition of spatial autocorrelation applied by using a mean-window filter based on a window size (Wechsler and Kroll, 2006). If size argument is 'auto' then window size calculated via a variogram (Wechsler and Kroll, 2006).
 
-The type argument 'autocorrelated' (default) increases the spatial autocorrelation by applying a users-specific filter over the surface (Wechsler and Kroll, 2006).
+vgm_model is the model fitted to the observed DEM variogram. This is used to calculate the distance at which spatial autocorrelation is no longer present (i.e. the range). If the vgm model type is not able to converge, try another model type (e.g. "Gau").
 
 Examples of RMSE for various datasets:
 
@@ -44,7 +42,7 @@ Ordnance Survey OS Terrain 50 has a maximum RMSE of 4m
 
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
-r_error <- add_dem_error(r, rmse = 9.73)
+r_error <- add_dem_error(r, rmse = 9.73, size = "auto", vgm_model = "Gau")
 }
 \references{
 Fisher, P. F., Tate, N. J. (2006). Causes and consequences of error in digital elevation models. Progress in Physical Geography, 30(4), 467-489. \doi{10.1191/0309133306pp492ra}
