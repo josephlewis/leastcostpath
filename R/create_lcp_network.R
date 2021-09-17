@@ -10,7 +10,9 @@
 #'
 #' @param cost_distance \code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.
 #'
-#'@param parallel \code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.
+#' @param parallel \code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Default is FALSE
+#'
+#' @param ncores \code{numeric}. Number of cores used if parallel is TRUE. Default value is 1.
 #'
 #' @return \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths calculated from each origins and destinations as specified in the neighbour matrix.
 #'
@@ -40,7 +42,7 @@
 #'lcp_network <- create_lcp_network(slope_cs, locations = locs,
 #'nb_matrix = cbind(c(1, 4, 2, 1), c(2, 2, 4, 3)), cost_distance = FALSE, parallel = FALSE)
 
-create_lcp_network <- function(cost_surface, locations, nb_matrix = NULL, cost_distance = FALSE, parallel = FALSE) {
+create_lcp_network <- function(cost_surface, locations, nb_matrix = NULL, cost_distance = FALSE, parallel = FALSE, ncores = 1) {
 
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
@@ -61,12 +63,16 @@ create_lcp_network <- function(cost_surface, locations, nb_matrix = NULL, cost_d
     if (max(nb_matrix) > length(locations)) {
         stop("Value within nb_matrix exceeds number of locations")
     }
+    
+    if (!inherits(ncores, "numeric")) {
+        stop("ncores argument is invalid. Expecting a numeric vector object")
+    }
 
     network <- nb_matrix
 
     if (parallel) {
 
-        no_cores <- parallel::detectCores() - 1
+        no_cores <- ncores
 
         cl <- parallel::makeCluster(no_cores)
 

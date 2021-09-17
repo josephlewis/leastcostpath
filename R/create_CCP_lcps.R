@@ -12,7 +12,9 @@
 #'
 #' @param cost_distance \code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE
 #'
-#' @param parallel \code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE
+#' @param parallel \code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Default is FALSE
+#'
+#' @param ncores \code{numeric}. Number of cores used if parallel is TRUE. Default value is 1.
 #'
 #' @references Verhagen, P. (2013). On the road to nowhere? Least cost paths, accessibility and the predictive modelling perspective. In Contreras F, Farjas M, Melero FJ (eds). Fusion of cultures. Proceedings of the 38th annual conference on computer applications and quantitative methods in archaeology, Granada, Spain, April 2010. (pp 383-389). Oxford: Archaeopress
 #'
@@ -43,7 +45,7 @@
 #' lcp_network <- create_CCP_lcps(cost_surface = slope_cs, location = locs,
 #' distance = 20, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 
-create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cost_distance = FALSE, parallel = FALSE) {
+create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cost_distance = FALSE, parallel = FALSE, ncores = 1) {
 
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
@@ -67,6 +69,10 @@ create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cos
 
     if (radial_points <= 0) {
         stop("Number of radial points invalid. Expecting numeric value greater than 0")
+    }
+    
+    if (!inherits(ncores, "numeric")) {
+        stop("ncores argument is invalid. Expecting a numeric vector object")
     }
 
     location <- location[1, ]
@@ -101,7 +107,7 @@ create_CCP_lcps <- function(cost_surface, location, distance, radial_points, cos
 
     if (parallel) {
 
-        no_cores <- parallel::detectCores() - 1
+        no_cores <- ncores
 
         cl <- parallel::makeCluster(no_cores)
 

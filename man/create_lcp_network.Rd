@@ -9,7 +9,8 @@ create_lcp_network(
   locations,
   nb_matrix = NULL,
   cost_distance = FALSE,
-  parallel = FALSE
+  parallel = FALSE,
+  ncores = 1
 )
 }
 \arguments{
@@ -21,7 +22,9 @@ create_lcp_network(
 
 \item{cost_distance}{\code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE.}
 
-\item{parallel}{\code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE.}
+\item{parallel}{\code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Default is FALSE}
+
+\item{ncores}{\code{numeric}. Number of cores used if parallel is TRUE. Default value is 1.}
 }
 \value{
 \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths calculated from each origins and destinations as specified in the neighbour matrix.

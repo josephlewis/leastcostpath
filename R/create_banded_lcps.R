@@ -14,7 +14,9 @@
 #'
 #' @param cost_distance \code{logical}. if TRUE computes total accumulated cost for each Least Cost Path. Default is FALSE
 #'
-#' @param parallel \code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Number of Parallel socket clusters is total number of cores available minus 1. Default is FALSE
+#' @param parallel \code{logical}. if TRUE, the Least Cost Paths will be calculated in parallel. Default is FALSE
+#'
+#' @param ncores \code{numeric}. Number of cores used if parallel is TRUE. Default value is 1.
 #'
 #' @return \code{SpatialLinesDataFrame} (sp package). The resultant object contains least cost paths (number of LCPs is dependent on radial_points argument) calculated from a centre location to random locations within a specified distance band.
 #'
@@ -44,7 +46,7 @@
 #'lcp_network <- create_banded_lcps(cost_surface = slope_cs, location = locs, min_distance = 5,
 #'max_distance = 25, radial_points = 10, cost_distance = FALSE, parallel = FALSE)
 #'
-create_banded_lcps <- function(cost_surface, location, min_distance, max_distance, radial_points, cost_distance = FALSE, parallel = FALSE) {
+create_banded_lcps <- function(cost_surface, location, min_distance, max_distance, radial_points, cost_distance = FALSE, parallel = FALSE, ncores = 1) {
 
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
@@ -76,6 +78,10 @@ create_banded_lcps <- function(cost_surface, location, min_distance, max_distanc
 
     if (radial_points <= 0) {
         stop("Number of radial points invalid. Expecting number greater than 0")
+    }
+    
+    if (!inherits(ncores, "numeric")) {
+        stop("ncores argument is invalid. Expecting a numeric vector object")
     }
 
     location <- location[1, ]
@@ -112,7 +118,7 @@ create_banded_lcps <- function(cost_surface, location, min_distance, max_distanc
 
     if (parallel) {
 
-        no_cores <- parallel::detectCores() - 1
+        no_cores <- ncores
 
         cl <- parallel::makeCluster(no_cores)
 

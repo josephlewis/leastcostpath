@@ -1,4 +1,4 @@
-leastcostpath - version 1.8.2 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.8.3 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -221,5 +221,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2021) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.2). 
+    Lewis, J. (2021) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.3). 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html
