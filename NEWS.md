@@ -1,3 +1,9 @@
+# 1.8.4 (10th November 2021)
+* Corrected "campbell 2019" cost function to calculate cost using slope in degrees rather than radians
+* Updated vignette with validation methods
+* Simplified PDI_validation. Now requires for origin and destination of lcp and comparison to be in the same order.
+* Fixed add_dem_error error when trying to access supplied DEM name. 
+
 # 1.8.3 (17th September 2021)
 * Allow users to specify number of cores to be used when using create_FETE_LCPS, create_banded_lcps, create_CCP_lcps, and create_lcp_network functions
 

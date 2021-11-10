@@ -1,4 +1,4 @@
-leastcostpath - version 1.8.3 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.8.4 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -15,6 +15,7 @@ Lastly, the library provides functionality to validate the accuracy of computed 
 This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
 
 *Functions currently in development:*
+* check_locations()
 
 *Functions recently added:*
 * force_isotropy()
@@ -221,5 +222,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2021) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.3). 
+    Lewis, J. (2021) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.4). 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html
