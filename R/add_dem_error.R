@@ -77,8 +77,9 @@ add_dem_error <- function(dem, rmse, size = "auto", vgm_model = "Sph") {
     if (size == "auto") {
 
         dem_spdf <- as(dem, "SpatialPixelsDataFrame")
-        vario = gstat::variogram(dem_spdf$v ~1, dem_spdf)
-        fit = gstat::fit.variogram(vario, vgm(vgm_model))
+        names(dem_spdf) <- "dem"
+        vario = gstat::variogram(dem_spdf$dem ~1, dem_spdf)
+        fit = gstat::fit.variogram(vario, gstat::vgm(vgm_model))
         window <- round(fit[fit$model == vgm_model,]$range / max(raster::res(dem)))
 
         # Ensures window is an odd-number to be used in raster::focal
