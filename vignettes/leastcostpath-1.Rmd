@@ -22,14 +22,15 @@ vignette: >
 
 # 1. Introducing leastcostpath
 
-This vignette describes <b>leastcostpath</b>, a package written for use in the R environment (R Core Team, 2018) and built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
-<b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) using numerous cost functions (time- and energy-based) that approximate the difficulty of moving across a landscapee. Furthermore, additional cost surfaces can be incorporated into the analysis via create_barrier_cs() or create_feature_cs(). 
+This vignette describes <b>leastcostpath</b>, a package written for use in the R environment (R Core Team, 2018) and built on classes and functions provided in the R package gdistance (Van Etten, 2017).
 
-Secondly, <b>leastcostpath</b> provides the functionality to calculate Stochastic Least Cost Paths (Pinto and Keitt, 2009); and Probabilistic Least Cost Paths (Lewis, 2020). 
+<b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) using numerous time- and energy-based cost functions that approximate the difficulty of moving across a landscape. Additional cost surfaces can be incorporated into the analysis via create_barrier_cs() or create_feature_cs().
 
-Thirdly, <b>leastcostpath</b> provides functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (White and Barber, 2012); Cumulative Cost Paths (Verhagen 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015).
+<b>leastcostpath</b> provides the functionality to calculate Stochastic Least Cost Paths (Pinto and Keitt, 2009), and Probabilistic Least Cost Paths (Lewis, 2020). 
 
-Lastly, <b>leastcostpath</b> provides the functionality to validate the accuracy of the computed Least Cost Path relative to another path via validate_lcp() (Goodchild and Hunter, 1997) and PDI_validation() (Jan et al. 1999).
+<b>leastcostpath</b> provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (White and Barber, 2012), Cumulative Cost Paths (Verhagen 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015).
+
+<b>leastcostpath</b> provides the functionality to validate the accuracy of the computed Least Cost Path relative to another path via validate_lcp() (Goodchild and Hunter, 1997) and PDI_validation() (Jan et al. 1999).
 
 ```{r set-options, echo=FALSE, cache=FALSE}
 options(width = 500)
@@ -64,11 +65,14 @@ raster::plot(dem_extent, add = T, border = "red")
 ```{r cs, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 # cost functions currently implemented within leastcostpath
 
-cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female",
-        "modified tobler", "wheeled transport", "herzog", "llobera-sluckin", "campbell 2019")
+cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", 
+         "irmischer-clarke offpath male", "irmischer-clarke female", 
+         "irmischer-clarke offpath female","modified tobler", 
+         "wheeled transport", "herzog", "llobera-sluckin", "campbell 2019")
 
-# neighbours can be 4, 8, 16, 32, or 48. 8 used for illustration purposes, but greater the number the better the cost surface / LCP approximates reality. 
-neigh <- 4
+# neighbours can be 4, 8, 16, 32, or 48. 16 used for illustration purposes, but greater number of neighbours = cost surface and LCP approximates reality better.
+
+neigh <- 16
 
 slope_cs <- leastcostpath::create_slope_cs(dem = dem, cost_function = "tobler", neighbours = neigh)
 
@@ -84,7 +88,7 @@ altitude <- dem > 180
 # convert value 0 to NA - this ensures that the areas below 180 are not viewed as barriers. That is, if the raster value is NA then create_barrier_cs() will assume that the cell is background and will therefore assign the background argument value 
 altitude[altitude == 0] <- NA
 
-# the values NOT NA will be assigned the field argument value. If 0 (default) then movement within the area will be completely inhibited.
+# the values NOT NA will be assigned the field argument value. If 0 (default) then movement within the area will be completely prohibited
 altitude_cs <- leastcostpath::create_barrier_cs(raster = altitude, barrier = altitude, neighbours = neigh, field = 0, background = 1)
 
 # multiplying the two cost surfaces ensures that barriers continue to completely inhibit movement (i.e. slope_cs values * 0 = 0)
@@ -111,10 +115,37 @@ plot(lcp[1,], add = T, col = "red")
 plot(lcp[2,], add = T, col = "blue")
 ```
 
-## 2.4 Calculating Cost Corridors
+## 2.4 Validating Least Cost Paths
+
+```{r validation = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+lcp_A <- sp::SpatialPoints(cbind(2667930, 6479466))
+lcp_B <- sp::SpatialPoints(cbind(2667592, 6478854))
+
+lcp <- leastcostpath::create_lcp(cost_surface = slope_altitude_cs, origin = lcp_A, destination = lcp_B, directional = TRUE)
+
+comparison_A <- sp::SpatialPoints(cbind(2667930, 6479466))
+comparison_B <- sp::SpatialPoints(cbind(2667592, 6478854))
+
+comparison <- leastcostpath::create_lcp(cost_surface = slope_cs, origin = comparison_A, destination = comparison_B, directional = TRUE)
+
+validate_lcp(lcp = lcp, comparison = comparison, buffers = c(1, 10, 100))
+PDI <- PDI_validation(lcp = lcp, comparison = comparison)
+data.frame(PDI@data)
+
+plot(raster(slope_altitude_cs), col = grey.colors(100))
+plot(lcp_A, add = T, col = "black")
+plot(lcp_B, add = T, col = "black")
+
+plot(lcp, add = T, col = "red")
+plot(comparison, add = T, col = "blue")
+plot(PDI, add = T, col = rgb(red = 0, green = 1, blue = 0, alpha = 0.4))
+```
+
+## 2.5 Calculating Cost Corridors
 
 ```{r cc, TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
-# calculates accumulated cost surface from A and from B. These are then averaged. rescale argument TRUE (not default) rescales the accumulated cost surface to 1
+# calculates accumulated cost surface from A and from B and B to A. These two cost surfaces are averaged. If rescale argument TRUE (not default) then final accumulated cost surface rescaled to 1. 
+
 cc <- leastcostpath::create_cost_corridor(cost_surface = slope_altitude_cs, origin = A, destination = B, rescale = TRUE)
 
 plot(cc, col = heat.colors(100))
@@ -122,11 +153,12 @@ plot(A, add = T, col = "white", pch = 16)
 plot(B, add = T, col = "white", pch = 16)
 ```
 
-## 2.5 Calculating From-Everywhere-To-Everywhere Least Cost Paths
+## 2.6 Calculating From-Everywhere-To-Everywhere Least Cost Paths
 
 ```{r fete, TRUE,  fig.height = 6, fig.width = 6, message=FALSE, warning=FALSE}
 random_locs <- sp::spsample(x = dem_extent, n = 25, type = 'random')
 
+# if parallel is TRUE then need to specify number of cores via ncores argument 
 fete_lcp <- leastcostpath::create_FETE_lcps(cost_surface = slope_altitude_cs, locations = random_locs, cost_distance = FALSE, parallel = FALSE)
 
 plot(raster(slope_altitude_cs), col = grey.colors(100))
@@ -134,10 +166,10 @@ plot(fete_lcp, add = T, col = "red")
 plot(random_locs, add = T, col = "black", pch = 16)
 ```
 
-## 2.6 Least Cost Path Density
+## 2.7 Least Cost Path Density
 
 ```{r lcp_d, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
-# rasterises the LCPs and calculates the number of times an LCP crosses a raster cell. If rescale argument TRUE (not default) then LCP density scaled to 1. If rasterize_as_points argument TRUE (default) then LCP vertices points are rasterized. This is quicker than rasterizing lines (rasterize_as_lines argument FALSE) but will contain 'gaps' where no LCP vertex point is present 
+# rasterises the LCPs and calculates the number of times an LCP crosses a raster cell. If rescale argument TRUE (not default) then LCP density rescaled to 1. If rasterize_as_points argument TRUE (default) then LCP vertices points are rasterized. This is quicker than rasterizing lines (rasterize_as_lines argument FALSE) but will contain 'gaps' where no LCP vertex point is present 
 fete_lcp_density <- leastcostpath::create_lcp_density(lcps = fete_lcp, raster = dem, rescale = TRUE, rasterize_as_points = TRUE)
 
 fete_lcp_density[fete_lcp_density == 0] <- NA
@@ -145,7 +177,7 @@ fete_lcp_density[fete_lcp_density == 0] <- NA
 plot(fete_lcp_density, col = heat.colors(100))
 ```
 
-## 2.7 Probabilistic Least Cost Paths
+## 2.8 Probabilistic Least Cost Paths
 
 ```{r p_lcp, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 # least cost paths are calculated using input data that contains errors. The most notable is the Digital Elevation Model (DEM) which is used to model movement difficulty within the landscape. By incorporating DEM error (in this case vertical error), the error is propagated throughout the LCP modelling process. This results in the input data better approximating the real world, with the LCP being more reliable as a result  
@@ -156,8 +188,6 @@ n <- 100
 lcps <- list()
 
 for (i in 1:n) {
-  
-  print(i)
 
 lcps[[i]] <- leastcostpath::create_lcp(cost_surface = leastcostpath::create_slope_cs(dem = leastcostpath::add_dem_error(dem = dem, rmse = RMSE, size = "auto", vgm_model = "Sph"), cost_function = "tobler", neighbours = neigh) * altitude_cs, origin = A, destination = B, directional = FALSE)
 
@@ -166,15 +196,11 @@ lcps[[i]] <- leastcostpath::create_lcp(cost_surface = leastcostpath::create_slop
 lcps <- do.call(rbind, lcps)
 
 lcps_A_B <- leastcostpath::create_lcp_density(lcps = lcps[lcps$direction == "A to B",], raster = dem, rescale = TRUE, rasterize_as_points = TRUE)
-
 lcps_A_B[lcps_A_B == 0] <- NA
-
 lcps_A_B <- (lcps_A_B/n)
 
 lcps_B_A <- leastcostpath::create_lcp_density(lcps = lcps[lcps$direction == "B to A",], raster = dem, rescale = FALSE, rasterize_as_points = TRUE)
-
 lcps_B_A[lcps_B_A == 0] <- NA
-
 lcps_B_A <- (lcps_B_A/n)
 
 plot(raster(slope_altitude_cs), legend = FALSE, col = grey.colors(100))
@@ -194,7 +220,7 @@ Goodchild, M. F., & Hunter, G. J. (1997). A simple positional accuracy measure f
 
 Jan, O., Horowitz, A., & Peng, Z. (1999). Using GPS Data to Understand Variations in Path Choice.
 
-Lewis, J. (2020). Probabilistic Modelling using Monte Carlo Simulation for Incorporating Uncertainty in Least Cost Path Results: a Postdictive Roman Road Case Study (preprint). SocArXiv. https://doi.org/10.31235/osf.io/mxas2
+Lewis, J. Probabilistic Modelling for Incorporating Uncertainty in Least Cost Path Results: a Postdictive Roman Road Case Study. J Archaeol Method Theory 28, 911–924 (2021). https://doi.org/10.1007/s10816-021-09522-w
 
 Llobera, M. (2015). Working the digital: some thoughts from landscape archaeology. Material evidence: learning from archaeological practice. Routledge, Abingdon, 173–188.
 
