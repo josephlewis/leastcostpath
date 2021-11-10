@@ -4,15 +4,17 @@ leastcostpath - version 1.8.4 [![Build Status](https://travis-ci.org/josephlewis
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
 =============================
 
-The R library <b>leastcostpath</b> provides the functionality to calculate Cost Surfaces based on multiple cost functions that approximate the difficulty of moving across a landscape. Furthermore, the attraction/repulsion of landscape features can be incorporated into the Cost Surfaces, as well as barriers that inhibit movement.
+The <b>leastcostpath</b> is built on the classes and functions provided in the R package gdistance (Van Etten, 2017).
 
 **NOTE:** The R library <b>leastcostpath</b> requires the use of projected coordinate systems. The package does not account for geographic coordinate systems.
 
-Cost Surfaces can be used to calculate Least Cost Paths, which are often, but not exclusively, used in archaeological research. <b>leastcostpath</b> also provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (FETE) (White and Barber, 2012), Cumulative Cost Paths (Verhagen, 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015). Furthermore, the library allows for the calculation of stochastic least cost paths and wide least cost paths.
+<b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) using numerous time- and energy-based cost functions that approximate the difficulty of moving across a landscape. Additional cost surfaces can be incorporated into the analysis via create_barrier_cs() or create_feature_cs().
 
-Lastly, the library provides functionality to validate the accuracy of computed Least Cost Paths relative to another path. 
+<b>leastcostpath</b> also provides the functionality to calculate Stochastic Least Cost Paths (Pinto and Keitt, 2009), and Probabilistic Least Cost Paths (Lewis, 2020). 
 
-This package is built on classes and functions provided in the R package gdistance (Van Etten, 2017). 
+<b>leastcostpath</b> also provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (White and Barber, 2012), Cumulative Cost Paths (Verhagen 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015).
+
+Lastly, <b>leastcostpath</b> provides the functionality to validate the accuracy of the computed Least Cost Path relative to another path via validate_lcp() (Goodchild and Hunter, 1997) and PDI_validation() (Jan et al. 1999).
 
 *Functions currently in development:*
 * check_locations()
