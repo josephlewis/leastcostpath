@@ -4,17 +4,15 @@
 \alias{PDI_validation}
 \title{Calculate Path Deviation Index}
 \usage{
-PDI_validation(lcp, comparison, reverse = FALSE)
+PDI_validation(lcp, comparison)
 }
 \arguments{
-\item{lcp}{\code{SpatialLines*} (sp package). Least Cost Path to assess the accuracy of. Expects object of class SpatialLines.}
+\item{lcp}{\code{SpatialLines*} (sp package). Least Cost Path to assess the accuracy of. Expects object of class SpatialLines. Only first feature used.}
 
-\item{comparison}{\code{SpatialLines*} to validate the Least Cost Path against. Expects object of class SpatialLines.}
-
-\item{reverse}{\code{logical}. If TRUE (default is FALSE) then coordinates of the comparison SpatialLines is reversed. This is to ensure that the order of coordinates is correct when creating the SpatialPolygon/SpatialLine between the two SpatialLines.}
+\item{comparison}{\code{SpatialLines*} to validate the Least Cost Path against. Expects object of class SpatialLines. Only first feature used.}
 }
 \value{
-\code{SpatialPolygonsDataFrame} or \code{SpatialLinesDataFrame} (sp package). SpatialPolygonsDataFrame of Area between the LCP and comparison SpatialLines if LCP and comparison SpatialLines are not identical, else returns SpatialLinesDataFrame. Data frame containing Area, PDI, normalised PDI and the distance of the Euclidean shortest path between the origin and destination.
+\code{SpatialPolygonsDataFrame} or \code{SpatialLinesDataFrame} (sp package). SpatialPolygonsDataFrame of Area between the LCP and comparison SpatialLines if LCP and comparison SpatialLines are not identical, else returns SpatialLinesDataFrame. Data frame containing Area, PDI, distance of the Euclidean shortest path between the origin and destination and normalised PDI.
 }
 \description{
 Calculates the Path Deviation Index of a Least Cost Path and a comparison SpatialLines using the method proposed by Jan et al. (1999).
@@ -31,6 +29,8 @@ The value of the Path Deviation Index depends on the length of the path and make
 \code{Normalised PDI = PDI / length of shortest path x 100}
 
 The normalised Path Deviation Index is the percent of deviation between the two paths over the shortest path. For example, if a normalised PDI is 30 percent, it means that the average distance between two paths is 30 percent of the length of the shortest path. With normalised PDI, all path deviation can be compared regardless of the length of the shortest path.
+
+Note: Direction of lcp and comparison SpatialLines must be in the same order. Check First point (Origin) and Last point (Destination) for confirmation.
 }
 \examples{
 x1 <- c(1,5,4,50)
