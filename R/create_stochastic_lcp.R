@@ -61,60 +61,62 @@
 #'origin = locs[1,], destination = locs[2,], directional = FALSE)
 
 create_stochastic_lcp <- function(cost_surface, origin, destination, directional = FALSE, percent_quantile) {
-
+    
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
-
+    
     done = FALSE
-
+    
     while (!done) {
-
+        
         adj <- gdistance::adjacencyFromTransition(cost_surface)
-
+        
         min_val <- base::min(cost_surface[adj])
         max_val <- base::max(cost_surface[adj])
-
+        
         cost <- cost_surface
-
+        
         if (missing(percent_quantile)) {
-
+            
             # random value between minimum and maximum value in cost surface
             threshold_val <- stats::runif(1, min_val, max_val)
         } else {
-
+            
             quantile_val <- stats::quantile(cost[adj], percent_quantile)
-
+            
             # random value between minimum and threshold quantile value in cost surface
             threshold_val <- stats::runif(1, min_val, quantile_val)
         }
-
-        # replace values lower than threshold_val with 0. Neighbours with higher costs are more likely to be maintained. This is the inverse of stochastic rule noted
-        # in Pinto and Keitt (2009) and reflects the cost surface representing conductivity rather than resistance.
-
+        
+        # replace values lower than threshold_val with 0. Neighbours with higher costs are more likely to be maintained. This is the inverse
+        # of stochastic rule noted in Pinto and Keitt (2009) and reflects the cost surface representing conductivity rather than resistance.
+        
         cost[adj] <- base::ifelse(cost[adj] < threshold_val, 0, cost[adj])
-
-        stochastic_lcp <- suppressWarnings(create_lcp(cost_surface = cost, origin = origin, destination = destination, directional = directional, cost_distance = TRUE))
-
+        
+        stochastic_lcp <- suppressWarnings(create_lcp(cost_surface = cost, origin = origin, destination = destination, directional = directional, 
+            cost_distance = TRUE))
+        
         # check to see if nrow of coordinates greater than 1. This check ensures that the LCP between origin and destination was feasible
         if (directional) {
             if (base::nrow(stochastic_lcp@lines[[1]]@Lines[[1]]@coords) > 1) {
-
+                
             }
         } else if (directional == FALSE) {
-            if (all((base::nrow(stochastic_lcp@lines[[1]]@Lines[[1]]@coords) > 1) & (base::nrow(stochastic_lcp@lines[[2]]@Lines[[1]]@coords) > 1))) {
+            if (all((base::nrow(stochastic_lcp@lines[[1]]@Lines[[1]]@coords) > 1) & (base::nrow(stochastic_lcp@lines[[2]]@Lines[[1]]@coords) > 
+                1))) {
             }
         }
-
+        
         # check to see if costs are not infinite
         if (base::all(!is.infinite(stochastic_lcp$cost))) {
-
+            
             done = TRUE
-
+            
             return(stochastic_lcp)
-
+            
         }
-
+        
     }
-
+    
 }

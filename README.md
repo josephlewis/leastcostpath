@@ -1,4 +1,4 @@
-leastcostpath - version 1.8.4 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.8.5 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -10,18 +10,17 @@ The <b>leastcostpath</b> is built on the classes and functions provided in the R
 
 <b>leastcostpath</b> provides the functionality to calculate Least Cost Paths (LCPs) using numerous time- and energy-based cost functions that approximate the difficulty of moving across a landscape. Additional cost surfaces can be incorporated into the analysis via create_barrier_cs() or create_feature_cs().
 
-<b>leastcostpath</b> also provides the functionality to calculate Stochastic Least Cost Paths (Pinto and Keitt, 2009), and Probabilistic Least Cost Paths (Lewis, 2020). 
+<b>leastcostpath</b> also provides the functionality to calculate Stochastic Least Cost Paths (Pinto and Keitt, 2009), and Probabilistic Least Cost Paths (Lewis, 2020).
 
 <b>leastcostpath</b> also provides the functionality to calculate movement potential within a landscape through the implementation of From-Everywhere-to-Everywhere (White and Barber, 2012), Cumulative Cost Paths (Verhagen 2013), and Least Cost Path calculation within specified distance bands (Llobera, 2015).
 
 Lastly, <b>leastcostpath</b> provides the functionality to validate the accuracy of the computed Least Cost Path relative to another path via validate_lcp() (Goodchild and Hunter, 1997) and PDI_validation() (Jan et al. 1999).
 
 *Functions currently in development:*
-* check_locations()
+
 
 *Functions recently added:*
-* force_isotropy()
-* create_distance_cs()
+* check_locations()
 
 Getting Started
 ---------------
@@ -224,5 +223,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2021) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.4). 
+    Lewis, J. (2021) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.5. 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html

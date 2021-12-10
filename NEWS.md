@@ -1,3 +1,6 @@
+# 1.8.5 (10th December 2021)
+* Added check_locations() function to check whether locations are traversable from at least one adjacent cell 
+
 # 1.8.4 (10th November 2021)
 * Corrected "campbell 2019" cost function to calculate cost using slope in degrees rather than radians
 * Updated vignette with validation methods

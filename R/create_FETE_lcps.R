@@ -52,7 +52,7 @@ create_FETE_lcps <- function(cost_surface, locations, cost_distance = FALSE, par
         stop("Locations argument is invalid. Expecting SpatialPoints* object")
     }
     
-    if (length(locations) < 2)
+    if (length(locations) < 2) 
         stop("Number of locations invalid. Expecting more than one location")
     
     if (!inherits(ncores, "numeric")) {
@@ -85,9 +85,11 @@ create_FETE_lcps <- function(cost_surface, locations, cost_distance = FALSE, par
         
     }
     
-    lcps_issue <- which(sapply(1:nrow(network), FUN = function(x) { nrow(lcp_network[[x]]@lines[[1]]@Lines[[1]]@coords)}) == 1)
+    lcps_issue <- which(sapply(1:nrow(network), FUN = function(x) {
+        nrow(lcp_network[[x]]@lines[[1]]@Lines[[1]]@coords)
+    }) == 1)
     
-    check_pts <- unique(network[lcps_issue,1][duplicated(network[lcps_issue,1])])
+    check_pts <- unique(network[lcps_issue, 1][duplicated(network[lcps_issue, 1])])
     
     if (length(lcps_issue) != 0) {
         warning(length(lcps_issue), " lcps could not be calculated. Please check the supplied location points to ensure they are not in areas in which movement is prohibited.")
@@ -97,9 +99,9 @@ create_FETE_lcps <- function(cost_surface, locations, cost_distance = FALSE, par
     
     if (length(lcps_issue) != 0) {
         
-        lcp_network <- lcp_network[-lcps_issue,]
+        lcp_network <- lcp_network[-lcps_issue, ]
         
-        network <- network[-lcps_issue,]
+        network <- network[-lcps_issue, ]
         
     }
     

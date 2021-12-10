@@ -46,40 +46,37 @@
 #'
 
 apply_cost <- function(slope = slope, cost_function = "tobler", neighbours = 16, crit_slope = 12, max_slope = NULL, percentile = 0.5) {
-
+    
     if (!inherits(slope, "TransitionLayer")) {
         stop("slope argument is invalid. Expecting a TransitionLayer object")
     }
-
+    
     slope_raster <- raster(slope)
-
+    
     adj <- raster::adjacent(slope_raster, cells = 1:raster::ncell(slope_raster), pairs = TRUE, directions = neighbours)
-
+    
     cf <- cost(cost_function = cost_function, adj = adj, crit_slope = crit_slope, percentile = percentile)
-
+    
     cost <- slope
-
+    
     cost[adj] <- cf(slope)
-
-    speed_cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", 
-                   "irmischer-clarke offpath male", "irmischer-clarke female", 
-                   "irmischer-clarke offpath female","modified tobler", "campbell 2019",
-                   )
-
+    
+    speed_cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", "campbell 2019")
+    
     if (cost_function %in% speed_cfs) {
-
+        
         cost[adj] <- cost[adj] * 0.278
-
+        
         Conductance <- gdistance::geoCorrection(cost, scl = FALSE)
-
+        
     } else {
-
+        
         Conductance <- gdistance::geoCorrection(cost, scl = FALSE)
-
+        
     }
-
+    
     if (cost_function == "campbell 2019") {
-
+        
         if (is.null(max_slope)) {
             message("max_slope argument set to 30 degrees slope to reflect the maximum slope that the cost function is parametised to")
             max_slope <- 30
@@ -90,21 +87,21 @@ apply_cost <- function(slope = slope, cost_function = "tobler", neighbours = 16,
             max_slope <- max_slope
         }
     }
-
+    
     if (inherits(max_slope, "numeric")) {
-
+        
         if (max_slope < 0) {
             stop("max_slope argument is invalid. Expecting numeric value above 0")
         }
-
+        
         max_slope <- max_slope/100
-
+        
         index <- abs(slope[adj]) >= max_slope
-
+        
         Conductance[adj][index] <- 0
-
+        
     }
-
+    
     return(Conductance)
-
+    
 }

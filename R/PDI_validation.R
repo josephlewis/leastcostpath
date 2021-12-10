@@ -24,7 +24,7 @@
 #' 
 #' @references
 #'
-#' Jan, O., Horowitz, A.J., Peng, Z,R. 1999. Using GPS data to understand variations in path choice. Paper presented at the 78th meeting of the Transportation Research Board, Washington. Available at: \url{https://www.semanticscholar.org/paper/Using-GPS-Data-to-Understand-Variations-in-Path-Jan-Horowitz/22bb3ae1c37632eeee7b6e3b8d973fdaf534f9ab?p2df}
+#' Jan, O., Horowitz, A.J., Peng, Z.R. (2000). Using Global Positioning System Data to Understand Variations in Path Choice. Transportation Research Record, 1725, 37-44 \doi{10.3141/1725-06}
 #'
 #' @return \code{SpatialPolygonsDataFrame} or \code{SpatialLinesDataFrame} (sp package). SpatialPolygonsDataFrame of Area between the LCP and comparison SpatialLines if LCP and comparison SpatialLines are not identical, else returns SpatialLinesDataFrame. Data frame containing Area, PDI, distance of the Euclidean shortest path between the origin and destination and normalised PDI. 
 #'
@@ -59,8 +59,8 @@ PDI_validation <- function(lcp, comparison) {
         stop("Comparison argument is invalid. Expecting a SpatialLines* object")
     }
     
-    lcp_subset <- lcp[1,]
-    comparison_subset <- comparison[1,]
+    lcp_subset <- lcp[1, ]
+    comparison_subset <- comparison[1, ]
     
     lcp_pts <- methods::as(lcp_subset, "SpatialPoints")
     comparison_pts <- methods::as(comparison_subset, "SpatialPoints")
@@ -74,7 +74,7 @@ PDI_validation <- function(lcp, comparison) {
     start <- lcp_coords[1, ]
     end <- lcp_coords[base::nrow(lcp_coords), ]
     
-    coords <- base::rbind(lcp_coords, comparison_coords[nrow(comparison_coords):1,])
+    coords <- base::rbind(lcp_coords, comparison_coords[nrow(comparison_coords):1, ])
     
     p = sp::Polygon(coords)
     ps = sp::Polygons(list(p), 1)
@@ -84,12 +84,12 @@ PDI_validation <- function(lcp, comparison) {
     if (!suppressWarnings(rgeos::gIsValid(sps))) {
         # if invalid and lcp_coords and comparison_coords of provided lcp and comparison SpatialLines equal then coerce to SpatialLines
         
-        if (identical(lcp_coords, comparison_coords)) { 
+        if (identical(lcp_coords, comparison_coords)) {
             
             sps <- as(sps, "SpatialLines")
             
             
-            # if lcp and comparison SpatialLines not equal then correct SpatialPolygon      
+            # if lcp and comparison SpatialLines not equal then correct SpatialPolygon
         } else {
             
             sps <- rgeos::gPolygonize(rgeos::gNode(rgeos::gBoundary(sps)))

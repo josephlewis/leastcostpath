@@ -20,17 +20,17 @@
 #' @export
 
 calculate_slope <- function(dem, neighbours, exaggeration) {
-
+    
     hd <- transition_slope(x = dem, neighbours = neighbours)
-
+    
     slope <- gdistance::geoCorrection(hd, scl = FALSE)
-
+    
     if (exaggeration) {
-
+        
         slope@transitionMatrix@x <- ifelse(slope@transitionMatrix@x > 0, slope@transitionMatrix@x * 1.99, slope@transitionMatrix@x * 2.31)
-
+        
     }
-
+    
     return(slope)
-
+    
 }

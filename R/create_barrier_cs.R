@@ -49,74 +49,74 @@
 #' barrier_ras <- create_barrier_cs(raster = r, barrier = r2)
 
 create_barrier_cs <- function(raster, barrier, neighbours = 16, field = 0, background = 1) {
-
+    
     if (!inherits(raster, "RasterLayer")) {
         stop("raster argument is invalid. Expecting a RasterLayer object")
     }
-
+    
     if ((!inherits(barrier, "Spatial")) & (!inherits(barrier, "RasterLayer"))) {
         stop("barrier argument is invalid. Expecting a Spatial* or RasterLayer object")
     }
-
+    
     if (any(!neighbours %in% c(4, 8, 16, 32, 48)) & (!inherits(neighbours, "matrix"))) {
         stop("neighbours argument is invalid. Expecting 4, 8, 16, 32, 48, or matrix object")
     }
-
+    
     if ((!inherits(barrier, "RasterLayer")) & (field == "mask")) {
         stop("field agument is invalid. Expecting numeric value when Spatial* object supplied in barrier argument. See details for more.")
     }
-
+    
     if (inherits(neighbours, "numeric")) {
         if (neighbours == 32) {
             neighbours <- neighbours_32
-
+            
         } else if (neighbours == 48) {
             neighbours <- neighbours_48
         }
-
+        
     }
-
+    
     # create TransitionLayer of zeroes based on raster dimensions
-    barrier_cs <- new("TransitionLayer", nrows = as.integer(nrow(raster)), ncols = as.integer(ncol(raster)), extent = extent(raster), crs = projection(raster,
-        asText = FALSE), transitionMatrix = Matrix(0, ncell(raster), ncell(raster)), transitionCells = 1:ncell(raster))
-
+    barrier_cs <- new("TransitionLayer", nrows = as.integer(nrow(raster)), ncols = as.integer(ncol(raster)), extent = extent(raster), 
+        crs = projection(raster, asText = FALSE), transitionMatrix = Matrix(0, ncell(raster), ncell(raster)), transitionCells = 1:ncell(raster))
+    
     # get adjacent cells to limit value change
     adj <- raster::adjacent(raster, cells = 1:raster::ncell(raster), pairs = TRUE, directions = neighbours)
-
+    
     if (inherits(barrier, "SpatialPoints")) {
-
+        
         barrier_cells <- raster::cellFromXY(object = raster, xy = barrier)
-
+        
     } else if (inherits(barrier, "SpatialLines")) {
-
+        
         barrier_cells <- unlist(raster::cellFromLine(object = raster, lns = barrier))
-
+        
     } else if (inherits(barrier, "SpatialPolygons")) {
-
+        
         barrier_cells <- unlist(raster::cellFromPolygon(object = raster, p = barrier))
-
+        
     } else if (inherits(barrier, "RasterLayer")) {
-
+        
         barrier_cells <- which(!is.na(raster::getValues(barrier)))
-
+        
         if (field == "mask") {
-
+            
             field <- raster::extract(x = barrier, adj[adj[, 2] %in% barrier_cells, ][, 2])
-
+            
         }
-
+        
     }
-
+    
     # change values that coincide with barrier
     barrier_cs[adj[adj[, 2] %in% barrier_cells, ]] <- field
-
+    
     # change values that don't coincide with barrier
     barrier_cs[adj[!adj[, 2] %in% barrier_cells, ]] <- background
-
+    
     # drop zeroes from matrix
     barrier_cs@transitionMatrix <- Matrix::drop0(barrier_cs@transitionMatrix)
-
+    
     return(barrier_cs)
-
+    
 }
 

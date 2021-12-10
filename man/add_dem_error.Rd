@@ -11,9 +11,9 @@ add_dem_error(dem, rmse, size = "auto", vgm_model = "Sph")
 
 \item{rmse}{\code{numeric}. Vertical Root Mean Square Error of the Digital Elevation Model}
 
-\item{size}{\code{character} or \code{numeric}. Size of window when applying mean filter to random error fields. Increasing the size of the window increases the spatial autocorreltion in the random error field. Size of window is automatically calculated via a variogram when argument is "auto" (default). If size of window is user-supplied, then numeric value must be odd.}
+\item{size}{\code{character} or \code{numeric}. Size of window when applying mean filter to random error fields. Increasing the size of the window increases the spatial autocorreltion in the random error field. Size of window is automatically calculated via a variogram when argument is 'auto' (default). If size of window is user-supplied, then numeric value must be odd.}
 
-\item{vgm_model}{\code{character}. Variogram model type when determining window size. Accepted values are "Sph" (default), "Exp", "Gau", "Mat". See details for more information}
+\item{vgm_model}{\code{character}. Variogram model type when determining window size. Accepted values are 'Sph' (default), 'Exp', 'Gau', 'Mat'. See details for more information}
 }
 \value{
 \code{raster} (raster package). Digital Elevation Model with a single realisation of vertical error incorporated
@@ -26,7 +26,7 @@ Digital Elevation Models (DEMs) are representations of the earth's surface and a
 
 The add_dem_error function incorporates vertical error into the supplied Digital Elevation Model by assuming that the error for each cell follows a gaussian (normal) distribution around the measured elevation value and the global Root Mean Square Error (RMSE) estimating the local error variance around this values (Fisher and Tate, 2006). Addition of spatial autocorrelation applied by using a mean-window filter based on a window size (Wechsler and Kroll, 2006). If size argument is 'auto' then window size calculated via a variogram (Wechsler and Kroll, 2006).
 
-vgm_model is the model fitted to the observed DEM variogram. This is used to calculate the distance at which spatial autocorrelation is no longer present (i.e. the range). If the vgm model type is not able to converge, try another model type (e.g. "Gau").
+vgm_model is the model fitted to the observed DEM variogram. This is used to calculate the distance at which spatial autocorrelation is no longer present (i.e. the range). If the vgm model type is not able to converge, try another model type (e.g. 'Gau').
 
 Examples of RMSE for various datasets:
 
@@ -42,7 +42,7 @@ Ordnance Survey OS Terrain 50 has a maximum RMSE of 4m
 
 r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
 
-r_error <- add_dem_error(r, rmse = 9.73, size = "auto", vgm_model = "Gau")
+r_error <- add_dem_error(r, rmse = 9.73, size = 'auto', vgm_model = 'Gau')
 }
 \references{
 Fisher, P. F., Tate, N. J. (2006). Causes and consequences of error in digital elevation models. Progress in Physical Geography, 30(4), 467-489. \doi{10.1191/0309133306pp492ra}

@@ -28,17 +28,17 @@
 #' slope_cs_iso <- force_isotropy(slope_cs)
 
 force_isotropy <- function(cost_surface) {
-
+    
     if (!inherits(cost_surface, "TransitionLayer")) {
         stop("cost_surface argument is invalid. Expecting a TransitionLayer object")
     }
-
+    
     adj <- gdistance::adjacencyFromTransition(x = cost_surface)
-
-    cost_surface[adj] <- rowMeans(cbind(cost_surface[adj[,1:2]], cost_surface[adj[,2:1]]))
-
+    
+    cost_surface[adj] <- rowMeans(cbind(cost_surface[adj[, 1:2]], cost_surface[adj[, 2:1]]))
+    
     return(cost_surface)
-
+    
 }
 
 
