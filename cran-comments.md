@@ -8,6 +8,6 @@ Running under: Windows 10 x64 (build 19041)
   - R Under development (unstable) (2021-02-10 r79988)
 
 ## R CMD check results - 2021-02-10
-There were no ERRORs, WARNINGs or NOTES.
+There were no ERRORs, WARNINGs.
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 notes
