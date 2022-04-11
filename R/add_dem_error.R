@@ -11,7 +11,7 @@
 #' @param vgm_model \code{character}. Variogram model type when determining window size. Accepted values are 'Sph' (default), 'Exp', 'Gau', 'Mat'. See details for more information
 #'
 #' @references
-#'Fisher, P. F., Tate, N. J. (2006). Causes and consequences of error in digital elevation models. Progress in Physical Geography, 30(4), 467-489. \doi{10.1191/0309133306pp492ra}
+#'Fisher, P. F., Tate, N. J. (2006). Causes and consequences of error in digital elevation models. Progress in Physical Geography, 30(4), 467-489.
 #'
 #'Hunter, G. J., Goodchild, M. F. (1997). Modeling the uncertainty of slope and aspect estimates derived from spatial databases. Geographical Analysis, 29: 35-49.
 #'

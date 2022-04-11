@@ -45,7 +45,7 @@ r <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'
 r_error <- add_dem_error(r, rmse = 9.73, size = 'auto', vgm_model = 'Gau')
 }
 \references{
-Fisher, P. F., Tate, N. J. (2006). Causes and consequences of error in digital elevation models. Progress in Physical Geography, 30(4), 467-489. \doi{10.1191/0309133306pp492ra}
+Fisher, P. F., Tate, N. J. (2006). Causes and consequences of error in digital elevation models. Progress in Physical Geography, 30(4), 467-489.
 
 Hunter, G. J., Goodchild, M. F. (1997). Modeling the uncertainty of slope and aspect estimates derived from spatial databases. Geographical Analysis, 29: 35-49.
 

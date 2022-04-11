@@ -1,4 +1,4 @@
-leastcostpath - version 1.8.5 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.8.6 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -204,8 +204,6 @@ Case Studies Using _leastcostpath_
 
 Lewis, J., 2021. Probabilistic Modelling for Incorporating Uncertainty in Least Cost Path Results: a Postdictive Roman Road Case Study. Journal of Archaeological Method and Theory. https://doi.org/10.1007/s10816-021-09522-w
 
-Lewis, J. Probabilistic Modelling using Monte Carlo Simulation for Incorporating Uncertainty in Least Cost Path Results: a Roman Road Case Study, Peer Community in Archaeology, 100005. [10.24072/pci.archaeo.100005](https://doi.org/10.24072/pci.archaeo.100005)
-
 Ludwig, B. Reconstructing the Ancient Route Network in Pergamon's Surroundings. Land 2020, 9, 241. [https://doi.org/10.3390/land9080241](https://doi.org/10.3390/land9080241)
     
 Versioning
@@ -223,5 +221,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2021) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.5. 
+    Lewis, J. (2022) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.6). 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html

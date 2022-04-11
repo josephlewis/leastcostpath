@@ -1,3 +1,7 @@
+# 1.8.6 (11th April 2022)
+* Fixed CRAN issue with loaded data from gdistance
+* Removed probabilistic LCP example from vignette. Will replace at later date.
+
 # 1.8.5 (10th December 2021)
 * Added check_locations() function to check whether locations are traversable from at least one adjacent cell 
 
@@ -5,7 +9,7 @@
 * Corrected "campbell 2019" cost function to calculate cost using slope in degrees rather than radians
 * Updated vignette with validation methods
 * Simplified PDI_validation. Now requires for origin and destination of lcp and comparison to be in the same order.
-* Fixed add_dem_error error when trying to access supplied DEM name. 
+* Fixed add_dem_error error when trying to access supplied DEM name.
 
 # 1.8.3 (17th September 2021)
 * Allow users to specify number of cores to be used when using create_FETE_LCPS, create_banded_lcps, create_CCP_lcps, and create_lcp_network functions

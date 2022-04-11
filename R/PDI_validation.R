@@ -24,7 +24,7 @@
 #' 
 #' @references
 #'
-#' Jan, O., Horowitz, A.J., Peng, Z.R. (2000). Using Global Positioning System Data to Understand Variations in Path Choice. Transportation Research Record, 1725, 37-44 \doi{10.3141/1725-06}
+#' Jan, O., Horowitz, A.J., Peng, Z.R. (2000). Using Global Positioning System Data to Understand Variations in Path Choice. Transportation Research Record, 1725, 37-44
 #'
 #' @return \code{SpatialPolygonsDataFrame} or \code{SpatialLinesDataFrame} (sp package). SpatialPolygonsDataFrame of Area between the LCP and comparison SpatialLines if LCP and comparison SpatialLines are not identical, else returns SpatialLinesDataFrame. Data frame containing Area, PDI, distance of the Euclidean shortest path between the origin and destination and normalised PDI. 
 #'

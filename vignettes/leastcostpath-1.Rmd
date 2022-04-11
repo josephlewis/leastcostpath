@@ -45,12 +45,15 @@ library(rgdal)
 library(rgeos)
 library(sp)
 library(raster)
+library(Matrix)
 library(gdistance)
 library(leastcostpath)
 ```
 
 ```{r raster, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 dem <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
+
+raster::crs(dem) <- sp::CRS("+init=epsg:27200")
 
 dem_extent <- as(raster::extent(dem), 'SpatialPolygons')
 
@@ -70,9 +73,9 @@ cfs <- c("tobler", "tobler offpath", "irmischer-clarke male",
          "irmischer-clarke offpath female","modified tobler", 
          "wheeled transport", "herzog", "llobera-sluckin", "campbell 2019")
 
-# neighbours can be 4, 8, 16, 32, or 48. 16 used for illustration purposes, but greater number of neighbours = cost surface and LCP approximates reality better.
+# neighbours can be 4, 8, 16, 32, or 48. 4 used for illustration purposes, but greater number of neighbours = cost surface and LCP approximates reality better.
 
-neigh <- 16
+neigh <- 4
 
 slope_cs <- leastcostpath::create_slope_cs(dem = dem, cost_function = "tobler", neighbours = neigh)
 
@@ -156,7 +159,8 @@ plot(B, add = T, col = "white", pch = 16)
 ## 2.6 Calculating From-Everywhere-To-Everywhere Least Cost Paths
 
 ```{r fete, TRUE,  fig.height = 6, fig.width = 6, message=FALSE, warning=FALSE}
-random_locs <- sp::spsample(x = dem_extent, n = 25, type = 'random')
+set.seed(1992)
+random_locs <- sp::spsample(x = dem_extent, n = 5, type = 'regular')
 
 # if parallel is TRUE then need to specify number of cores via ncores argument 
 fete_lcp <- leastcostpath::create_FETE_lcps(cost_surface = slope_altitude_cs, locations = random_locs, cost_distance = FALSE, parallel = FALSE)
@@ -177,50 +181,11 @@ fete_lcp_density[fete_lcp_density == 0] <- NA
 plot(fete_lcp_density, col = heat.colors(100))
 ```
 
-## 2.8 Probabilistic Least Cost Paths
-
-```{r p_lcp, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
-# least cost paths are calculated using input data that contains errors. The most notable is the Digital Elevation Model (DEM) which is used to model movement difficulty within the landscape. By incorporating DEM error (in this case vertical error), the error is propagated throughout the LCP modelling process. This results in the input data better approximating the real world, with the LCP being more reliable as a result  
-
-# for illustration purposes, we will assume that the vertical error (root-mean-square-error) is +/- 0.5m.
-RMSE <- 0.5
-n <- 100
-lcps <- list()
-
-for (i in 1:n) {
-
-lcps[[i]] <- leastcostpath::create_lcp(cost_surface = leastcostpath::create_slope_cs(dem = leastcostpath::add_dem_error(dem = dem, rmse = RMSE, size = "auto", vgm_model = "Sph"), cost_function = "tobler", neighbours = neigh) * altitude_cs, origin = A, destination = B, directional = FALSE)
-
-}
-
-lcps <- do.call(rbind, lcps)
-
-lcps_A_B <- leastcostpath::create_lcp_density(lcps = lcps[lcps$direction == "A to B",], raster = dem, rescale = TRUE, rasterize_as_points = TRUE)
-lcps_A_B[lcps_A_B == 0] <- NA
-lcps_A_B <- (lcps_A_B/n)
-
-lcps_B_A <- leastcostpath::create_lcp_density(lcps = lcps[lcps$direction == "B to A",], raster = dem, rescale = FALSE, rasterize_as_points = TRUE)
-lcps_B_A[lcps_B_A == 0] <- NA
-lcps_B_A <- (lcps_B_A/n)
-
-plot(raster(slope_altitude_cs), legend = FALSE, col = grey.colors(100))
-plot(lcps_A_B, add = T, col = heat.colors(100))
-plot(A, add = T, col = "white", pch = 16)
-plot(B, add = T, col = "white", pch = 16)
-
-plot(raster(slope_altitude_cs), legend = FALSE, col = grey.colors(100))
-plot(lcps_B_A, add = T, col = heat.colors(100))
-plot(A, add = T, col = "white", pch = 16)
-plot(B, add = T, col = "white", pch = 16)
-```
-
 # References
 
 Goodchild, M. F., & Hunter, G. J. (1997). A simple positional accuracy measure for linear features. International Journal of Geographical Information Science, 11(3), 299–306. https://doi.org/10.1080/136588197242419
 
 Jan, O., Horowitz, A., & Peng, Z. (1999). Using GPS Data to Understand Variations in Path Choice.
-
-Lewis, J. Probabilistic Modelling for Incorporating Uncertainty in Least Cost Path Results: a Postdictive Roman Road Case Study. J Archaeol Method Theory 28, 911–924 (2021). https://doi.org/10.1007/s10816-021-09522-w
 
 Llobera, M. (2015). Working the digital: some thoughts from landscape archaeology. Material evidence: learning from archaeological practice. Routledge, Abingdon, 173–188.
 
