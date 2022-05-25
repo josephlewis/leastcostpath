@@ -18,7 +18,7 @@ check_locations(cost_surface, locations)
 Checks that locations can be reached when calculating least cost paths
 }
 \details{
-Using the supplied cost surface, the function checks whether the cell(s) of supplied locations are traversable from at least one adjacent cell. If the cell(s) of the supplied location are not traversable from at least one adjacent cell then a calculated least cost path cannot traverse to that location.
+Using the supplied cost surface, the function checks whether the cells of supplied locations are traversable from at least one adjacent cell. If the cells of the supplied location are not traversable from at least one adjacent cell then a calculated least cost path cannot traverse to that location.
 }
 \author{
 Joseph Lewis

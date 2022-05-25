@@ -52,11 +52,9 @@ library(leastcostpath)
 
 ```{r raster, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
 dem <- raster::raster(system.file('external/maungawhau.grd', package = 'gdistance'))
-
 raster::crs(dem) <- sp::CRS("+init=epsg:27200")
 
 dem_extent <- as(raster::extent(dem), 'SpatialPolygons')
-
 raster::crs(dem_extent) <- raster::crs(dem)
 
 raster::plot(dem)
@@ -159,11 +157,11 @@ plot(B, add = T, col = "white", pch = 16)
 ## 2.6 Calculating From-Everywhere-To-Everywhere Least Cost Paths
 
 ```{r fete, TRUE,  fig.height = 6, fig.width = 6, message=FALSE, warning=FALSE}
-set.seed(1992)
-random_locs <- sp::spsample(x = dem_extent, n = 5, type = 'regular')
+set.seed(1)
+random_locs <- sp::spsample(x = dem_extent, n = 4, type = 'regular')
 
 # if parallel is TRUE then need to specify number of cores via ncores argument 
-fete_lcp <- leastcostpath::create_FETE_lcps(cost_surface = slope_altitude_cs, locations = random_locs, cost_distance = FALSE, parallel = FALSE)
+fete_lcp <- leastcostpath::create_FETE_lcps(cost_surface = slope_cs, locations = random_locs, cost_distance = FALSE, parallel = FALSE)
 
 plot(raster(slope_altitude_cs), col = grey.colors(100))
 plot(fete_lcp, add = T, col = "red")

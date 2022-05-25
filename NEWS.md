@@ -1,6 +1,9 @@
+# 1.8.7 (22nd May 2022)
+* Fix error in check_locations. now returns number of points not traversable by LCP
+
 # 1.8.6 (11th April 2022)
 * Fixed CRAN issue with loaded data from gdistance
-* Removed probabilistic LCP example from vignette. Will replace at later date.
+* Removed probabilistic LCP example from vignette. Will replace at later date. See README for usage
 
 # 1.8.5 (10th December 2021)
 * Added check_locations() function to check whether locations are traversable from at least one adjacent cell 

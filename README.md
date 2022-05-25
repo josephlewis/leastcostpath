@@ -1,4 +1,4 @@
-leastcostpath - version 1.8.6 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
+leastcostpath - version 1.8.7 [![Build Status](https://travis-ci.org/josephlewis/leastcostpath.svg?branch=master)](https://travis-ci.org/josephlewis/leastcostpath)
 [![CRAN status](https://www.r-pkg.org/badges/version/leastcostpath)](https://cran.r-project.org/package=leastcostpath)
 [![CRAN Downloads Month](https://cranlogs.r-pkg.org/badges/leastcostpath)](https://cranlogs.r-pkg.org/badges/leastcostpath)
 [![CRAN Downloads Total](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)](https://cranlogs.r-pkg.org/badges/grand-total/leastcostpath)
@@ -17,7 +17,6 @@ The <b>leastcostpath</b> is built on the classes and functions provided in the R
 Lastly, <b>leastcostpath</b> provides the functionality to validate the accuracy of the computed Least Cost Path relative to another path via validate_lcp() (Goodchild and Hunter, 1997) and PDI_validation() (Jan et al. 1999).
 
 *Functions currently in development:*
-
 
 *Functions recently added:*
 * check_locations()
@@ -221,5 +220,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2022) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.6). 
+    Lewis, J. (2022) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 1.8.7). 
     Available at: https://cran.r-project.org/web/packages/leastcostpath/index.html
