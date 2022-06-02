@@ -32,10 +32,6 @@ This vignette describes <b>leastcostpath</b>, a package written for use in the R
 
 <b>leastcostpath</b> provides the functionality to validate the accuracy of the computed Least Cost Path relative to another path via validate_lcp() (Goodchild and Hunter, 1997) and PDI_validation() (Jan et al. 1999).
 
-```{r set-options, echo=FALSE, cache=FALSE}
-options(width = 500)
-```
-
 # 2. using leastcostpath
 
 ## 2.1 Setup
@@ -177,6 +173,11 @@ fete_lcp_density <- leastcostpath::create_lcp_density(lcps = fete_lcp, raster = 
 fete_lcp_density[fete_lcp_density == 0] <- NA
 
 plot(fete_lcp_density, col = heat.colors(100))
+```
+
+```{r reset, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+# reset set.seed to NULL
+set.seed(NULL)
 ```
 
 # References

@@ -201,10 +201,16 @@ Please submit issues and enhancement requests via github Issues
 Case Studies Using _leastcostpath_
 --------
 
+Fjellström, M., Seitsonen, O., Wallén, H., 2022. Mobility in Early Reindeer Herding, in: Salmi, A.-K. (Ed.), Domestication in Action, Arctic Encounters. Springer International Publishing, Cham, pp. 187–212. https://doi.org/10.1007/978-3-030-98643-8_7
+
+Field, S., Glowacki, D.M., Gettler, L.T., 2022. The Importance of Energetics in Archaeological Least Cost Analysis. J Archaeol Method Theory. https://doi.org/10.1007/s10816-022-09564-8
+
+Herzog, I., 2022. Issues in Replication and Stability of Least-cost Path Calculations. SDH 5, 131–155. https://doi.org/10.14434/sdh.v5i2.33796
+
 Lewis, J., 2021. Probabilistic Modelling for Incorporating Uncertainty in Least Cost Path Results: a Postdictive Roman Road Case Study. Journal of Archaeological Method and Theory. https://doi.org/10.1007/s10816-021-09522-w
 
-Ludwig, B. Reconstructing the Ancient Route Network in Pergamon's Surroundings. Land 2020, 9, 241. [https://doi.org/10.3390/land9080241](https://doi.org/10.3390/land9080241)
-    
+Ludwig, B., 2020. Reconstructing the Ancient Route Network in Pergamon’s Surroundings. Land 9, 241. https://doi.org/10.3390/land9080241
+
 Versioning
 ----------
 
