@@ -56,12 +56,20 @@ create_lcp <- function(cost_surface, origin, destination, directional = FALSE, c
     
     if (directional == "TRUE") {
         
-        sPath <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
+        sPath <- try(suppressWarnings(gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")), silent = TRUE)
+        
+        if(inherits(sPath, "try-error")) {
+            warning("least cost path from origin to destination could not be calculated. Returning empty SpatialLinesDataFrame")  
+            sPath <- SpatialLinesDataFrame(sl = SpatialLines(list(Lines(Line(matrix(0, ncol = 2)), ID = 1))), data = data.frame("direction" = "A to B"), match.ID = FALSE)
+            raster::crs(sPath) <- raster::crs(cost_surface)
+        }
         
         if (cost_distance) {
-            
-            sPath$cost <- as.vector(gdistance::costDistance(cost_surface, origin, destination))
-            
+            if(inherits(sPath, "try-error")) {
+                sPath$cost <- NA 
+            } else { 
+                sPath$cost <- as.vector(gdistance::costDistance(cost_surface, origin, destination))
+            }
         }
         
         sPath$direction <- "A to B"
@@ -70,13 +78,36 @@ create_lcp <- function(cost_surface, origin, destination, directional = FALSE, c
         
         sPaths <- list()
         
-        sPaths[[1]] <- gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")
-        sPaths[[2]] <- gdistance::shortestPath(cost_surface, destination, origin, output = "SpatialLines")
+        sPath1 <- try(suppressWarnings(gdistance::shortestPath(cost_surface, origin, destination, output = "SpatialLines")), silent = TRUE)
+        if(inherits(sPath1, "try-error")) {
+            warning("least cost path from origin to destination could not be calculated. Returning empty SpatialLinesDataFrame")
+            sPath1 <- SpatialLinesDataFrame(sl = SpatialLines(list(Lines(Line(matrix(0, ncol = 2)), ID = 1))), data = data.frame("direction" = "A to B"), match.ID = FALSE)
+            raster::crs(sPath1) <- raster::crs(cost_surface)
+        }
+        
+        sPath2 <- try(suppressWarnings(gdistance::shortestPath(cost_surface, destination, origin, output = "SpatialLines")), silent = TRUE)
+        if(inherits(sPath2, "try-error")) {
+            warning("least cost path from destination to origin could not be calculated. Returning empty SpatialLinesDataFrame")
+            sPath2 <- SpatialLinesDataFrame(sl = SpatialLines(list(Lines(Line(matrix(0, ncol = 2)), ID = 1))), data = data.frame("direction" = "B to A"), match.ID = FALSE)
+            raster::crs(sPath2) <- raster::crs(cost_surface)
+        }
+        
+        sPaths[[1]] <- sPath1
+        sPaths[[2]] <- sPath2
         
         if (cost_distance) {
             
-            sPaths[[1]]$cost <- as.vector(gdistance::costDistance(cost_surface, origin, destination))
-            sPaths[[2]]$cost <- as.vector(gdistance::costDistance(cost_surface, destination, origin))
+            if(inherits(sPath1, "try-error")) {
+                sPaths[[1]]$cost <- NA
+            } else {
+                sPaths[[1]]$cost <- as.vector(gdistance::costDistance(cost_surface, origin, destination))  
+            }
+            
+            if(inherits(sPath2, "try-error")) {
+                sPaths[[2]]$cost <- NA
+            } else {
+                sPaths[[2]]$cost <- as.vector(gdistance::costDistance(cost_surface, destination, origin))  
+            }
             
         }
         
