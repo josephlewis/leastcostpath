@@ -47,6 +47,7 @@
 #' @import rgeos
 #' @import sp
 #' @import raster
+#' @import Matrix
 #' @import gdistance
 #'
 #' @export
@@ -125,7 +126,7 @@ create_slope_cs <- function(dem, cost_function = "tobler", neighbours = 16, crit
         index <- abs(slope[adj]) >= max_slope
         
         Conductance[adj][index] <- 0
-        
+        Conductance@transitionMatrix <- Matrix::drop0(Conductance@transitionMatrix)
     }
     
     return(Conductance)
