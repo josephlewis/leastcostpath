@@ -24,7 +24,7 @@
 
 create_distance_cs <- function(raster, neighbours = 16) {
     
-    distance_correction <- neighbours > 4
+    distance_correction <- sum(neighbours, na.rm = TRUE) > 4
     
     if (!inherits(raster, "RasterLayer")) {
         stop("raster argument is invalid. Expecting a RasterLayer object")
