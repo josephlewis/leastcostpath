@@ -1,133 +1,169 @@
-#' Cost function to apply to rise-over-run slope
-#' @param cost_function \code{character}. Cost Function used in the Least Cost Path calculation. Implemented cost functions include 'tobler', 'tobler offpath', 'irmischer-clarke male', 'irmischer-clarke offpath male', 'irmischer-clarke female', 'irmischer-clarke offpath female', 'modified tobler', 'wheeled transport', 'herzog', 'llobera-sluckin', 'campbell 2019'. Default is 'tobler'.
-#'
-#' @noRd
-#'
-#' @author Joseph Lewis
-
-cost <- function(cost_function, adj, crit_slope, percentile) {
+cost <- function(cost_function, crit_slope, percentile) {
     
-    cfs <- c("tobler", "tobler offpath", "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", 
-        "modified tobler", "wheeled transport", "herzog", "llobera-sluckin", "campbell 2019")
+    cfs <- c("tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019")
     
-    if (!cost_function %in% cfs) {
-        stop("cost_function argument is invalid. See details for accepted cost functions")
-    }
-    
-    if (cost_function == "tobler") {
-        
-        cf <- function(x) {
-            (6 * exp(-3.5 * abs(x[adj] + 0.05)))
+    if (inherits(cost_function, "character")) {
+        if (!cost_function %in% cfs) {
+            stop("cost_function argument is invalid. See details for accepted cost functions")
         }
         
-    }
-    
-    if (cost_function == "tobler offpath") {
+        # mathematical slope to degrees
+        slope2deg <- function(slope) { (atan(slope) * 180/pi)}
         
-        cf <- function(x) {
-            (6 * exp(-3.5 * abs(x[adj] + 0.05))) * 0.6
-        }
+        # degrees to radians
+        deg2rad <- function(deg) {(deg * pi) / (180)}
         
-    }
-    
-    if (cost_function == "irmischer-clarke male") {
-        
-        cf <- function(x) {
-            (0.11 + exp(-(abs(x[adj]) * 100 + 5)^2/(2 * 30^2))) * 3.6
-        }
-        
-    }
-    
-    if (cost_function == "irmischer-clarke offpath male") {
-        
-        cf <- function(x) {
-            (0.11 + 0.67 * exp(-(abs(x[adj]) * 100 + 2)^2/(2 * 30^2))) * 3.6
-        }
-        
-    }
-    
-    if (cost_function == "irmischer-clarke female") {
-        
-        cf <- function(x) {
-            0.95 * (0.11 + exp(-(abs(x[adj]) * 100 + 5)^2/(2 * 30^2))) * 3.6
-        }
-        
-    }
-    
-    if (cost_function == "irmischer-clarke offpath female") {
-        
-        cf <- function(x) {
-            0.95 * (0.11 + 0.67 * exp(-(abs(x[adj]) * 100 + 2)^2/(2 * 30^2))) * 3.6
-        }
-        
-    }
-    
-    if (cost_function == "modified tobler") {
-        
-        cf <- function(x) {
-            (4.8 * exp(-5.3 * abs((x[adj] * 0.7) + 0.03)))
-        }
-        
-    }
-    
-    if (cost_function == "wheeled transport") {
-        
-        cf <- function(x) {
-            (1/(1 + ((abs(x[adj]) * 100)/crit_slope)^2))
-        }
-        
-    }
-    
-    if (cost_function == "herzog") {
-        
-        cf <- function(x) {
+        # Tobler Hiking Function measured in km/h. Divided by 3.6 to turn into m/s
+        if (cost_function == "tobler") {
             
-            (1/((1337.8 * abs(x[adj])^6) + (278.19 * abs(x[adj])^5) - (517.39 * abs(x[adj])^4) - (78.199 * abs(x[adj])^3) + (93.419 * 
-                abs(x[adj])^2) + (19.825 * abs(x[adj])) + 1.64))
+            # 3.6 converts from km/h to m/s
+            cf <- function(x) {
+                (6 * exp(-3.5 * abs(x + 0.05))) / 3.6
+            }
+        }
+        
+        if (cost_function == "tobler offpath") {
+            
+            cf <- function(x) {
+                ((6 * exp(-3.5 * abs(x + 0.05))) * 0.6) / 3.6
+            }
             
         }
         
-    }
-    
-    if (cost_function == "llobera-sluckin") {
-        
-        cf <- function(x) {
-            (1/(2.635 + (17.37 * abs(x[adj])) + (42.37 * abs(x[adj])^2) - (21.43 * abs(x[adj])^3) + (14.93 * abs(x[adj])^4)))
+        # requires mathematical slope to be in radians. Necessary to convert mathematical slope to degrees and then to radians
+        if (cost_function == "davey") { 
+            
+            cf <- function(x, y = 1.40, z = 2.8) { 
+                x_deg <- slope2deg(x)
+                x_rad <- deg2rad(x_deg)
+                
+                (y * exp(-z*abs(x_rad)))
+            }
+            
         }
         
-    }
-    
-    if (cost_function == "campbell 2019") {
+        if (cost_function == "rees") { 
+            
+            cf <- function(x) { 
+                1 / (0.75+0.09*tan(x) + 14.6*(tan(x)^2))
+            }
+            
+        }
         
-        percentile_choice <- c(0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 
-            0.95, 0.99)
+        if (cost_function == "irmischer-clarke male") {
+            
+            cf <- function(x) {
+                (0.11 + exp(-(abs(x) * 100 + 5)^2/(2 * 30^2)))
+                
+            }
+            
+        }
         
-        if (!percentile %in% percentile_choice) {
-            stop("percentile argument is invalid. Expecting percentile value of 0.01, 0.05, 0.10, 0.15, 0.20,
+        if (cost_function == "irmischer-clarke female") {
+            
+            cf <- function(x) {
+                (0.95 * (0.11 + exp(-(abs(x) * 100 + 5)^2/(2 * 30^2))))
+            }
+            
+        }
+        
+        if (cost_function == "modified tobler") {
+            
+            cf <- function(x) {
+                (4.8 * exp(-5.3 * abs((x * 0.7) + 0.03)))
+            }
+            
+        }
+        
+        if (cost_function == "wheeled transport") {
+            
+            cf <- function(x) {
+                (1/(1 + ((abs(x) * 100)/crit_slope)^2))
+            }
+            
+        }
+        
+        if (cost_function == "herzog") {
+            
+            cf <- function(x) {
+                
+                (1/((1337.8 * abs(x)^6) + (278.19 * abs(x)^5) - (517.39 * abs(x)^4) - (78.199 * abs(x)^3) + (93.419 * abs(x)^2) + (19.825 * abs(x)) + 1.64))
+                
+            }
+            
+        }
+        
+        if (cost_function == "llobera-sluckin") {
+            
+            cf <- function(x) {
+                (1/(2.635 + (17.37 * abs(x)) + (42.37 * abs(x)^2) - (21.43 * abs(x)^3) + (14.93 * abs(x)^4)))
+            }
+            
+        }
+        
+        if (cost_function == "naismith") {
+            
+            cf <- function(x) {
+                
+                x_deg <- slope2deg(x)
+                x_rad <- deg2rad(x_deg)
+                
+                ifelse(x_deg > 0, (1 / (0.72 + 6 * tan(x_rad))), ifelse(x_deg <= -12, (1 / (0.72 - 2 * tan(x_rad))), ifelse(x_deg > -12 & x_deg <= -5, (1 / (0.72 + 2 * tan(x_rad))), 1.40)))
+            }
+        }
+        
+        if (cost_function == "minetti") { 
+            
+            cf <- function(x) { 
+                (((280.5 * (x)^5) - (58.7 * (x)^4) - (76.8 * (x)^3) + (51.9 * (x)^2) + (19.6 * (x)) + 2.5))
+            } 
+            
+        }
+        
+        if (cost_function == "campbell") { 
+            
+            cf <- function(x) { 
+                x_deg <- slope2deg(x)
+                
+                1.662 - (5.191 * 10^-3) * x_deg - (1.127*10^-3) * x_deg^2
+            }
+            
+        }
+        
+        if (cost_function == "campbell 2019") {
+            
+            percentile_choice <- c(0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 0.99)
+            
+            if (!percentile %in% percentile_choice) {
+                stop("percentile argument is invalid. Expecting percentile value of 0.01, 0.05, 0.10, 0.15, 0.20,
         0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95 or 0.99")
+            }
+            
+            lf_terms <- data.frame(percentile = percentile_choice, 
+                                   a = c(-2.1, -1.527, -1.568, -1.626, -1.71, -1.822, -1.858, -1.891, -1.958, -2.05, -2.171, -2.317, -2.459, -2.647, -2.823, 
+                                         -3.067, -3.371, -3.661, -3.06, -3.485, -4),
+                                   b = c(12.273, 14.041, 13.328, 11.847, 10.154, 8.827, 8.412, 8.584, 8.96, 9.402, 10.064, 10.712, 11.311, 12.089, 12.784, 
+                                         13.888, 15.395, 17.137, 16.653, 17.033, 13.903),
+                                   c = c(21.816, 36.813, 38.892, 38.231, 36.905, 37.111, 39.995, 44.852, 50.34, 56.172, 63.66, 71.572, 79.287, 89.143, 98.697, 
+                                         113.655, 134.409, 159.027, 138.875, 138.04, 123.515),
+                                   d = c(0.263, 0.32, 0.404, 0.481, 0.557, 0.616, 0.645, 0.649, 0.649, 0.646, 0.628, 0.608, 0.599, 0.576, 0.566, 0.518, 0.443, 
+                                         0.385, 0.823, 1.179, 1.961),
+                                   e = c(-0.00193, -0.00273, -0.00323, -0.00356, -0.00389, -0.00402, -0.0043, -0.00443, -0.00457, -0.0046, -0.00463, -0.00451, 
+                                         -0.00461, -0.00465, -0.00493, -0.00488, -0.00472, -0.00534, -0.01386, -0.01252, -0.01081))
+            
+            lf_terms <- lf_terms[lf_terms$percentile == percentile,]
+            
+            cf <- function(x) {
+                (lf_terms$c +  (1 / ((pi * lf_terms$b) * (1 + ((slope2deg(x) - lf_terms$a) / lf_terms$b)^2))) + lf_terms$d + (lf_terms$e * slope2deg(x)))
+            }
         }
+    }
+    
+    if(is.function(cost_function)) { 
         
-        term_a <- c(-2.1, -1.527, -1.568, -1.626, -1.71, -1.822, -1.858, -1.891, -1.958, -2.05, -2.171, -2.317, -2.459, -2.647, -2.823, 
-            -3.067, -3.371, -3.661, -3.06, -3.485, -4)
-        term_b <- c(12.273, 14.041, 13.328, 11.847, 10.154, 8.827, 8.412, 8.584, 8.96, 9.402, 10.064, 10.712, 11.311, 12.089, 12.784, 
-            13.888, 15.395, 17.137, 16.653, 17.033, 13.903)
-        term_c = c(21.816, 36.813, 38.892, 38.231, 36.905, 37.111, 39.995, 44.852, 50.34, 56.172, 63.66, 71.572, 79.287, 89.143, 98.697, 
-            113.655, 134.409, 159.027, 138.875, 138.04, 123.515)
-        term_d = c(0.263, 0.32, 0.404, 0.481, 0.557, 0.616, 0.645, 0.649, 0.649, 0.646, 0.628, 0.608, 0.599, 0.576, 0.566, 0.518, 0.443, 
-            0.385, 0.823, 1.179, 1.961)
-        term_e = c(-0.00193, -0.00273, -0.00323, -0.00356, -0.00389, -0.00402, -0.0043, -0.00443, -0.00457, -0.0046, -0.00463, -0.00451, 
-            -0.00461, -0.00465, -0.00493, -0.00488, -0.00472, -0.00534, -0.01386, -0.01252, -0.01081)
+        cf <- cost_function
         
-        lorentz_function_terms <- data.frame(percentile = percentile_choice, term_a, term_b, term_c, term_d, term_e)
-        
-        terms <- lorentz_function_terms[lorentz_function_terms$percentile == percentile, ]
-        
-        cf <- function(x) {
-            (terms$term_c * (1/((pi * terms$term_b) * (1 + (((atan(x[adj]) * 180/pi))/terms$term_b)^2))) + terms$term_d + (terms$term_e * 
-                ((atan(x[adj]) * 180/pi)))) * 3.6
-        }
     }
     
     return(cf)
-    
 }
