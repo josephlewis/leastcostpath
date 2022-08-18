@@ -1,4 +1,5 @@
 #' Calculate Least Cost Path from Origin to Destination
+#' 
 #' @author Joseph Lewis
 #'
 #' @export
