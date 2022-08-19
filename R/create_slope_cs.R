@@ -82,7 +82,7 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
                "nrow" = terra::nrow(x), 
                "ncol" = terra::ncol(x), 
                "extent" = terra::ext(x), 
-               "crs" = terra::crs(x))
+               "crs" = terra::crs(x, proj = TRUE))
     
     class(cs) <- "conductanceMatrix"
     
