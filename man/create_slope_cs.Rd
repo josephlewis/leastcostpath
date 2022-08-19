@@ -2,8 +2,6 @@
 % Please edit documentation in R/create_slope_cs.R
 \name{create_slope_cs}
 \alias{create_slope_cs}
-\alias{print.conductanceMatrix}
-\alias{plot.conductanceMatrix}
 \title{Creates a slope-based cost surface}
 \usage{
 create_slope_cs(
@@ -15,10 +13,6 @@ create_slope_cs(
   percentile = 0.5,
   exaggeration = FALSE
 )
-
-\method{print}{conductanceMatrix}(x)
-
-\method{plot}{conductanceMatrix}(x)
 }
 \arguments{
 \item{x}{\code{SpatRaster}}

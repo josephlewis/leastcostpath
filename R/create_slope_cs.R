@@ -95,7 +95,6 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
     
 }
 
-#' @name create_slope_cs
 #' @export
 
 print.conductanceMatrix <- function(x) {
@@ -113,7 +112,6 @@ print.conductanceMatrix <- function(x) {
     cat("\nextent:", x$extent@ptr$vector, "(xmin, xmax, ymin, ymax)")
 }
 
-#' @name create_slope_cs
 #' @export
 
 plot.conductanceMatrix <- function(x) {
