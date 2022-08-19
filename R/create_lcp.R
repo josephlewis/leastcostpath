@@ -15,6 +15,20 @@
 #' @return \code{sf}  Least-cost path from origin and destination based on the supplied \code{conductanceMatrix} 
 #' 
 #' @export
+#' 
+#' @examples 
+#' 
+#' r <- terra::rast(system.file("ex/test.grd", package="terra"))
+#' 
+#' slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+#' 
+#' locs <- sf::st_sf(geometry = sf::st_sfc(
+#' sf::st_point(c(178743.9, 329740.1)),
+#' sf::st_point(c(180097, 330248.4)),
+#' crs = terra::crs(r)))
+#' 
+#' lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2,], 
+#' cost_distance = TRUE)
 
 create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
     
@@ -34,7 +48,13 @@ create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
     lcp_cells <- unlist(lcp_graph$vpath)
     lcp_xy <- terra::xyFromCell(cs_rast, lcp_cells)
     lcp <- sf::st_sf(geometry = sf::st_sfc(sf::st_linestring(lcp_xy)), crs = x$crs)
-    lcp$costFunction <- x$costFunction
+    
+    if(!is.function(x$costFunction)) { 
+        lcp$costFunction <- x$costFunction
+    } else if (is.function(x$costFunction)) { 
+        lcp$costFunction <- deparse(body(x$costFunction)[[2]])
+    }
+    
     lcp$fromCell <- from_cell
     lcp$toCell <- to_cell
     

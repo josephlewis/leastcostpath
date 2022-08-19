@@ -21,6 +21,20 @@ create_lcp(x, origin, destination, cost_distance = FALSE)
 \description{
 Calculates the Least-cost path from an origin location to a destination location. Applies Dijkstra's algorithm as implemented in igraph
 }
+\examples{
+
+r <- terra::rast(system.file("ex/test.grd", package="terra"))
+
+slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+
+locs <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(178743.9, 329740.1)),
+sf::st_point(c(180097, 330248.4)),
+crs = terra::crs(r)))
+
+lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2,], 
+cost_distance = TRUE)
+}
 \author{
 Joseph Lewis
 }
