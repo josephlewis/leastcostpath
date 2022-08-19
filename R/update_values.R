@@ -14,7 +14,29 @@
 #' 
 #' @return \code{conductanceMatrix} 
 #' 
-
+#' @author Joseph Lewis
+#'
+#' @export
+#' 
+#' @examples 
+#' 
+#' r <- terra::rast(system.file("ex/test.grd", package="terra"))
+#' 
+#' slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+#' 
+#' locs <- sf::st_sf(geometry = sf::st_sfc(
+#' sf::st_point(c(178743.9, 329740.1)),
+#' sf::st_point(c(180097, 330248.4)),
+#' crs = terra::crs(r)))
+#' 
+#' locs <- sf::st_buffer(x = locs, dist = 200)
+#' 
+#' slope_cs2 <- update_values(x = slope_cs, sf = locs, 
+#' FUN = function(j) { j * 0.6})
+#' slope_cs3 <- update_values(x = slope_cs, sf = locs, 
+#' FUN = function(j) { j + 10})
+#' slope_cs4 <- update_values(x = slope_cs, sf = locs, 
+#' FUN = function(j) { replace(x = j, values = 0)})
 
 update_values <- function(x, sf, FUN) {
   
@@ -35,7 +57,7 @@ update_values <- function(x, sf, FUN) {
   terra_vect <- terra::vect(sf)
   cells_indx <- terra::cells(cs_rast, terra_vect)[, 2]
   
-  adj_indx <- which(x$conductanceMatrix!= 0, arr.ind = TRUE)
+  adj_indx <- Matrix::which(x$conductanceMatrix!= 0, arr.ind = TRUE)
   adj_indx <- adj_indx[adj_indx[,2] %in% cells_indx,, drop = FALSE]
   
   x$conductanceMatrix[adj_indx] <- FUN(x$conductanceMatrix[adj_indx])

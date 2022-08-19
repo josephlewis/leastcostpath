@@ -22,3 +22,26 @@ Update values in conductanceMatrix based on the supplied sf object
 \details{
 the updated conductanceMatrix is produced by assessing which areas of the conductanceMatrix coincide with the supplied sf object. The values within the areas that coincide with the sf object are manipulated based on the supplied function
 }
+\examples{
+
+r <- terra::rast(system.file("ex/test.grd", package="terra"))
+
+slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+
+locs <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(178743.9, 329740.1)),
+sf::st_point(c(180097, 330248.4)),
+crs = terra::crs(r)))
+
+locs <- sf::st_buffer(x = locs, dist = 200)
+
+slope_cs2 <- update_values(x = slope_cs, sf = locs, 
+FUN = function(j) { j * 0.6})
+slope_cs3 <- update_values(x = slope_cs, sf = locs, 
+FUN = function(j) { j + 10})
+slope_cs4 <- update_values(x = slope_cs, sf = locs, 
+FUN = function(j) { replace(x = j, values = 0)})
+}
+\author{
+Joseph Lewis
+}
