@@ -3,8 +3,6 @@
 #'  Creates a cost surface based on the difficulty of moving up and down slope. This function provides multiple isotropic and anisotropic cost functions that estimate the 'cost' of human movement across a landscape.
 #'  
 #' The supplied 'spatRaster' object must have a projected CRS
-#'  
-#' See details for more information
 #' 
 #' @details
 #' 
@@ -12,11 +10,11 @@
 #' 
 #' 'tobler', 'tobler offpath', 'davey', 'rees', 'irmischer-clarke male', 'irmischer-clarke offpath male', 'irmischer-clarke female', 'irmischer-clarke offpath female', 'modified tobler', 'wheeled transport', 'herzog', 'llobera-sluckin', 'naismith', 'minetti', 'campbell', 'campbell 2019'
 #'
-#' @param x \code{SpatRaster}. Digital Elevation Model
+#' @param x \code{SpatRaster}
 #'
 #' @param cost_function \code{character} or \code{function}. Cost function applied to slope values. See details for implemented cost functions. tobler (default)
 #'
-#' @param neighbours \code{numeric} value. Number of directions used in the Least-Cost Path calculation. Expected numeric values are 4, 8, 16, 32, 48. 16 (default)
+#' @param neighbours \code{numeric} value. Number of directions used in the conductance matrix calculation. Expected numeric values are 4, 8, 16, 32, 48. 16 (default)
 #'
 #' @param crit_slope \code{numeric} value. Critical Slope (in percentage) is 'the transition where switchbacks become more effective than direct uphill or downhill paths'. Cost of climbing the critical slope is twice as high as those for moving on flat terrain and is used for estimating the cost of using wheeled vehicles. Default value is 12, which is the postulated maximum gradient traversable by ancient transport (Verhagen and Jeneson, 2012). Critical slope only used in 'wheeled transport' cost function
 #'
@@ -26,13 +24,13 @@
 #'
 #' @param exaggeration \code{logical}. if TRUE, positive slope values (up-hill movement) multiplied by 1.99 and negative slope values (down-hill movement) multiplied by 2.31
 #'
-#' @return conductanceMatrix that numerically expresses the difficulty of moving across slope based on the provided cost function
+#' @return \code{conductanceMatrix} that numerically expresses the difficulty of moving across slope based on the provided cost function
 #'
 #' @author Joseph Lewis
 #'
 #' @export
 
-conductanceMatrix <- function(x) UseMethod("conductanceMatrix")
+conductanceMatrix <- function(x, cost_function, neighbours, crit_slope, max_slope, percentile, exaggeration) UseMethod("conductanceMatrix")
 
 create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_slope = 12, max_slope = NULL, percentile = 0.5, exaggeration = FALSE) {
     
