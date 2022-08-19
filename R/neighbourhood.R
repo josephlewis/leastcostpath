@@ -1,9 +1,5 @@
 neighbourhood <- function(neighbours) { 
   
-  # updated neighbours to not include NA for non-adjacent cells but 0. This in-line with updates from terra
-  # raster::adjacent requires 0 as focal cell, 1 as adjacent cells, anything else ignored
-  # terra::adjacent requires 1 for adjacent cells and 0 for all non-adjacent cells
-  
   neighbours_32 <- matrix(c(0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 
                             1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0), nrow = 7, ncol = 7, byrow = TRUE)
   
