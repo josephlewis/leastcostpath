@@ -95,8 +95,6 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
     
 }
 
-conductanceMatrix <- function(x, cost_function, neighbours, crit_slope, max_slope, percentile, exaggeration) UseMethod("conductanceMatrix")
-
 print.conductanceMatrix <- function(x) {
     cat("Class: ", class(x))
     if(!is.function(x$costFunction)) { cat("\ncost function: ", x$costFunction)}
