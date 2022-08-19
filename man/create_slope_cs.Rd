@@ -3,6 +3,7 @@
 \name{create_slope_cs}
 \alias{create_slope_cs}
 \alias{print.conductanceMatrix}
+\alias{plot.conductanceMatrix}
 \title{Creates a slope-based cost surface}
 \usage{
 create_slope_cs(
@@ -16,6 +17,8 @@ create_slope_cs(
 )
 
 \method{print}{conductanceMatrix}(x)
+
+\method{plot}{conductanceMatrix}(x)
 }
 \arguments{
 \item{x}{\code{SpatRaster}}

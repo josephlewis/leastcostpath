@@ -112,3 +112,26 @@ print.conductanceMatrix <- function(x) {
     cat("\ncrs:", x$crs)
     cat("\nextent:", x$extent@ptr$vector, "(xmin, xmax, ymin, ymax)")
 }
+
+#' @name create_slope_cs
+#' @export
+
+plot.conductanceMatrix <- function(x) {
+    
+    cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, extent = x$extent, crs = x$crs)
+    
+    col_sum <- Matrix::colSums(x$conductanceMatrix)
+    row_sum <- Matrix::rowSums(x$conductanceMatrix)
+    
+    logical_sm <- methods::as(x$conductance, "lMatrix")
+    
+    ncols <- Matrix::colSums(logical_sm)
+    nrows <- Matrix::rowSums(logical_sm)
+    
+    vals <- ((col_sum / ncols) + (row_sum / nrows)) / 2
+    
+    cs_rast <- terra::setValues(cs_rast, vals)
+    
+    plot(cs_rast)
+    
+}
