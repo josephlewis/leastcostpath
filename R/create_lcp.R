@@ -1,9 +1,20 @@
-#' Calculate Least Cost Path from Origin to Destination
+#' Calculate Least-cost Path from Origin to Destination
+#' 
+#' Calculates the Least-cost path from an origin location to a destination location. Applies Dijkstra's algorithm as implemented in igraph
+#' 
+#' @param x \code{conductanceMatrix} 
+#' 
+#' @param origin \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' 
+#' @param destination \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' 
+#' @param cost_distance \code{logical} if TRUE computes total accumulated cost from origin to destination. FALSE (default)
 #' 
 #' @author Joseph Lewis
-#'
+#' 
+#' @return \code{sf}  Least-cost path from origin and destination based on the supplied \code{conductanceMatrix} 
+#' 
 #' @export
-#'
 
 create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
     
