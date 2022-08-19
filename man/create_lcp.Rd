@@ -2,12 +2,24 @@
 % Please edit documentation in R/create_lcp.R
 \name{create_lcp}
 \alias{create_lcp}
-\title{Calculate Least Cost Path from Origin to Destination}
+\title{Calculate Least-cost Path from Origin to Destination}
 \usage{
 create_lcp(x, origin, destination, cost_distance = FALSE)
 }
+\arguments{
+\item{x}{\code{conductanceMatrix}}
+
+\item{origin}{\code{sf} of geometry type 'POINT' or 'MULTIPOINT'}
+
+\item{destination}{\code{sf} of geometry type 'POINT' or 'MULTIPOINT'}
+
+\item{cost_distance}{\code{logical} if TRUE computes total accumulated cost from origin to destination. FALSE (default)}
+}
+\value{
+\code{sf}  Least-cost path from origin and destination based on the supplied \code{conductanceMatrix}
+}
 \description{
-Calculate Least Cost Path from Origin to Destination
+Calculates the Least-cost path from an origin location to a destination location. Applies Dijkstra's algorithm as implemented in igraph
 }
 \author{
 Joseph Lewis
