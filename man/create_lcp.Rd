@@ -4,7 +4,7 @@
 \alias{create_lcp}
 \title{Calculate Least Cost Path from Origin to Destination}
 \usage{
-create_lcp(x, origin, destination, directional = FALSE, cost_distance = FALSE)
+create_lcp(x, origin, destination, cost_distance = FALSE)
 }
 \description{
 Calculate Least Cost Path from Origin to Destination
