@@ -22,6 +22,21 @@ Using the supplied conductanceMatrix, the function checks whether:
 (1) the supplied locations are traversable from at least one adjacent cell
 (2) the supplied locations are within the extent of the supplied conductanceMatrix
 }
+\examples{
+
+r <- terra::rast(system.file("ex/test.grd", package="terra"))
+
+slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+
+locs <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(178743.9, 329740.1)),
+sf::st_point(c(180097, 330248.4)),
+sf::st_point(c(180714.8, 333283)),
+sf::st_point(c(182402.6, 331717.2)),
+crs = terra::crs(r)))
+
+check_locations(x = slope_cs, locations = locs)
+}
 \author{
 Joseph Lewis
 }
