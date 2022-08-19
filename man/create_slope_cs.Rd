@@ -42,6 +42,15 @@ The following cost functions have been implemented however users may also supply
 
 'tobler', 'tobler offpath', 'davey', 'rees', 'irmischer-clarke male', 'irmischer-clarke offpath male', 'irmischer-clarke female', 'irmischer-clarke offpath female', 'modified tobler', 'wheeled transport', 'herzog', 'llobera-sluckin', 'naismith', 'minetti', 'campbell', 'campbell 2019'
 }
+\examples{
+
+r <- terra::rast(system.file("ex/test.grd", package="terra"))
+
+slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+slope_cs2 <- create_slope_cs(x = r, 
+cost_function = function(x) {(6 * exp(-3.5 * abs(x + 0.05))) / 3.6})
+
+}
 \author{
 Joseph Lewis
 }

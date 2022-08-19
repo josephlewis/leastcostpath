@@ -30,6 +30,14 @@
 #'
 #' @export
 #' 
+#' @examples 
+#' 
+#' r <- terra::rast(system.file("ex/test.grd", package="terra"))
+#' 
+#' slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+#' slope_cs2 <- create_slope_cs(x = r, 
+#' cost_function = function(x) {(6 * exp(-3.5 * abs(x + 0.05))) / 3.6})
+#' 
 
 create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_slope = 12, max_slope = NULL, percentile = 0.5, exaggeration = FALSE) {
     
@@ -103,25 +111,3 @@ print.conductanceMatrix <- function(x) {
     cat("\ncrs:", x$crs)
     cat("\nextent:", x$extent@ptr$vector, "(xmin, xmax, ymin, ymax)")
 }
-
-plot.conductanceMatrix <- function(x) { 
-    
-    cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, extent = x$extent, crs = x$crs)
-    
-    col_sum <- Matrix::colSums(x$conductanceMatrix)
-    row_sum <- Matrix::rowSums(x$conductanceMatrix)
-    
-    logical_sm <- methods::as(x$conductance, "lMatrix")
-    
-    ncols <- Matrix::colSums(logical_sm)
-    nrows <- Matrix::rowSums(logical_sm)
-    
-    vals <- ((col_sum / ncols) + (row_sum / nrows)) / 2
-    
-    cs_rast <- terra::setValues(cs_rast, vals)
-    
-    plot(cs_rast)
-    
-}
-
-
