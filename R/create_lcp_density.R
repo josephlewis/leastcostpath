@@ -21,7 +21,7 @@ create_lcp_density <- function(x, lcps, rescale = FALSE) {
   
   lcps_vect <- terra::vect(lcps)
   
-  cum_rast <- rasterizeGeom(x = lcps_vect, y = cs_rast, fun = "crosses")
+  cum_rast <- terra::rasterizeGeom(x = lcps_vect, y = cs_rast, fun = "crosses")
 
   if(rescale) { 
     rast_min <- terra::minmax(cum_rast)[1]
