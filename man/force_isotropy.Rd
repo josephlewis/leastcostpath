@@ -6,6 +6,12 @@
 \usage{
 force_isotropy(x)
 }
+\arguments{
+\item{x}{\code{conductanceMatrix}}
+}
+\value{
+\code{conductanceMatrix}
+}
 \description{
-Coerce an anisotropic cost surface to an isotropic cost surface
+Averages conductance values from-to adjacent cells
 }
