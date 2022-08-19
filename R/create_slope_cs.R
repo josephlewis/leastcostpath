@@ -95,7 +95,10 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
     
 }
 
-print.conductanceMatrix <- function(x, ...) {
+#' @name create_slope_cs
+#' @export
+
+print.conductanceMatrix <- function(x) {
     cat("Class: ", class(x))
     if(!is.function(x$costFunction)) { cat("\ncost function: ", x$costFunction)}
     if(is.function(x$costFunction)) { cat("\ncost function: ", deparse(body(x$costFunction)[[2]]))}
