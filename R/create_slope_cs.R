@@ -29,6 +29,7 @@
 #' @author Joseph Lewis
 #'
 #' @export
+#' 
 
 conductanceMatrix <- function(x, cost_function, neighbours, crit_slope, max_slope, percentile, exaggeration) UseMethod("conductanceMatrix")
 
@@ -122,4 +123,5 @@ plot.conductanceMatrix <- function(x) {
     plot(cs_rast)
     
 }
+
 
