@@ -1,5 +1,3 @@
-conductanceMatrix <- function(x, cost_function, neighbours, crit_slope, max_slope, percentile, exaggeration) UseMethod("conductanceMatrix")
-
 #' Creates a slope-based cost surface
 #' 
 #'  Creates a cost surface based on the difficulty of moving up and down slope. This function provides multiple isotropic and anisotropic cost functions that estimate the 'cost' of human movement across a landscape.
@@ -88,6 +86,8 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
     return(cs)
     
 }
+
+conductanceMatrix <- function(x, cost_function, neighbours, crit_slope, max_slope, percentile, exaggeration) UseMethod("conductanceMatrix")
 
 print.conductanceMatrix <- function(x) {
     cat("Class: ", class(x))
