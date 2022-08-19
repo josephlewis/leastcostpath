@@ -7,6 +7,12 @@
 #' @export
 #' 
 #' @return \code{conductanceMatrix} 
+#' 
+#' r <- terra::rast(system.file("ex/test.grd", package="terra"))
+#' 
+#' slope_cs_aniso <- create_slope_cs(x = r, cost_function = "tobler")
+#' 
+#' slope_cs_iso <- force_isotropy(slope_cs_aniso)
 
 force_isotropy <- function(x) { 
   

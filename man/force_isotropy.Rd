@@ -10,7 +10,13 @@ force_isotropy(x)
 \item{x}{\code{conductanceMatrix}}
 }
 \value{
-\code{conductanceMatrix}
+\code{conductanceMatrix} 
+
+r <- terra::rast(system.file("ex/test.grd", package="terra"))
+
+slope_cs_aniso <- create_slope_cs(x = r, cost_function = "tobler")
+
+slope_cs_iso <- force_isotropy(slope_cs_aniso)
 }
 \description{
 Averages conductance values from-to adjacent cells
