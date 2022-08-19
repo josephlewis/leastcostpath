@@ -1,4 +1,29 @@
+#' check supplied locations
+#' 
+#' checks that locations can be reached when calculating least-cost paths
+#' 
+#' @param x \code{conductanceMatrix}
+#' 
+#' @param locations \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' 
+#' @details 
+#' 
+#' Using the supplied conductanceMatrix, the function checks whether:
+#' (1) the supplied locations are traversable from at least one adjacent cell
+#' (2) the supplied locations are within the extent of the supplied conductanceMatrix
+#' 
+#' @author Joseph Lewis
+#' 
+#' @return \code{message} 
+#' 
+#' @export
+
 check_locations <- function(x, locations) { 
+  
+  if(!all(sf::st_geometry_type(locations) %in% c("POINT", "MULTITYPE"))) { 
+    stop("Invalid locations argument. locations must be a sf object of geometry type 'POINT' or 'MULTIPOINT'")
+    }
+  
   
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, extent = x$extent, crs = x$crs)
   
