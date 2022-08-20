@@ -2,6 +2,7 @@
 
 S3method(plot,conductanceMatrix)
 S3method(print,conductanceMatrix)
+export(buffer_validation)
 export(check_locations)
 export(create_FETE_lcps)
 export(create_cost_corridor)
