@@ -31,37 +31,37 @@
 #' cost_distance = TRUE)
 
 create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
-    
-    cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, extent = x$extent, crs = x$crs)
-    
-    from_coords <- sf::st_coordinates(origin)[1, 1:2, drop = FALSE]
-    to_coords <- sf::st_coordinates(destination)[1, 1:2, drop = FALSE]
-    
-    from_cell <- terra::cellFromXY(cs_rast, from_coords)
-    to_cell <- terra::cellFromXY(cs_rast, to_coords)
-    
-    cm_graph <- igraph::graph_from_adjacency_matrix(x$conductanceMatrix, mode = "directed", weighted = TRUE)
-    
-    igraph::E(cm_graph)$weight <- (1/igraph::E(cm_graph)$weight)
-    
-    lcp_graph <- igraph::shortest_paths(cm_graph, from = from_cell, to = to_cell, mode = "out")
-    lcp_cells <- unlist(lcp_graph$vpath)
-    lcp_xy <- terra::xyFromCell(cs_rast, lcp_cells)
-    lcp <- sf::st_sf(geometry = sf::st_sfc(sf::st_linestring(lcp_xy)), crs = x$crs)
-    
-    if(!is.function(x$costFunction)) { 
-        lcp$costFunction <- x$costFunction
-    } else if (is.function(x$costFunction)) { 
-        lcp$costFunction <- deparse(body(x$costFunction)[[2]])
-    }
-    
-    lcp$fromCell <- from_cell
-    lcp$toCell <- to_cell
-    
-    if (cost_distance) {
-        cost <- igraph::distances(graph = cm_graph, v = from_cell, to = to_cell, mode = "out")
-        lcp <- transform(lcp, cost_distance = cost)
-    }
-    
-    return(lcp)
+  
+  cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, extent = x$extent, crs = x$crs)
+  
+  from_coords <- sf::st_coordinates(origin)[1, 1:2, drop = FALSE]
+  to_coords <- sf::st_coordinates(destination)[1, 1:2, drop = FALSE]
+  
+  from_cell <- terra::cellFromXY(cs_rast, from_coords)
+  to_cell <- terra::cellFromXY(cs_rast, to_coords)
+  
+  cm_graph <- igraph::graph_from_adjacency_matrix(x$conductanceMatrix, mode = "directed", weighted = TRUE)
+  
+  igraph::E(cm_graph)$weight <- (1/igraph::E(cm_graph)$weight)
+  
+  lcp_graph <- igraph::shortest_paths(cm_graph, from = from_cell, to = to_cell, mode = "out")
+  lcp_cells <- unlist(lcp_graph$vpath)
+  lcp_xy <- terra::xyFromCell(cs_rast, lcp_cells)
+  lcp <- sf::st_sf(geometry = sf::st_sfc(sf::st_linestring(lcp_xy)), crs = x$crs)
+  
+  if(!is.function(x$costFunction)) { 
+    lcp$costFunction <- x$costFunction
+  } else if (is.function(x$costFunction)) { 
+    lcp$costFunction <- deparse(body(x$costFunction)[[2]])
+  }
+  
+  lcp$fromCell <- from_cell
+  lcp$toCell <- to_cell
+  
+  if (cost_distance) {
+    cost <- igraph::distances(graph = cm_graph, v = from_cell, to = to_cell, mode = "out")
+    lcp <- transform(lcp, cost_distance = cost)
+  }
+  
+  return(lcp)
 }
