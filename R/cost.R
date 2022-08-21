@@ -62,7 +62,7 @@ cost <- function(cost_function, crit_slope, percentile) {
         if (cost_function == "irmischer-clarke offpath male") {
             
             cf <- function(x) {
-                (0.11 + 0.67 * exp(-(abs(x[adj]) * 100 + 2)^2/(2 * 30^2))) * 3.6
+                (0.11 + 0.67 * exp(-(abs(x) * 100 + 2)^2/(2 * 30^2))) * 3.6
             }
             
         }
@@ -78,7 +78,7 @@ cost <- function(cost_function, crit_slope, percentile) {
         if (cost_function == "irmischer-clarke offpath female") {
             
             cf <- function(x) {
-                0.95 * (0.11 + 0.67 * exp(-(abs(x[adj]) * 100 + 2)^2/(2 * 30^2))) * 3.6
+                0.95 * (0.11 + 0.67 * exp(-(abs(x) * 100 + 2)^2/(2 * 30^2))) * 3.6
             }
             
         }
