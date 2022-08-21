@@ -175,7 +175,7 @@ cost <- function(cost_function, crit_slope, percentile) {
         }
     }
     
-    if(is.function(cost_function)) { 
+    if(is.function(cost_function)) {
         
         cf <- cost_function
         
