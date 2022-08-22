@@ -38,9 +38,9 @@ Creates a cost surface based on the difficulty of moving up and down slope. This
 The supplied 'spatRaster' object must have a projected CRS
 }
 \details{
-The following cost functions have been implemented however users may also supply their own cost functions:
+The following cost functions have been implemented however users may also supply their own cost functions (see examples):
 
-'tobler', 'tobler offpath', 'davey', 'rees', 'irmischer-clarke male', 'irmischer-clarke offpath male', 'irmischer-clarke female', 'irmischer-clarke offpath female', 'modified tobler', 'wheeled transport', 'herzog', 'llobera-sluckin', 'naismith', 'minetti', 'campbell', 'campbell 2019'
+"tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'Kondo-Saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019"
 }
 \examples{
 
