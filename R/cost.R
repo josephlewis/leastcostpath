@@ -13,7 +13,7 @@ cost <- function(cost_function, crit_slope, percentile) {
         # degrees to radians
         deg2rad <- function(deg) {(deg * pi) / (180)}
         
-        # Tobler Hiking Function measured in km/h. Divided by 3.6 to turn into m/s
+        # Tobler Hiking Function measured in km/h. Divide by 3.6 to turn into m/s
         if (cost_function == "tobler") {
             
             # 3.6 converts from km/h to m/s
@@ -45,7 +45,7 @@ cost <- function(cost_function, crit_slope, percentile) {
         if (cost_function == "rees") { 
             
             cf <- function(x) { 
-                1 / (0.75+0.09*tan(x) + 14.6*(tan(x)^2))
+                (1 / (0.75 + 0.09 * abs(x) + 14.6 * (abs(x))^2))
             }
             
         }
