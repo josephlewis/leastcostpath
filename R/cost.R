@@ -1,6 +1,6 @@
 cost <- function(cost_function, crit_slope, percentile) {
     
-    cfs <- c("tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019")
+    cfs <- c("tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'Kondo-Saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019")
     
     if (inherits(cost_function, "character")) {
         if (!cost_function %in% cfs) {
@@ -91,6 +91,22 @@ cost <- function(cost_function, crit_slope, percentile) {
             
         }
         
+        if (cost_function == "garmy") {
+          
+          cf <- function(x) { 
+            (4 * exp(-0.008 * (slope2deg(x)^2)))
+          }
+          
+        }
+        
+        if (cost_function == "Kondo-Saino") {
+          
+          cf <- function(x) { 
+            ifelse(abs(x) >= -0.07, (5.1 * exp(-2.25 * abs(x + 0.07))), (5.1 * exp(-1.5 * abs(x + 0.07))))
+          }
+          
+        }
+        
         if (cost_function == "wheeled transport") {
             
             cf <- function(x) {
@@ -131,7 +147,7 @@ cost <- function(cost_function, crit_slope, percentile) {
         if (cost_function == "minetti") { 
             
             cf <- function(x) { 
-                (((280.5 * (x)^5) - (58.7 * (x)^4) - (76.8 * (x)^3) + (51.9 * (x)^2) + (19.6 * (x)) + 2.5))
+              1/ ((280.5 * abs(x)^5) - (58.7 * abs(x)^4) - (76.8 * abs(x)^3) + (51.9 * abs(x)^2) + (19.6 * abs(x)) + 2.5)
             } 
             
         }
@@ -147,31 +163,34 @@ cost <- function(cost_function, crit_slope, percentile) {
         }
         
         if (cost_function == "campbell 2019") {
-            
-            percentile_choice <- c(0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 0.99)
-            
-            if (!percentile %in% percentile_choice) {
-                stop("percentile argument is invalid. Expecting percentile value of 0.01, 0.05, 0.10, 0.15, 0.20,
+          
+          percentile_choice <- c(0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 
+                                 0.95, 0.99)
+          
+          if (!percentile %in% percentile_choice) {
+            stop("percentile argument is invalid. Expecting percentile value of 0.01, 0.05, 0.10, 0.15, 0.20,
         0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95 or 0.99")
-            }
-            
-            lf_terms <- data.frame(percentile = percentile_choice, 
-                                   a = c(-2.1, -1.527, -1.568, -1.626, -1.71, -1.822, -1.858, -1.891, -1.958, -2.05, -2.171, -2.317, -2.459, -2.647, -2.823, 
-                                         -3.067, -3.371, -3.661, -3.06, -3.485, -4),
-                                   b = c(12.273, 14.041, 13.328, 11.847, 10.154, 8.827, 8.412, 8.584, 8.96, 9.402, 10.064, 10.712, 11.311, 12.089, 12.784, 
-                                         13.888, 15.395, 17.137, 16.653, 17.033, 13.903),
-                                   c = c(21.816, 36.813, 38.892, 38.231, 36.905, 37.111, 39.995, 44.852, 50.34, 56.172, 63.66, 71.572, 79.287, 89.143, 98.697, 
-                                         113.655, 134.409, 159.027, 138.875, 138.04, 123.515),
-                                   d = c(0.263, 0.32, 0.404, 0.481, 0.557, 0.616, 0.645, 0.649, 0.649, 0.646, 0.628, 0.608, 0.599, 0.576, 0.566, 0.518, 0.443, 
-                                         0.385, 0.823, 1.179, 1.961),
-                                   e = c(-0.00193, -0.00273, -0.00323, -0.00356, -0.00389, -0.00402, -0.0043, -0.00443, -0.00457, -0.0046, -0.00463, -0.00451, 
-                                         -0.00461, -0.00465, -0.00493, -0.00488, -0.00472, -0.00534, -0.01386, -0.01252, -0.01081))
-            
-            lf_terms <- lf_terms[lf_terms$percentile == percentile,]
-            
-            cf <- function(x) {
-                (lf_terms$c +  (1 / ((pi * lf_terms$b) * (1 + ((slope2deg(x) - lf_terms$a) / lf_terms$b)^2))) + lf_terms$d + (lf_terms$e * slope2deg(x)))
-            }
+          }
+          
+          term_a <- c(-2.1, -1.527, -1.568, -1.626, -1.71, -1.822, -1.858, -1.891, -1.958, -2.05, -2.171, -2.317, -2.459, -2.647, -2.823, 
+                      -3.067, -3.371, -3.661, -3.06, -3.485, -4)
+          term_b <- c(12.273, 14.041, 13.328, 11.847, 10.154, 8.827, 8.412, 8.584, 8.96, 9.402, 10.064, 10.712, 11.311, 12.089, 12.784, 
+                      13.888, 15.395, 17.137, 16.653, 17.033, 13.903)
+          term_c = c(21.816, 36.813, 38.892, 38.231, 36.905, 37.111, 39.995, 44.852, 50.34, 56.172, 63.66, 71.572, 79.287, 89.143, 98.697, 
+                     113.655, 134.409, 159.027, 138.875, 138.04, 123.515)
+          term_d = c(0.263, 0.32, 0.404, 0.481, 0.557, 0.616, 0.645, 0.649, 0.649, 0.646, 0.628, 0.608, 0.599, 0.576, 0.566, 0.518, 0.443, 
+                     0.385, 0.823, 1.179, 1.961)
+          term_e = c(-0.00193, -0.00273, -0.00323, -0.00356, -0.00389, -0.00402, -0.0043, -0.00443, -0.00457, -0.0046, -0.00463, -0.00451, 
+                     -0.00461, -0.00465, -0.00493, -0.00488, -0.00472, -0.00534, -0.01386, -0.01252, -0.01081)
+          
+          lorentz_function_terms <- data.frame(percentile = percentile_choice, term_a, term_b, term_c, term_d, term_e)
+          
+          terms <- lorentz_function_terms[lorentz_function_terms$percentile == percentile, ]
+          
+          cf <- function(x) {
+            (terms$term_c * (1/((pi * terms$term_b) * (1 + ((slope2deg(x))/terms$term_b)^2))) + terms$term_d + (terms$term_e * 
+                                                                                                                  (slope2deg(x))))
+          }
         }
     }
     
