@@ -14,7 +14,6 @@
 #'
 #' @param percentile \code{numeric} value. Travel rate percentile only used in 'campbell 2019' cost_function. Expected numeric values are 0.01, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 0.99. 0.5 (default)
 #'
-#'
 #' @param rescale \code{logical} if TRUE conductance values scaled to between 0 and 1. This can be useful when comparing multiple cost functions
 #' 
 #' @param title \code{character} title to be included in plot. NULL (default)
@@ -33,7 +32,7 @@
 #' plot_cf(cost_function = "wheeled transport", crit_slope = 8)
 #' plot_cf(cost_function = "campbell 2019", percentile = 0.5)
 
-plot_cf <- function(cost_function, crit_slope = NULL, percentile = NULL, rescale = TRUE, title = NULL) {
+plot_cf <- function(cost_function, crit_slope = 12, percentile = 0.5, rescale = TRUE, title = NULL) {
   
   cfs <- c("tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'Kondo-Saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019")
   

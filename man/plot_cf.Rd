@@ -6,8 +6,8 @@
 \usage{
 plot_cf(
   cost_function,
-  crit_slope = NULL,
-  percentile = NULL,
+  crit_slope = 12,
+  percentile = 0.5,
   rescale = TRUE,
   title = NULL
 )
