@@ -36,11 +36,13 @@ PDI_validation <- function(lcp, comparison) {
   diff_polygons <- lapply(X = lcps, FUN = function(x) {
     
     x$geometry[[1]][1,] <- comparison$geometry[[1]][1,]
-    x$geometry[[1]][nrow(comparison$geometry[[1]]),] <- comparison$geometry[[1]][nrow(comparison$geometry[[1]]),]
+    x$geometry[[1]][nrow(x$geometry[[1]]),] <- comparison$geometry[[1]][nrow(comparison$geometry[[1]]),]
     
     diff_polygon <- sf::st_polygon(list(rbind(sf::st_coordinates(sf::st_reverse(x)), sf::st_coordinates(comparison))))
     diff_polygon <- sf::st_sfc(diff_polygon, crs = sf::st_crs(comparison))
     
+    diff_polygon <- sf::st_zm(diff_polygon)
+
     pdi_area <- as.vector(sf::st_area(diff_polygon))
     max_distance <- sf::st_distance(sf::st_point(comparison$geometry[[1]][1,]), sf::st_point(comparison$geometry[[1]][nrow(comparison$geometry[[1]]),]), which = "Euclidean")
     pdi <- pdi_area/max_distance
@@ -57,4 +59,3 @@ PDI_validation <- function(lcp, comparison) {
   return(min_diff_polygon)
   
 }
-
