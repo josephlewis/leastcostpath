@@ -186,9 +186,8 @@ cost <- function(cost_function, crit_slope, percentile) {
           lorentz_function_terms <- data.frame(percentile = percentile_choice, term_a, term_b, term_c, term_d, term_e)
           terms <- lorentz_function_terms[lorentz_function_terms$percentile == percentile, ]
           
-          cf <- function(x) {
-            (terms$term_c * (1/((pi * terms$term_b) * (1 + ((slope2deg(x))/terms$term_b)^2))) + terms$term_d + (terms$term_e * 
-                                                                                                                  (slope2deg(x))))
+          cf <- function(x){
+              (terms$term_c*(1/(pi*terms$term_b*(1+((slope2deg(x)-terms$term_a)/terms$term_b)^2)))+terms$term_d)+terms$term_e*slope2deg(x)
           }
         }
     
@@ -209,9 +208,8 @@ cost <- function(cost_function, crit_slope, percentile) {
         lorentz_function_terms <- data.frame(percentile = percentile_choice, term_a, term_b, term_c, term_d, term_e)
         terms <- lorentz_function_terms[lorentz_function_terms$percentile == percentile, ]
         
-        cf <- function(x) {
-            (terms$term_c * (1/((pi * terms$term_b) * (1 + ((slope2deg(x))/terms$term_b)^2))) + terms$term_d + (terms$term_e * 
-                                                                                                                    (slope2deg(x))))
+        cf <- function(x){
+            (terms$term_c*(1/(pi*terms$term_b*(1+((slope2deg(x)-terms$term_a)/terms$term_b)^2)))+terms$term_d)+terms$term_e*slope2deg(x)
         }
         
     }
