@@ -1,6 +1,6 @@
 cost <- function(cost_function, crit_slope, percentile) {
     
-    cfs <- c("tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'Kondo-Saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019")
+    cfs <- c("tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019", "sullivan")
     
     if (inherits(cost_function, "character")) {
         if (!cost_function %in% cfs) {
@@ -99,7 +99,7 @@ cost <- function(cost_function, crit_slope, percentile) {
           
         }
         
-        if (cost_function == "Kondo-Saino") {
+        if (cost_function == "kondo-saino") {
           
           cf <- function(x) { 
             ifelse(abs(x) >= -0.07, (5.1 * exp(-2.25 * abs(x + 0.07))), (5.1 * exp(-1.5 * abs(x + 0.07))))
@@ -184,7 +184,6 @@ cost <- function(cost_function, crit_slope, percentile) {
                      -0.00461, -0.00465, -0.00493, -0.00488, -0.00472, -0.00534, -0.01386, -0.01252, -0.01081)
           
           lorentz_function_terms <- data.frame(percentile = percentile_choice, term_a, term_b, term_c, term_d, term_e)
-          
           terms <- lorentz_function_terms[lorentz_function_terms$percentile == percentile, ]
           
           cf <- function(x) {
@@ -192,6 +191,31 @@ cost <- function(cost_function, crit_slope, percentile) {
                                                                                                                   (slope2deg(x))))
           }
         }
+    
+    if (cost_function == "sullivan") {
+        
+        percentile_choice <- c(0.167, 0.5, 0.833)
+        
+        if (!percentile %in% percentile_choice) {
+            stop("percentile argument is invalid. Expecting percentile value of 0.167, 0.5, 0.833")
+        }
+        
+        term_a <- c(-3.3717, -2.8292, -2.2893)
+        term_b <- c(25.8255, 20.9482, 19.4024)
+        term_c <- c(92.6594, 77.6346, 65.3577)
+        term_d <- c(-0.1624, 0.2228, 0.6226)
+        term_e <- c(0.0019, -0.0004, -0.0020)
+        
+        lorentz_function_terms <- data.frame(percentile = percentile_choice, term_a, term_b, term_c, term_d, term_e)
+        terms <- lorentz_function_terms[lorentz_function_terms$percentile == percentile, ]
+        
+        cf <- function(x) {
+            (terms$term_c * (1/((pi * terms$term_b) * (1 + ((slope2deg(x))/terms$term_b)^2))) + terms$term_d + (terms$term_e * 
+                                                                                                                    (slope2deg(x))))
+        }
+        
+    }
+        
     }
     
     if(is.function(cost_function)) {
