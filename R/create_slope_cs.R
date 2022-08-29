@@ -8,7 +8,7 @@
 #' 
 #' The following cost functions have been implemented however users may also supply their own cost functions (see examples):
 #' 
-#' "tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'Kondo-Saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019"
+#' "tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019", "sullivan"
 #'
 #'
 #' @param x \code{SpatRaster}
