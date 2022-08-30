@@ -15,6 +15,19 @@
 #' @author Joseph Lewis
 #' 
 #' @export
+#' 
+#' @examples 
+#' 
+#' r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
+#' 
+#' slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
+#' 
+#' locs <- sf::st_sf(geometry = sf::st_sfc(
+#' sf::st_point(c(839769, 4199443)),
+#' sf::st_point(c(1038608, 4100024)),
+#' crs = terra::crs(r)))
+#' 
+#' cc <- create_cost_corridor(x = slope_cs, origin = locs[1,], destination = locs[2,], rescale = TRUE)
 
 create_cost_corridor <- function(x, origin, destination, rescale = FALSE) { 
   
