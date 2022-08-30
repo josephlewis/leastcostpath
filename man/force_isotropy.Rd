@@ -12,9 +12,9 @@ force_isotropy(x)
 \value{
 \code{conductanceMatrix} 
 
-r <- terra::rast(system.file("ex/test.grd", package="terra"))
+r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
 
-slope_cs_aniso <- create_slope_cs(x = r, cost_function = "tobler")
+slope_cs_aniso <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 
 slope_cs_iso <- force_isotropy(slope_cs_aniso)
 }
