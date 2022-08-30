@@ -17,11 +17,11 @@ converts conductanceMatrix to SpatRaster
 }
 \examples{
 
-r <- terra::rast(system.file("ex/test.grd", package="terra"))
+r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
 
-slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 
-rast <- rasterise(slope_cs)
+cs_rast <- rasterise(slope_cs)
 }
 \author{
 Joseph Lewis
