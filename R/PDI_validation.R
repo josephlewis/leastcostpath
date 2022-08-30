@@ -28,6 +28,24 @@
 #' 
 #' @export
 #' 
+#' @examples 
+#' 
+#' r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
+#' 
+#' slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
+#' 
+#' locs <- sf::st_sf(geometry = sf::st_sfc(
+#' sf::st_point(c(839769, 4199443)),
+#' sf::st_point(c(1038608, 4100024)),
+#' crs = terra::crs(r)))
+#' 
+#' lcp1 <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2,], 
+#' cost_distance = TRUE)
+#' 
+#' lcp2 <- create_lcp(x = slope_cs, origin = locs[2,], destination = locs[1,], 
+#' cost_distance = TRUE)
+#' 
+#' pdi_val <- PDI_validation(lcp = lcp1, comparison = lcp2)
 
 PDI_validation <- function(lcp, comparison) {
  
