@@ -33,11 +33,11 @@
 #' 
 #' @examples 
 #' 
-#' r <- terra::rast(system.file("ex/test.grd", package="terra"))
+#' r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
 #' 
-#' slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+#' slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 #' slope_cs2 <- create_slope_cs(x = r, 
-#' cost_function = function(x) {(6 * exp(-3.5 * abs(x + 0.05))) / 3.6})
+#' cost_function = function(x) {(6 * exp(-3.5 * abs(x + 0.05))) / 3.6}, neighbours = 4)
 #' 
 
 create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_slope = 12, max_slope = NULL, percentile = 0.5, exaggeration = FALSE) {

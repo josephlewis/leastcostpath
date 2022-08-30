@@ -44,11 +44,11 @@ The following cost functions have been implemented however users may also supply
 }
 \examples{
 
-r <- terra::rast(system.file("ex/test.grd", package="terra"))
+r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
 
-slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 slope_cs2 <- create_slope_cs(x = r, 
-cost_function = function(x) {(6 * exp(-3.5 * abs(x + 0.05))) / 3.6})
+cost_function = function(x) {(6 * exp(-3.5 * abs(x + 0.05))) / 3.6}, neighbours = 4)
 
 }
 \author{
