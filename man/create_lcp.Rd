@@ -23,13 +23,13 @@ Calculates the Least-cost path from an origin location to a destination location
 }
 \examples{
 
-r <- terra::rast(system.file("ex/test.grd", package="terra"))
+r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
 
-slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
+slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 
 locs <- sf::st_sf(geometry = sf::st_sfc(
-sf::st_point(c(178743.9, 329740.1)),
-sf::st_point(c(180097, 330248.4)),
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
 crs = terra::crs(r)))
 
 lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2,], 
