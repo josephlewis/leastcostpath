@@ -1,6 +1,6 @@
 #' Incorporate vertical error into a Digital Elevation Model
 #' 
-#' @param dem \code{spatRaster}
+#' @param x \code{spatRaster}
 #'
 #' @param rmse \code{numeric}. Vertical Root Mean Square Error of the Digital Elevation Model
 #' 
@@ -19,31 +19,38 @@
 #'
 #' Ordnance Survey OS Terrain 50 has a maximum RMSE of 4m
 #' 
+#' TINITALY DEM has a RMSE of 4.3m
+#' 
 #' @author Joseph Lewis
 #' 
 #' @export
+#' 
+#' @examples 
+#' 
+#' r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
+#' 
+#' r2 <- add_dem_error(x = r, rmse = 4.3)
 
-add_dem_error <- function(dem, rmse) { 
+add_dem_error <- function(x, rmse) { 
 
-  dem_error <- dem
-  dem_error[] <- stats::rnorm(n = terra::ncell(dem), mean = 0, sd = abs(rmse))
+  dem_error <- x
+  dem_error[] <- stats::rnorm(n = terra::ncell(x), mean = 0, sd = abs(rmse))
   
-  dem_df <- sf::st_as_sf(as.data.frame(dem,xy=TRUE, na.rm = TRUE), coords=1:2)
+  dem_df <- sf::st_as_sf(as.data.frame(x,xy=TRUE, na.rm = TRUE), coords=1:2)
   
-  vario <- gstat::variogram(dem_df$test ~ 1, data = dem_df)
+  vario <- gstat::variogram(dem_df[[1]] ~ 1, data = dem_df)
   fit = gstat::fit.variogram(vario, gstat::vgm(c("Exp", "Mat", "Sph", "Gau")))
   
-  window <- round(fit$range[2]/max(terra::res(dem)))
+  window <- round(fit$range[2]/max(terra::res(x)))
   window <- ifelse(test = (window%%2) != 0, yes = window, no = window + 1)
 
-  message("Variogram model = ", fit$model[2])  
-  message("size of window = ", window)
+  message("Variogram model = ", fit$model[2], ", ", "size of window = ", window)
   
   dem_error <- terra::focal(x = dem_error, w = matrix(1/window, nrow = window, ncol = window), na.rm = TRUE, pad = TRUE)
   dem_error[] <- base::scale(terra::values(dem_error)) * rmse
   
-  dem <- dem + dem_error
+  x <- x + dem_error
   
-  return(dem)
+  return(x)
   
 }

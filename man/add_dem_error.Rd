@@ -4,10 +4,10 @@
 \alias{add_dem_error}
 \title{Incorporate vertical error into a Digital Elevation Model}
 \usage{
-add_dem_error(dem, rmse)
+add_dem_error(x, rmse)
 }
 \arguments{
-\item{dem}{\code{spatRaster}}
+\item{x}{\code{spatRaster}}
 
 \item{rmse}{\code{numeric}. Vertical Root Mean Square Error of the Digital Elevation Model}
 }
@@ -28,6 +28,14 @@ Advanced Spaceborne Thermal Emission and Reflection Radiometer (ASTER) Global Di
 Ordnance Survey OS Terrain 5 has a maximum RMSE of 2.5m
 
 Ordnance Survey OS Terrain 50 has a maximum RMSE of 4m
+
+TINITALY DEM has a RMSE of 4.3m
+}
+\examples{
+
+r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
+
+r2 <- add_dem_error(x = r, rmse = 4.3)
 }
 \author{
 Joseph Lewis
