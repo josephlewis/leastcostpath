@@ -24,15 +24,16 @@ Using the supplied conductanceMatrix, the function checks whether:
 }
 \examples{
 
-r <- terra::rast(system.file("ex/test.grd", package="terra"))
+r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
 
 slope_cs <- create_slope_cs(x = r, cost_function = "tobler")
 
 locs <- sf::st_sf(geometry = sf::st_sfc(
-sf::st_point(c(178743.9, 329740.1)),
-sf::st_point(c(180097, 330248.4)),
-sf::st_point(c(180714.8, 333283)),
-sf::st_point(c(182402.6, 331717.2)),
+sf::st_point(c(861534, 4173726)),
+sf::st_point(c(897360, 4155813)),
+sf::st_point(c(928364, 4138588)),
+sf::st_point(c(862223, 4128943)),
+sf::st_point(c(1119209, 4143411)),
 crs = terra::crs(r)))
 
 check_locations(x = slope_cs, locations = locs)
