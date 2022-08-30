@@ -18,10 +18,9 @@
 #' 
 #' @examples 
 #' 
-#' r <- terra::rast(system.file("ex/test.grd", package="terra"))
+#' r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
 #' 
-#' slope_cs <- create_distance_cs(x = r)
-#' 
+#' distance_cs <- create_distance_cs(x = r, neighbours = 4)
 
 create_distance_cs <- function(x, neighbours = 16, max_slope = NULL, exaggeration = FALSE) { 
   
