@@ -31,7 +31,7 @@
 
 create_cost_corridor <- function(x, origin, destination, rescale = FALSE) { 
   
-  cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, extent = x$extent, crs = x$crs)
+  cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
   
   from_coords <- sf::st_coordinates(origin)[1, 1:2, drop = FALSE]
   to_coords <- sf::st_coordinates(destination)[1, 1:2, drop = FALSE]

@@ -87,7 +87,7 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
                "neighbours" = sum(neighbours, na.rm = TRUE), 
                "nrow" = terra::nrow(x), 
                "ncol" = terra::ncol(x), 
-               "extent" = terra::ext(x), 
+               "extent" = x@ptr$extent$vector, 
                "crs" = terra::crs(x, proj = TRUE))
     
     class(cs) <- "conductanceMatrix"
@@ -110,14 +110,14 @@ print.conductanceMatrix <- function(x) {
     cat("\nSpatRaster dimenions: ", x$nrow, x$ncol, prod(x$nrow, x$ncol),  "(nrow, ncol, ncell)")
     cat("\nMatrix dimensions: ", x$conductanceMatrix@Dim,  "(nrow, ncol)")
     cat("\ncrs:", x$crs)
-    cat("\nextent:", x$extent@ptr$vector, "(xmin, xmax, ymin, ymax)")
+    cat("\nextent:", x$extent, "(xmin, xmax, ymin, ymax)")
 }
 
 #' @export
 
 plot.conductanceMatrix <- function(x) {
     
-    cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, extent = x$extent, crs = x$crs)
+  cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
     
     col_sum <- Matrix::colSums(x$conductanceMatrix)
     row_sum <- Matrix::rowSums(x$conductanceMatrix)
