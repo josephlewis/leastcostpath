@@ -4,7 +4,7 @@
 \alias{create_FETE_lcps}
 \title{Calculate Least-cost Paths from each location to all other locations}
 \usage{
-create_FETE_lcps(x, locations, cost_distance = FALSE)
+create_FETE_lcps(x, locations, cost_distance = FALSE, ncores = 1)
 }
 \arguments{
 \item{x}{\code{conductanceMatrix}}
@@ -12,6 +12,8 @@ create_FETE_lcps(x, locations, cost_distance = FALSE)
 \item{locations}{\code{sf} of geometry type 'POINT' or 'MULTIPOINT'}
 
 \item{cost_distance}{\code{logical} if TRUE computes total accumulated cost from origin to destination. FALSE (default)}
+
+\item{ncores}{\code{numeric} Number of cores used when calculating least-cost paths from-everywhere-to-everywhere. 1 (default)}
 }
 \value{
 \code{sf}  Least-cost paths from-everywhere-to-everywhere based on the supplied \code{conductanceMatrix}

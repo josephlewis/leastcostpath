@@ -9,11 +9,13 @@
 #' 
 #' @param cost_distance \code{logical} if TRUE computes total accumulated cost from origin to destination. FALSE (default)
 #' 
+#' @param ncores \code{numeric} Number of cores used when calculating least-cost paths from-everywhere-to-everywhere. 1 (default)
+#' 
 #' @author Joseph Lewis
 #' 
 #' @return \code{sf}  Least-cost paths from-everywhere-to-everywhere based on the supplied \code{conductanceMatrix} 
 #' 
-#' @importFrom foreach %do%
+#' @importFrom foreach %dopar%
 #' 
 #' @export
 #' 
@@ -33,12 +35,15 @@
 #' 
 #' lcps <- create_FETE_lcps(x = slope_cs, locations = locs, cost_distance = TRUE)
 
-create_FETE_lcps <- function(x, locations, cost_distance = FALSE) {
+create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
+  
+  myCluster <- parallel::makeCluster(ncores)
+  doParallel::registerDoParallel(myCluster)
   
   network <- expand.grid(1:nrow(locations), 1:nrow(locations))
   network <- network[network[,1] != network[,2],]
   
-  lcp_network <- foreach::foreach(i = 1:nrow(network), .packages = c("leastcostpath"), .errorhandling = "remove", .combine = "rbind") %do% {
+  lcp_network <- foreach::foreach(i = 1:nrow(network), .packages = c("leastcostpath"), .errorhandling = "remove", .combine = "rbind") %dopar% {
     lcp <- suppressWarnings(create_lcp(x = x,
                                        origin = locations[network[i,1],],
                                        destination = locations[network[i,2],],
@@ -48,6 +53,8 @@ create_FETE_lcps <- function(x, locations, cost_distance = FALSE) {
     
     return(lcp)
   }
+  
+  parallel::stopCluster(myCluster)
 
   empty_lcps <- sf::st_is_empty(lcp_network)
 
