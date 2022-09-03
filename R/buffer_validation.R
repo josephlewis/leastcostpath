@@ -10,6 +10,8 @@
 #' 
 #' @return \code{data.frame}
 #' 
+#' @importFrom foreach %do%
+#' 
 #' @author Joseph Lewis
 #' 
 #' @export
