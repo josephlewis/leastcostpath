@@ -53,7 +53,7 @@ update_values <- function(x, sf, FUN) {
     stop("Invalid FUN argument. FUN must be a function")
     }
   
-  cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, extent = x$extent, crs = x$crs)
+  cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
   
   terra_vect <- terra::vect(sf)
   cells_indx <- terra::cells(cs_rast, terra_vect)[, 2]
