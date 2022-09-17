@@ -1,4 +1,4 @@
-#' converts conductanceMatrix to SpatRaster 
+#' converts conductanceMatrix to SpatRaster
 #' 
 #' @param x \code{conductanceMatrix}
 #' 
