@@ -10,7 +10,7 @@
 #' 
 #' @details 
 #' 
-#' the updated conductanceMatrix is produced by assessing which areas of the conductanceMatrix coincide with the supplied sf object. The values within the areas that coincide with the sf object are manipulated based on the supplied function 
+#' the updated conductanceMatrix is produced by assessing which areas of the conductanceMatrix coincide with the supplied sf object. The values within the areas that coincide with the sf object are manipulated based on the supplied function
 #' 
 #' @return \code{conductanceMatrix} 
 #' 
@@ -62,6 +62,8 @@ update_values <- function(x, sf, FUN) {
   adj_indx <- adj_indx[adj_indx[,2] %in% cells_indx,, drop = FALSE]
   
   x$conductanceMatrix[adj_indx] <- FUN(x$conductanceMatrix[adj_indx])
+  
+  x$conductanceMatrix <- Matrix::drop0(x$conductanceMatrix)
   
   return(x)
   
