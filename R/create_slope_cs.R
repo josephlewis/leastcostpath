@@ -1,6 +1,6 @@
 #' Creates a slope-based cost surface
 #' 
-#'  Creates a cost surface based on the difficulty of moving up and down slope. This function provides multiple isotropic and anisotropic cost functions that estimate the 'cost' of human movement across a landscape.
+#'  Creates a cost surface based on the difficulty of moving up and down slope. This function provides multiple isotropic and anisotropic cost functions that estimate the 'cost' of human movement when traversing a landscape
 #'  
 #' The supplied 'spatRaster' object must have a projected CRS
 #' 
@@ -10,8 +10,7 @@
 #' 
 #' "tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019", "sullivan"
 #'
-#'
-#' @param x \code{SpatRaster}
+#' @param x \code{SpatRaster} Digital Elevation Model (DEM)
 #'
 #' @param cost_function \code{character} or \code{function}. Cost function applied to slope values. See details for implemented cost functions. tobler (default)
 #'
@@ -52,6 +51,8 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
     
     elev_values <- terra::values(x)[,1]
     
+    message("calculating slope...")
+    
     rise <- (elev_values[adj[,2]] - elev_values[adj[,1]])
     run <- terra::distance(terra::xyFromCell(x, adj[,1]), terra::xyFromCell(x, adj[,2]), lonlat = FALSE, pairwise = TRUE)
     
@@ -64,6 +65,12 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
     ncells <- length(cells) + length(na_cells)
     
     cf <- cost(cost_function = cost_function, crit_slope = crit_slope, percentile = percentile)
+    
+    if(is.function(cost_function)) { 
+      message(c("Applying ", deparse(body(cost_function)[[2]]), " cost function"))
+    } else{ 
+      message(c("Applying ", cost_function, " cost function"))
+    }
     
     speed <- cf(mathematical_slope)
     
@@ -84,7 +91,8 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
                "exaggeration" = exaggeration,
                "criticalSlope" = ifelse(test = !is.function(cost_function), yes = ifelse(test = cost_function == "wheeled transport", yes = paste0(max_slope, "%"), no = NA), no = NA),
                "percentile" = ifelse(test = !is.function(cost_function), yes = ifelse(test = cost_function == "campbell 2019", yes = percentile, no = NA), no = NA),
-               "neighbours" = sum(neighbours, na.rm = TRUE), 
+               "neighbours" = sum(neighbours, na.rm = TRUE),
+               "resolution" = terra::res(x), 
                "nrow" = terra::nrow(x), 
                "ncol" = terra::ncol(x), 
                "extent" = x@ptr$extent$vector, 
@@ -103,6 +111,7 @@ print.conductanceMatrix <- function(x) {
     if(!is.function(x$costFunction)) { cat("\ncost function: ", x$costFunction)}
     if(is.function(x$costFunction)) { cat("\ncost function: ", deparse(body(x$costFunction)[[2]]))}
     cat("\nneighbours:", x$neighbours)
+    cat("\nresolution:", x$resolution, "(x, y)")
     cat("\nmax slope:", x$maxSlope)
     cat("\nexaggeration:", x$exaggeration)
     cat("\ncritical slope:", x$criticalSlope)

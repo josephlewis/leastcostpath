@@ -15,7 +15,7 @@ create_slope_cs(
 )
 }
 \arguments{
-\item{x}{\code{SpatRaster}}
+\item{x}{\code{SpatRaster} Digital Elevation Model (DEM)}
 
 \item{cost_function}{\code{character} or \code{function}. Cost function applied to slope values. See details for implemented cost functions. tobler (default)}
 
@@ -33,7 +33,7 @@ create_slope_cs(
 \code{conductanceMatrix} that numerically expresses the difficulty of moving across slope based on the provided cost function
 }
 \description{
-Creates a cost surface based on the difficulty of moving up and down slope. This function provides multiple isotropic and anisotropic cost functions that estimate the 'cost' of human movement across a landscape.
+Creates a cost surface based on the difficulty of moving up and down slope. This function provides multiple isotropic and anisotropic cost functions that estimate the 'cost' of human movement when traversing a landscape
  
 The supplied 'spatRaster' object must have a projected CRS
 }
