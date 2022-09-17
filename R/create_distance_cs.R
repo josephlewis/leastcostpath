@@ -2,7 +2,7 @@
 #' 
 #' Creates a cost surface based on the distance between neighbouring cells. Distance corrected for if neighbours value is greater than 4.
 #' 
-#' @param x \code{SpatRaster}
+#' @param x \code{SpatRaster}. Digital Elevation Model (DEM)
 #'
 #' @param neighbours \code{numeric} value. Number of directions used in the conductance matrix calculation. Expected numeric values are 4, 8, 16, 32, 48. 16 (default)
 #'

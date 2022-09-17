@@ -7,7 +7,7 @@
 create_distance_cs(x, neighbours = 16, max_slope = NULL, exaggeration = FALSE)
 }
 \arguments{
-\item{x}{\code{SpatRaster}}
+\item{x}{\code{SpatRaster}. Digital Elevation Model (DEM)}
 
 \item{neighbours}{\code{numeric} value. Number of directions used in the conductance matrix calculation. Expected numeric values are 4, 8, 16, 32, 48. 16 (default)}
 
