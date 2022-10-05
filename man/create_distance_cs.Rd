@@ -9,7 +9,7 @@ create_distance_cs(x, neighbours = 16, max_slope = NULL, exaggeration = FALSE)
 \arguments{
 \item{x}{\code{SpatRaster}. Digital Elevation Model (DEM)}
 
-\item{neighbours}{\code{numeric} value. Number of directions used in the conductance matrix calculation. Expected numeric values are 4, 8, 16, 32, 48. 16 (default)}
+\item{neighbours}{\code{numeric} value. Number of directions used in the conductance matrix calculation. Expected numeric values are 4, 8, 16, 32, 48, or matrix object. 16 (default)}
 
 \item{max_slope}{\code{numeric} value. Maximum percentage slope that is traversable. Slope values that are greater than the specified max_slope are given a conductivity value of 0. If cost_function argument is 'campbell 2019' then max_slope is fixed at 30 degrees slope to reflect the maximum slope that the cost function is parametised to. NULL (default)}
 
