@@ -15,7 +15,7 @@ create_cs(
 \arguments{
 \item{x}{\code{SpatRaster}}
 
-\item{neighbours}{\code{numeric} value. Number of directions used in the conductance matrix calculation. Expected numeric values are 4, 8, 16, 32, 48. 16 (default)}
+\item{neighbours}{\code{numeric} value. Number of directions used in the conductance matrix calculation. Expected numeric values are 4, 8, 16, 32, 48, or matrix object. 16 (default)}
 
 \item{dem}{\code{SpatRaster} Digital Elevation Model (DEM)}
 

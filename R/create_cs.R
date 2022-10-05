@@ -6,7 +6,7 @@
 #'
 #' @param x \code{SpatRaster}
 #'
-#' @param neighbours \code{numeric} value. Number of directions used in the conductance matrix calculation. Expected numeric values are 4, 8, 16, 32, 48. 16 (default)
+#' @param neighbours \code{numeric} value. Number of directions used in the conductance matrix calculation. Expected numeric values are 4, 8, 16, 32, 48, or matrix object. 16 (default)
 #' 
 #' @param dem \code{SpatRaster} Digital Elevation Model (DEM)
 #'
