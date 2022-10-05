@@ -9,7 +9,9 @@ neighbourhood <- function(neighbours) {
                             1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 
                             1, 0, 1, 0, 1, 0, 1, 0, 1, 0), nrow = 9, ncol = 9, byrow = TRUE)
   
-  if (neighbours == 4) {  
+  if (inherits(neighbours, "matrix")) { 
+    neighbours <- neighbours 
+  } else if (neighbours == 4) {  
     neighbours <- 4
   } else if (neighbours == 8) {
     neighbours <- 8      
@@ -20,7 +22,7 @@ neighbourhood <- function(neighbours) {
   } else if (neighbours == 48) { 
   neighbours <- neighbours_48
   } else (
-    stop(paste0("neighbours argument invalid. Expecting 4, 8, 16, 32, or 48"))
+    stop(paste0("neighbours argument invalid. Expecting 4, 8, 16, 32, 48, or a matrix object"))
   )
   
   return(neighbours)
