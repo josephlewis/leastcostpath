@@ -1,6 +1,6 @@
 # leastcostpath - version 2.0.0 <img src="https://josephlewis.github.io/leastcostpath.png" align="right"  width="20%" height="20%"/>
 
-<b>leastcostpath</b> from version on 2.0.0 onwards is built without dependency on the R package gdistance and instead relies on <b>sf</b> and <b>terra</b>.
+<b>leastcostpath</b> from version 2.0.0 onwards is built without dependency on the R package gdistance and instead relies on <b>sf</b> and <b>terra</b>.
 
 **NOTE:** The R library <b>leastcostpath</b> requires the use of projected coordinate systems. The package does not account for geographic coordinate systems.
 
