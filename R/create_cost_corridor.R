@@ -1,6 +1,6 @@
 #' creates a cost corridor
 #' 
-#' Combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both directions of movement
+#' Combines and averages the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both directions of movement
 #'  
 #' @param x \code{SpatRaster}
 #' 
@@ -49,7 +49,7 @@ create_cost_corridor <- function(x, origin, destination, rescale = FALSE) {
   from_rast <- terra::setValues(cs_rast, as.numeric(from_distances))
   to_rast <- terra::setValues(cs_rast, as.numeric(to_distances))
   
-  costCorridor <- from_rast + to_rast
+  costCorridor <- (from_rast + to_rast) / 2
   
   costCorridor[is.infinite(costCorridor)] <- NA
   

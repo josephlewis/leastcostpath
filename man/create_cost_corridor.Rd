@@ -19,7 +19,7 @@ create_cost_corridor(x, origin, destination, rescale = FALSE)
 \code{SpatRaster}
 }
 \description{
-Combines the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both directions of movement
+Combines and averages the accumulated cost surfaces from origin-to-destination and destination-to-origin to identify areas of preferential movement that takes into account both directions of movement
 }
 \examples{
 
