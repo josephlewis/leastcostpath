@@ -16,7 +16,7 @@ r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"
 
 slope_cs_aniso <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 
-slope_cs_iso <- force_isotropy(slope_cs_aniso)
+slope_cs_iso <- force_isotropy(x = slope_cs_aniso)
 }
 \description{
 Averages conductance values from-to adjacent cells

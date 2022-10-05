@@ -12,12 +12,12 @@
 #' 
 #' slope_cs_aniso <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 #' 
-#' slope_cs_iso <- force_isotropy(slope_cs_aniso)
+#' slope_cs_iso <- force_isotropy(x = slope_cs_aniso)
 
 force_isotropy <- function(x) { 
   
-  adj <- which(x$conductanceMatrix!=0,arr.ind=TRUE)
-  x$conductanceMatrix[adj] <- rowMeans(cbind(x$conductanceMatrix[adj[,1:2]], x$conductanceMatrix[adj[,2:1]]))
+  adj <- as.matrix(summary(x$conductanceMatrix))
+  x$conductanceMatrix[adj[,1:2]] <- rowMeans(cbind(x$conductanceMatrix[adj[,1:2]], x$conductanceMatrix[adj[,2:1]]))
   
   return(x)
 
