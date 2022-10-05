@@ -12,7 +12,7 @@ Installation
 
     #install.packages("devtools")
     library(devtools)
-    install_github("josephlewis/leastcostpath@dev")
+    install_github("josephlewis/leastcostpath")
     library(leastcostpath)
     
 Issues
