@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_values.R
 \name{update_values}
 \alias{update_values}
-\title{update values in conductanceMatrix}
+\title{update values in a conductanceMatrix}
 \usage{
 update_values(x, sf, FUN)
 }
@@ -17,10 +17,10 @@ update_values(x, sf, FUN)
 \code{conductanceMatrix}
 }
 \description{
-Update values in conductanceMatrix based on the supplied sf object
+Apply a function to values in the \code{conductanceMatrix} that coincide with the supplied sf object
 }
 \details{
-the updated conductanceMatrix is produced by assessing which areas of the conductanceMatrix coincide with the supplied sf object. The values within the areas that coincide with the sf object are manipulated based on the supplied function
+An updated conductanceMatrix is produced by assessing which areas of the conductanceMatrix coincide with the supplied sf object. The values within the areas that coincide with the sf object are modified based on the supplied function
 }
 \examples{
 

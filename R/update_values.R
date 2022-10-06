@@ -1,6 +1,6 @@
-#' update values in conductanceMatrix
+#' update values in a conductanceMatrix
 #' 
-#' Update values in conductanceMatrix based on the supplied sf object
+#' Apply a function to values in the \code{conductanceMatrix} that coincide with the supplied sf object
 #' 
 #' @param x \code{conductanceMatrix}
 #' 
@@ -10,7 +10,7 @@
 #' 
 #' @details 
 #' 
-#' the updated conductanceMatrix is produced by assessing which areas of the conductanceMatrix coincide with the supplied sf object. The values within the areas that coincide with the sf object are manipulated based on the supplied function
+#' An updated conductanceMatrix is produced by assessing which areas of the conductanceMatrix coincide with the supplied sf object. The values within the areas that coincide with the sf object are modified based on the supplied function
 #' 
 #' @return \code{conductanceMatrix} 
 #' 
@@ -58,7 +58,7 @@ update_values <- function(x, sf, FUN) {
   terra_vect <- terra::vect(sf)
   cells_indx <- terra::cells(cs_rast, terra_vect)[, 2]
   
-  adj_indx <- Matrix::which(x$conductanceMatrix!= 0, arr.ind = TRUE)
+  adj_indx <- Matrix::as.matrix(Matrix::summary(x$conductanceMatrix))[,1:2] 
   adj_indx <- adj_indx[adj_indx[,2] %in% cells_indx,, drop = FALSE]
   
   x$conductanceMatrix[adj_indx] <- FUN(x$conductanceMatrix[adj_indx])
