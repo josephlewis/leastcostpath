@@ -1,6 +1,9 @@
 # 2.0.1 (09/10/2022)
-* renamed add_stochasticity to add_global_stochasticity. 
+* renamed add_stochasticity to add_global_stochasticity
+* added add_local_stochasticity
+* added add_global_stochasticity
 * added calculate_slope_variance
+* added calculate_rmse
 
 # 2.0.0 (05/10/2022)
 * From version 2.0.0 onwards the R package leastcostpath is no longer reliant on the R package gdistance. leastcostpath has been updated to work with sf and terra objects
