@@ -1,8 +1,21 @@
-# leastcostpath - version 2.0.0 <img src="https://josephlewis.github.io/leastcostpath.png" align="right"  width="20%" height="20%"/>
+# leastcostpath - version 2.0.1 <img src="https://josephlewis.github.io/leastcostpath.png" align="right"  width="20%" height="20%"/>
 
 <b>leastcostpath</b> from version 2.0.0 onwards is built without dependency on the R package gdistance and instead relies on <b>sf</b> and <b>terra</b>.
 
 **NOTE:** The R library <b>leastcostpath</b> requires the use of projected coordinate systems. The package does not account for geographic coordinate systems.
+
+*Functions currently in development:*
+
+*Functions recently added:*
+* update_values()
+* replace_values()
+* create_cs()
+* plot_cf()
+* rasterise()
+* add_local_stochasticity()
+* add_global_stochasticity()
+
+
 
 Getting Started
 ---------------
@@ -52,5 +65,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2022) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 2.0.0). 
+    Lewis, J. (2022) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 2.0.1). 
     Available at: https://github.com/josephlewis/leastcostpath
