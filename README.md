@@ -14,8 +14,7 @@
 * rasterise()
 * add_local_stochasticity()
 * add_global_stochasticity()
-
-
+* calculate_slope_variance
 
 Getting Started
 ---------------
