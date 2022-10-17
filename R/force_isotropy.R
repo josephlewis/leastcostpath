@@ -16,8 +16,8 @@
 
 force_isotropy <- function(x) { 
   
-  adj <- as.matrix(summary(x$conductanceMatrix))
-  x$conductanceMatrix[adj[,1:2]] <- rowMeans(cbind(x$conductanceMatrix[adj[,1:2]], x$conductanceMatrix[adj[,2:1]]))
+  adj <- as.matrix(Matrix::summary(x$conductanceMatrix))
+  x$conductanceMatrix[adj[,1:2]] <- Matrix::rowMeans(cbind(x$conductanceMatrix[adj[,1:2]], x$conductanceMatrix[adj[,2:1]]))
   
   return(x)
 

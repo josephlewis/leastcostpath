@@ -1,3 +1,6 @@
+# 2.0.2 (17/10/2022)
+* Ensured that Matrix::summary is made explicit rather than rely on using summary from Matrix package.
+
 # 2.0.1 (09/10/2022)
 * renamed add_stochasticity to add_global_stochasticity
 * added add_local_stochasticity
