@@ -1,3 +1,6 @@
+# 2.0.2 (22/10/2022)
+* modified calculation of run in cost surface calculations to use base R rather than terra::distance. This now allows for the use of DEMs with more cells without causing memory issues
+
 # 2.0.2 (17/10/2022)
 * Ensured that Matrix::summary is made explicit rather than rely on using summary from Matrix package.
 

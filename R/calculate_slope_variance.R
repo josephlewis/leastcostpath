@@ -43,7 +43,7 @@ calculate_slope_variance <- function(x, neighbours, origin, destination) {
   elev_values <- terra::values(x)[, 1]
   message("calculating slope...")
   rise <- (elev_values[adj[, 2]] - elev_values[adj[, 1]])
-  run <- terra::distance(terra::xyFromCell(x, adj[, 1]), terra::xyFromCell(x, adj[, 2]), lonlat = FALSE, pairwise = TRUE)
+  run <- calculate_distance(x = x, adj = adj)
   mathematical_slope <- rise/run
   
   adj_vals <- cbind(adj, mathematical_slope)

@@ -35,7 +35,7 @@ create_distance_cs <- function(x, neighbours = 16, max_slope = NULL, exaggeratio
   elev_values <- terra::values(x)[,1]
   
   rise <- (elev_values[adj[,2]] - elev_values[adj[,1]])
-  run <- terra::distance(terra::xyFromCell(x, adj[,1]), terra::xyFromCell(x, adj[,2]), lonlat = FALSE, pairwise = TRUE)
+  run <- calculate_distance(x = x, adj = adj)
   
   mathematical_slope <- rise/run
   
