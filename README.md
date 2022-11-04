@@ -16,6 +16,7 @@
 * add_global_stochasticity()
 * calculate_slope_variance()
 * calculate_rmse()
+* crop_cs()
 
 Getting Started
 ---------------
