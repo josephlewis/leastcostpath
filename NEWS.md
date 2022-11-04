@@ -1,4 +1,8 @@
-# 2.0.2 (22/10/2022)
+# 2.0.4 (04/11/2022)
+* Modified add_dem_error to now allow for different methods. See function details for more information
+* Added crop_cs() function to allow conductanceMatrix to be cropped based on extent of supplied object
+
+# 2.0.3 (22/10/2022)
 * modified calculation of run in cost surface calculations to use base R rather than terra::distance. This now allows for the use of DEMs with more cells without causing memory issues
 
 # 2.0.2 (17/10/2022)

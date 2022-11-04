@@ -1,4 +1,4 @@
-# leastcostpath - version 2.0.3 <img src="https://josephlewis.github.io/leastcostpath.png" align="right"  width="20%" height="20%"/>
+# leastcostpath - version 2.0.4 <img src="https://josephlewis.github.io/leastcostpath.png" align="right"  width="20%" height="20%"/>
 
 <b>leastcostpath</b> from version 2.0.0 onwards is built without dependency on the R package gdistance and instead relies on <b>sf</b> and <b>terra</b>.
 
@@ -38,6 +38,8 @@ Please submit issues and enhancement requests via github Issues
 Case Studies Using _leastcostpath_
 --------
 
+Fabrício Machado, A., Miranda, F.R., 2022. The potential distribution of Cyclopes didactylus , a silky anteater, reveals a likely unknown population and urgent need for forest conservation in Northeast Brazil. J. Trop. Ecol. 38, 454–461. https://doi.org/10.1017/S0266467422000372
+
 Theron, K.J., J.S. Pryke and M.J. Samways 2022. Maintaining functional connectivity in grassland corridors between plantation forests promotes high-quality habitat and conserves range restricted grasshoppers. Landsc Ecol 37, 2081–97
 
 Barnett, T., J. Valdez-Tullett and L.M. Bjerketvedt 2022. Close encounters: visibility and accessibility of Atlantic rock art in Scotland. Abstractions Based on Circles: Papers on prehistoric rock art presented to Stan Beckensall on his 90th birthday, 63
@@ -65,5 +67,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2022) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 2.0.3). 
+    Lewis, J. (2022) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 2.0.4). 
     Available at: https://github.com/josephlewis/leastcostpath
