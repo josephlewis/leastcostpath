@@ -1,6 +1,6 @@
-#' Adds local stochasticity to a cost surface
+#' Adds local stochasticity to a conductance surface
 #' 
-#' Adds stochasticity to a cost surface based on sampling adjacent neighbours. Probability of remaining adjacent and thus traversable is equal to the probability weight of the adjacent values. Sampling done with replacement so possible for multiple adjacent neighbours to remain traversable  
+#' Adds local stochasticity to a conductance surface based on sampling adjacent neighbours. Probability of remaining adjacent and thus traversable is equal to the probability weight of the adjacent values. Sampling done with replacement so possible for multiple adjacent neighbours to remain traversable  
 #' 
 #' @param x \code{conductanceMatrix}
 #' 
