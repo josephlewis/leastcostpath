@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_lcp_density.R
 \name{create_lcp_density}
 \alias{create_lcp_density}
-\title{creates a cumulative least-cost path layer}
+\title{creates a cumulative least-cost path raster}
 \usage{
 create_lcp_density(x, lcps, rescale = FALSE)
 }

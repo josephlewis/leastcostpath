@@ -1,4 +1,4 @@
-#' creates a cumulative least-cost path layer
+#' creates a cumulative least-cost path raster
 #' 
 #'  Cumulatively combines least-cost paths to idenify routes of preferential movement
 #'  
