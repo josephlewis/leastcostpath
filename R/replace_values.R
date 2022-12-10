@@ -1,6 +1,6 @@
 #' replace values with values from another object
 #' 
-#' Replace values of \code{conductanceMatrix} x with the values of \code{conductanceMatrix} y that coincide with the supplied sf object  
+#' Replace values of \code{conductanceMatrix} x with the values of \code{conductanceMatrix} y that coincide with the supplied sf object
 #' 
 #' @param x \code{conductanceMatrix}
 #' 
