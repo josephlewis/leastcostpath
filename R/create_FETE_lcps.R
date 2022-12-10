@@ -5,7 +5,7 @@
 #' 
 #' @param x \code{conductanceMatrix} 
 #' 
-#' @param locations \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' @param locations \code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the locations coordinates
 #' 
 #' @param cost_distance \code{logical} if TRUE computes total accumulated cost from origin to destination. FALSE (default)
 #' 
@@ -43,11 +43,12 @@ create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
   network <- expand.grid(1:nrow(locations), 1:nrow(locations))
   network <- network[network[,1] != network[,2],]
   
-  lcp_network <- foreach::foreach(i = 1:nrow(network), .packages = c("leastcostpath"), .errorhandling = "remove", .combine = "rbind") %dopar% {
-    lcp <- suppressWarnings(create_lcp(x = x,
-                                       origin = locations[network[i,1],],
-                                       destination = locations[network[i,2],],
-                                       cost_distance = cost_distance))
+  lcp_network <- foreach::foreach(i = 1:nrow(network), .errorhandling = "remove", .combine = "rbind", .packages = c("sf", "terra")) %dopar% {
+    lcp <- create_lcp(x = x,
+                      origin = locations[network[i,1],],
+                      destination = locations[network[i,2],],
+                      cost_distance = cost_distance)
+
     lcp$origin_ID <- network[i,1]
     lcp$destination_ID <- network[i,2]
     

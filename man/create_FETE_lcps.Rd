@@ -9,7 +9,7 @@ create_FETE_lcps(x, locations, cost_distance = FALSE, ncores = 1)
 \arguments{
 \item{x}{\code{conductanceMatrix}}
 
-\item{locations}{\code{sf} of geometry type 'POINT' or 'MULTIPOINT'}
+\item{locations}{\code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the locations coordinates}
 
 \item{cost_distance}{\code{logical} if TRUE computes total accumulated cost from origin to destination. FALSE (default)}
 
