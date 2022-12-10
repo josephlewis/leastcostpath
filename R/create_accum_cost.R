@@ -4,7 +4,7 @@
 #'  
 #' @param x \code{SpatRaster}
 #' 
-#' @param origin \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' @param origin \code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the origin coordinates. Only the first row of the supplied object is used as the origin.
 #' 
 #' @param rescale \code{logical}. if TRUE, values scaled to between 0 and 1. FALSE (default)
 #' 
@@ -28,9 +28,8 @@ create_accum_cost <- function(x, origin, rescale = FALSE) {
   
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
   
-  from_coords <- sf::st_coordinates(origin)[1, 1:2, drop = FALSE]
-  
-  from_cell <- terra::cellFromXY(cs_rast, from_coords)
+  from_coords <- get_coordinates(origin)
+  from_cell <- terra::cellFromXY(cs_rast, from_coords[1,, drop = FALSE])
   
   cm_graph <- igraph::graph_from_adjacency_matrix(x$conductanceMatrix, mode = "directed", weighted = TRUE)
   
