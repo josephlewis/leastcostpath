@@ -1,3 +1,9 @@
+# 2.0.5 (10/12/2022)
+* create_lcp now allows for multiple destinations. If supplied least-cost paths will be calculated from a single origin to all destinations
+* origin, destination, and locations arguments now accepts sf POINT and MULTIPOINT, terra spatVector, data.frame and matrix objects
+* Fixed max_slope argument to 30 degrees within create_slope_cs when using 'campbell 2019' and 'campbell' cost functions
+* Added vignette
+
 # 2.0.4 (04/11/2022)
 * Modified add_dem_error to now allow for different methods. See function details for more information
 * Added crop_cs() function to allow conductanceMatrix to be cropped based on extent of supplied object
