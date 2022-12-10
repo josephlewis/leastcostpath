@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_local_stochasticity.R
 \name{add_local_stochasticity}
 \alias{add_local_stochasticity}
-\title{Adds local stochasticity to a cost surface}
+\title{Adds local stochasticity to a conductance surface}
 \usage{
 add_local_stochasticity(x)
 }
@@ -10,7 +10,7 @@ add_local_stochasticity(x)
 \item{x}{\code{conductanceMatrix}}
 }
 \description{
-Adds stochasticity to a cost surface based on sampling adjacent neighbours. Probability of remaining adjacent and thus traversable is equal to the probability weight of the adjacent values. Sampling done with replacement so possible for multiple adjacent neighbours to remain traversable
+Adds local stochasticity to a conductance surface based on sampling adjacent neighbours. Probability of remaining adjacent and thus traversable is equal to the probability weight of the adjacent values. Sampling done with replacement so possible for multiple adjacent neighbours to remain traversable
 }
 \examples{
 
