@@ -1,18 +1,18 @@
-#' Calculate Least-cost Path from Origin to Destination
+#' Calculate Least-cost Path from Origin to Destinations
 #' 
-#' Calculates the Least-cost path from an origin location to a destination location. Applies Dijkstra's algorithm as implemented in igraph
+#' Calculates the Least-cost path from an origin location to one or more destination locations. Applies Dijkstra's algorithm as implemented in the igraph R package
 #' 
 #' @param x \code{conductanceMatrix} 
 #' 
-#' @param origin \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' @param origin \code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the origin coordinates. Only the first row of the supplied object is used as the origin.
 #' 
-#' @param destination \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' @param destination \code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the destination coordinates. If the object contains multiple coordinates then least-cost paths will be calculated from the origin to all destinations
 #' 
-#' @param cost_distance \code{logical} if TRUE computes total accumulated cost from origin to destination. FALSE (default)
+#' @param cost_distance \code{logical} if TRUE computes total accumulated cost from origin to the destinations. FALSE (default)
 #' 
 #' @author Joseph Lewis
 #' 
-#' @return \code{sf}  Least-cost path from origin and destination based on the supplied \code{conductanceMatrix} 
+#' @return \code{sf}  Least-cost path from origin and destinations based on the supplied \code{conductanceMatrix} 
 #' 
 #' @export
 #' 
@@ -25,19 +25,20 @@
 #' locs <- sf::st_sf(geometry = sf::st_sfc(
 #' sf::st_point(c(839769, 4199443)),
 #' sf::st_point(c(1038608, 4100024)),
+#' sf::st_point(c(1017819, 4206255)),
 #' crs = terra::crs(r)))
 #' 
-#' lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2,], 
+#' lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2:3,], 
 #' cost_distance = TRUE)
 
 create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
   
-  from_coords <- sf::st_coordinates(origin)[1, 1:2, drop = FALSE]
-  to_coords <- sf::st_coordinates(destination)[1, 1:2, drop = FALSE]
+  from_coords <- get_coordinates(origin)
+  to_coords <- get_coordinates(destination)
   
-  from_cell <- terra::cellFromXY(cs_rast, from_coords)
+  from_cell <- terra::cellFromXY(cs_rast, from_coords[1,, drop = FALSE])
   to_cell <- terra::cellFromXY(cs_rast, to_coords)
   
   cm_graph <- igraph::graph_from_adjacency_matrix(x$conductanceMatrix, mode = "directed", weighted = TRUE)
@@ -45,23 +46,30 @@ create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   igraph::E(cm_graph)$weight <- (1/igraph::E(cm_graph)$weight)
   
   lcp_graph <- igraph::shortest_paths(cm_graph, from = from_cell, to = to_cell, mode = "out")
-  lcp_cells <- unlist(lcp_graph$vpath)
-  lcp_xy <- terra::xyFromCell(cs_rast, lcp_cells)
-  lcp <- sf::st_sf(geometry = sf::st_sfc(sf::st_linestring(lcp_xy)), crs = x$crs)
+  
+  lcps <- lapply(lcp_graph$vpath, FUN = function(i) { 
+    
+    lcp_xy <- terra::xyFromCell(cs_rast, as.integer(i))
+    lcp <- sf::st_sf(geometry = sf::st_sfc(sf::st_linestring(lcp_xy)), crs = x$crs)
+    return(lcp)
+  }
+  )
+  
+  lcps <- do.call(rbind, lcps)
   
   if(!is.function(x$costFunction)) { 
-    lcp$costFunction <- x$costFunction
+    lcps$costFunction <- x$costFunction
   } else if (is.function(x$costFunction)) { 
-    lcp$costFunction <- deparse(body(x$costFunction)[[2]])
+    lcps$costFunction <- deparse(body(x$costFunction)[[2]])
   }
   
-  lcp$fromCell <- from_cell
-  lcp$toCell <- to_cell
+  lcps$fromCell <- from_cell
+  lcps$toCell <- to_cell
   
   if (cost_distance) {
     cost <- igraph::distances(graph = cm_graph, v = from_cell, to = to_cell, mode = "out")
-    lcp <- transform(lcp, cost_distance = cost)
+    lcps <- transform(lcps, cost_distance = as.numeric(cost))
   }
   
-  return(lcp)
+  return(lcps)
 }

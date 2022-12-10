@@ -2,24 +2,24 @@
 % Please edit documentation in R/create_lcp.R
 \name{create_lcp}
 \alias{create_lcp}
-\title{Calculate Least-cost Path from Origin to Destination}
+\title{Calculate Least-cost Path from Origin to Destinations}
 \usage{
 create_lcp(x, origin, destination, cost_distance = FALSE)
 }
 \arguments{
 \item{x}{\code{conductanceMatrix}}
 
-\item{origin}{\code{sf} of geometry type 'POINT' or 'MULTIPOINT'}
+\item{origin}{\code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the origin coordinates. Only the first row of the supplied object is used as the origin.}
 
-\item{destination}{\code{sf} of geometry type 'POINT' or 'MULTIPOINT'}
+\item{destination}{\code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the destination coordinates. If the object contains multiple coordinates then least-cost paths will be calculated from the origin to all destinations}
 
-\item{cost_distance}{\code{logical} if TRUE computes total accumulated cost from origin to destination. FALSE (default)}
+\item{cost_distance}{\code{logical} if TRUE computes total accumulated cost from origin to the destinations. FALSE (default)}
 }
 \value{
-\code{sf}  Least-cost path from origin and destination based on the supplied \code{conductanceMatrix}
+\code{sf}  Least-cost path from origin and destinations based on the supplied \code{conductanceMatrix}
 }
 \description{
-Calculates the Least-cost path from an origin location to a destination location. Applies Dijkstra's algorithm as implemented in igraph
+Calculates the Least-cost path from an origin location to one or more destination locations. Applies Dijkstra's algorithm as implemented in the igraph R package
 }
 \examples{
 
@@ -30,9 +30,10 @@ slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 locs <- sf::st_sf(geometry = sf::st_sfc(
 sf::st_point(c(839769, 4199443)),
 sf::st_point(c(1038608, 4100024)),
+sf::st_point(c(1017819, 4206255)),
 crs = terra::crs(r)))
 
-lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2,], 
+lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2:3,], 
 cost_distance = TRUE)
 }
 \author{
