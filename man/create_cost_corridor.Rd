@@ -9,9 +9,9 @@ create_cost_corridor(x, origin, destination, rescale = FALSE)
 \arguments{
 \item{x}{\code{SpatRaster}}
 
-\item{origin}{\code{sf} of geometry type 'POINT' or 'MULTIPOINT'}
+\item{origin}{\code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the origin coordinates. Only the first row of the supplied object is used as the origin.}
 
-\item{destination}{\code{sf} of geometry type 'POINT' or 'MULTIPOINT'}
+\item{destination}{\code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the destination coordinates.  Only the first row of the supplied object is used as the destination.}
 
 \item{rescale}{\code{logical}. if TRUE, values scaled to between 0 and 1. FALSE (default)}
 }

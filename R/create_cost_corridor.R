@@ -4,9 +4,9 @@
 #'  
 #' @param x \code{SpatRaster}
 #' 
-#' @param origin \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' @param origin \code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the origin coordinates. Only the first row of the supplied object is used as the origin.
 #' 
-#' @param destination \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' @param destination \code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the destination coordinates.  Only the first row of the supplied object is used as the destination.
 #' 
 #' @param rescale \code{logical}. if TRUE, values scaled to between 0 and 1. FALSE (default)
 #' 
@@ -33,11 +33,11 @@ create_cost_corridor <- function(x, origin, destination, rescale = FALSE) {
   
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
   
-  from_coords <- sf::st_coordinates(origin)[1, 1:2, drop = FALSE]
-  to_coords <- sf::st_coordinates(destination)[1, 1:2, drop = FALSE]
+  from_coords <- get_coordinates(origin)
+  to_coords <- get_coordinates(destination)
   
-  from_cell <- terra::cellFromXY(cs_rast, from_coords)
-  to_cell <- terra::cellFromXY(cs_rast, to_coords)
+  from_cell <- terra::cellFromXY(cs_rast, from_coords[1,, drop = FALSE])
+  to_cell <- terra::cellFromXY(cs_rast, to_coords[1,, drop = FALSE])
   
   cm_graph <- igraph::graph_from_adjacency_matrix(x$conductanceMatrix, mode = "directed", weighted = TRUE)
   
