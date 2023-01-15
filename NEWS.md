@@ -1,3 +1,6 @@
+# 2.0.6 (15/01/2023)
+* Modified cost functions "herzog", "llobera-sluckin", and "minetti" to now be ansitropic, i.e. cost uphill is different to cost downhill
+
 # 2.0.5 (10/12/2022)
 * create_lcp now allows for multiple destinations. If supplied least-cost paths will be calculated from a single origin to all destinations
 * origin, destination, and locations arguments now accepts sf POINT and MULTIPOINT, terra spatVector, data.frame and matrix objects

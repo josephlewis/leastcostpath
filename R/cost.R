@@ -1,6 +1,6 @@
 cost <- function(cost_function, crit_slope, percentile) {
     
-    cfs <- c("tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019", "sullivan")
+    cfs <- c("tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', "wheeled transport", "herzog", "llobera-sluckin", "naismith", "minetti", "campbell", "campbell 2019", "sullivan")
     
     if (inherits(cost_function, "character")) {
         if (!cost_function %in% cfs) {
@@ -119,7 +119,7 @@ cost <- function(cost_function, crit_slope, percentile) {
             
             cf <- function(x) {
                 
-                (1/((1337.8 * abs(x)^6) + (278.19 * abs(x)^5) - (517.39 * abs(x)^4) - (78.199 * abs(x)^3) + (93.419 * abs(x)^2) + (19.825 * abs(x)) + 1.64))
+                (1/((1337.8 * (x)^6) + (278.19 * (x)^5) - (517.39 * (x)^4) - (78.199 * (x)^3) + (93.419 * (x)^2) + (19.825 * (x)) + 1.64))
                 
             }
             
@@ -128,7 +128,7 @@ cost <- function(cost_function, crit_slope, percentile) {
         if (cost_function == "llobera-sluckin") {
             
             cf <- function(x) {
-                (1/(2.635 + (17.37 * abs(x)) + (42.37 * abs(x)^2) - (21.43 * abs(x)^3) + (14.93 * abs(x)^4)))
+                (1/(2.635 + (17.37 * (x)) + (42.37 * (x)^2) - (21.43 * (x)^3) + (14.93 * (x)^4)))
             }
             
         }
@@ -147,7 +147,7 @@ cost <- function(cost_function, crit_slope, percentile) {
         if (cost_function == "minetti") { 
             
             cf <- function(x) { 
-              1/ ((280.5 * abs(x)^5) - (58.7 * abs(x)^4) - (76.8 * abs(x)^3) + (51.9 * abs(x)^2) + (19.6 * abs(x)) + 2.5)
+                (1/((280.5 * (x)^5) - (58.7 * (x)^4) - (76.8 * (x)^3) + (51.9 * (x)^2) + (19.6 * (x)) + 2.5))
             } 
             
         }
