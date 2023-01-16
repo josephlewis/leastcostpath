@@ -146,11 +146,9 @@ cost <- function(cost_function, crit_slope, percentile) {
         
         if (cost_function == "minetti") { 
             
-            cf <- function(x) { 
-                (1/((280.5 * (x)^5) - (58.7 * (x)^4) - (76.8 * (x)^3) + (51.9 * (x)^2) + (19.6 * (x)) + 2.5))
-            } 
-            
-        }
+            cf <- function(x) {
+                (1/((280.5 * abs(x)^5) - (58.7 * abs(x)^4) - (76.8 * abs(x)^3) + (51.9 * abs(x)^2) + (19.6 * abs(x)) + 2.5))
+            }
         
         if (cost_function == "campbell") { 
             
