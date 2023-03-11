@@ -14,7 +14,7 @@
 #' 
 #' @export
 #' 
-#' @examples 
+#' @examples
 #' 
 #' r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
 #' 

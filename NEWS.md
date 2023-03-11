@@ -1,3 +1,9 @@
+# 2.0.7 (11/03/2023)
+* Fixed error when using terra spatVector objects in create_FETE_lcps and create_lcps
+* create_accum_cost and create_lcp_density can now take terra spatVector objects
+* Removed add_local_stochasticity, calculate_rmse and calculate_slope_variance. These will be amended and re-added at a later date
+* Modified create_FETE_lcps to leverage that igraph shortest.paths function is vectorised. This function is now quicker. 
+
 # 2.0.6 (16/01/2023)
 * Modified cost functions "herzog" and "llobera-sluckin" to now be ansitropic, i.e. cost uphill is different to cost downhill
 * "Minetti" continues to be isotropic given that downhill slope gradient values are given negative cost values

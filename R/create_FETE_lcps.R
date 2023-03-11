@@ -2,7 +2,6 @@
 #' 
 #' Calculates Least-cost paths from-everywhere-to-everywhere. This is based on the approach proposed by White and Barber (2012).
 #' 
-#' 
 #' @param x \code{conductanceMatrix} 
 #' 
 #' @param locations \code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the locations coordinates
@@ -29,43 +28,53 @@
 #' sf::st_point(c(839769, 4199443)),
 #' sf::st_point(c(1038608, 4100024)),
 #' sf::st_point(c(907695, 4145478)),
-#' sf::st_point(c(1054446, 4232288)),
-#' sf::st_point(c(957989, 4208863)),
 #' crs = terra::crs(r)))
 #' 
-#' lcps <- create_FETE_lcps(x = slope_cs, locations = locs, cost_distance = TRUE)
+#' lcps1 <- create_FETE_lcps(x = slope_cs, locations = locs)
 
 create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
   
   myCluster <- parallel::makeCluster(ncores)
   doParallel::registerDoParallel(myCluster)
   
-  network <- expand.grid(1:nrow(locations), 1:nrow(locations))
-  network <- network[network[,1] != network[,2],]
+  nlocs <- nrow(locations)
   
-  lcp_network <- foreach::foreach(i = 1:nrow(network), .errorhandling = "remove", .combine = "rbind", .packages = c("sf", "terra")) %dopar% {
+  if(inherits(locations, "SpatVector")) { 
+    locations <- terra::wrap(locations)
+  }
+  
+  lcp_network <- foreach::foreach(i = 1:nlocs, .errorhandling = "remove", .combine = "rbind", .packages = c("sf", "terra")) %dopar% {
+    
+    if(inherits(locations, "PackedSpatVector")) { 
+      locations <- terra::unwrap(locations)
+    } 
+    
     lcp <- create_lcp(x = x,
-                      origin = locations[network[i,1],],
-                      destination = locations[network[i,2],],
+                      origin = locations[i,, drop = FALSE],
+                      destination = locations[-i,, drop = FALSE],
                       cost_distance = cost_distance)
-
-    lcp$origin_ID <- network[i,1]
-    lcp$destination_ID <- network[i,2]
+    
+    lcp$origin_ID <- i
+    lcp$destination_ID <- (1:nlocs)[-i]
     
     return(lcp)
   }
   
   parallel::stopCluster(myCluster)
-
+  
   empty_lcps <- sf::st_is_empty(lcp_network)
-
+  
   lcp_network <- lcp_network[!empty_lcps,]
   lcp_network <- lcp_network[order(lcp_network$origin_ID),]
-
+  
   if(sum(empty_lcps) > 0) {
-    message(nrow(network) - nrow(lcp_network), " lcps could not able to be calculated. Ensure that all locations are reachable by using check_locations()")
+    message((nlocs*nlocs-nlocs) - nrow(lcp_network), " lcps could not able to be calculated. Ensure that all locations are reachable by using check_locations()")
   }
-
+  
+  if(inherits(locations, "SpatVector")) { 
+    lcp_network <- terra::vect(lcp_network)
+    }
+  
   return(lcp_network)
   
 }

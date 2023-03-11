@@ -4,7 +4,7 @@
 #'  
 #' @param x \code{SpatRaster}
 #' 
-#' @param lcps \code{sf}
+#' @param lcps \code{sf} or \code{spatVector}
 #' 
 #' @param rescale \code{logical}. if TRUE, values scaled to between 0 and 1. FALSE (default)
 #' 
@@ -24,20 +24,22 @@
 #' sf::st_point(c(839769, 4199443)),
 #' sf::st_point(c(1038608, 4100024)),
 #' sf::st_point(c(907695, 4145478)),
-#' sf::st_point(c(1054446, 4232288)),
-#' sf::st_point(c(957989, 4208863)),
 #' crs = terra::crs(r)))
 #' 
-#' lcps <- create_FETE_lcps(x = slope_cs, locations = locs, cost_distance = TRUE)
+#' lcps <- create_FETE_lcps(x = slope_cs, locations = locs)
 #' 
-#' lcps_dens <- create_lcp_density(x = r, lcps = lcps, rescale = TRUE)
+#' lcps_dens <- create_lcp_density(x = r, lcps = lcps)
 
 create_lcp_density <- function(x, lcps, rescale = FALSE) {
   
   ras <- x
   ras <- terra::setValues(ras, 0)
   
-  lcps_vect <- terra::vect(lcps)
+  if(inherits(lcps, "sf")) {
+    lcps_vect <- terra::vect(lcps)
+  } else { 
+    lcps_vect <- lcps
+    }
   
   cumul_ras <- terra::rasterizeGeom(x = lcps_vect, y = ras, fun = "crosses")
 
