@@ -16,7 +16,7 @@ create_FETE_lcps(x, locations, cost_distance = FALSE, ncores = 1)
 \item{ncores}{\code{numeric} Number of cores used when calculating least-cost paths from-everywhere-to-everywhere. 1 (default)}
 }
 \value{
-\code{sf}  Least-cost paths from-everywhere-to-everywhere based on the supplied \code{conductanceMatrix}
+\code{sf} or \code{spatVector} Least-cost paths from-everywhere-to-everywhere based on the supplied \code{conductanceMatrix}. If supplied \code{locations} is a \code{spatVector} object then \code{spatVector} object returned else \code{sf} object
 }
 \description{
 Calculates Least-cost paths from-everywhere-to-everywhere. This is based on the approach proposed by White and Barber (2012).
@@ -34,6 +34,7 @@ sf::st_point(c(907695, 4145478)),
 crs = terra::crs(r)))
 
 lcps1 <- create_FETE_lcps(x = slope_cs, locations = locs)
+
 }
 \author{
 Joseph Lewis

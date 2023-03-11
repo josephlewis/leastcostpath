@@ -4,7 +4,7 @@
 #' 
 #' @param x \code{conductanceMatrix}
 #' 
-#' @param locations \code{sf} of geometry type 'POINT' or 'MULTIPOINT'
+#' @param locations \code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the locations coordinates
 #' 
 #' @details 
 #' 
@@ -36,22 +36,21 @@
 
 check_locations <- function(x, locations) { 
   
-  if(!all(sf::st_geometry_type(locations) %in% c("POINT", "MULTITYPE"))) { 
-    stop("Invalid locations argument. locations must be a sf object of geometry type 'POINT' or 'MULTIPOINT'")
-    }
-  
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
   
-  coords <- sf::st_coordinates(locations)[, 1:2, drop = FALSE]
+  coords <- get_coordinates(locations)
   cells <- terra::cellFromXY(cs_rast, coords)
   cells <- cbind(cells[!is.nan(cells)])
+  cells_na <- which(is.na(cells))
   
-  connectivity_list <- apply(X = cells, MARGIN = 1, FUN = function(j) { all(x$conductanceMatrix[,j] == 0)})
+  connectivity_list <- apply(X = cells[-cells_na,, drop = FALSE], MARGIN = 1, FUN = function(j) { !all(x$conductanceMatrix[,j] == 0)})
   connected <- sum(connectivity_list)
   
-  message(nrow(locations), " locations were supplied")
-  message(nrow(cells) - connected, " location(s) are traversable from at least one adjacent cell")
-  message(nrow(locations) - ((nrow(cells) - connected) + (nrow(locations) - nrow(cells))), " location(s) are not traversable from at least one adjacent cell")
-  message(nrow(locations) - nrow(cells), " location(s) are outside the extent of the conductanceMatrix")
+  #### NA IN CELLS IS WHERE IT'S OUTSIDE THE AREA.. I CAN USE THIS TO DO THE OUTSIDE EXTENT. JUST NEED TO ONLY DO NON-NA ABOVE CHECKS IN CELLS AND CONNECTIVITY_LIST
   
+  message(nrow(locations), " locations were supplied")
+  message(connected, " location(s) are traversable from at least one adjacent cell")
+  message(sum(!connectivity_list), " location(s) are not traversable from at least one adjacent cell")
+  message(sum(is.na(cells)), " location(s) are outside the extent of the conductanceMatrix")
+
 }

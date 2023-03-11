@@ -12,7 +12,7 @@
 #' 
 #' @author Joseph Lewis
 #' 
-#' @return \code{sf}  Least-cost paths from-everywhere-to-everywhere based on the supplied \code{conductanceMatrix} 
+#' @return \code{sf} or \code{spatVector} Least-cost paths from-everywhere-to-everywhere based on the supplied \code{conductanceMatrix}. If supplied \code{locations} is a \code{spatVector} object then \code{spatVector} object returned else \code{sf} object 
 #' 
 #' @importFrom foreach %dopar%
 #' 
@@ -31,23 +31,22 @@
 #' crs = terra::crs(r)))
 #' 
 #' lcps1 <- create_FETE_lcps(x = slope_cs, locations = locs)
+#' 
 
 create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
+  
+  loc_vect <- inherits(locations, "SpatVector")
   
   myCluster <- parallel::makeCluster(ncores)
   doParallel::registerDoParallel(myCluster)
   
   nlocs <- nrow(locations)
   
-  if(inherits(locations, "SpatVector")) { 
-    locations <- terra::wrap(locations)
+  if(loc_vect) { 
+    locations <- sf::st_as_sf(locations)
   }
   
   lcp_network <- foreach::foreach(i = 1:nlocs, .errorhandling = "remove", .combine = "rbind", .packages = c("sf", "terra")) %dopar% {
-    
-    if(inherits(locations, "PackedSpatVector")) { 
-      locations <- terra::unwrap(locations)
-    } 
     
     lcp <- create_lcp(x = x,
                       origin = locations[i,, drop = FALSE],
@@ -71,7 +70,7 @@ create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
     message((nlocs*nlocs-nlocs) - nrow(lcp_network), " lcps could not able to be calculated. Ensure that all locations are reachable by using check_locations()")
   }
   
-  if(inherits(locations, "SpatVector")) { 
+  if(loc_vect) { 
     lcp_network <- terra::vect(lcp_network)
     }
   

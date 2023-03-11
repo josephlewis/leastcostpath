@@ -9,7 +9,7 @@ check_locations(x, locations)
 \arguments{
 \item{x}{\code{conductanceMatrix}}
 
-\item{locations}{\code{sf} of geometry type 'POINT' or 'MULTIPOINT'}
+\item{locations}{\code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the locations coordinates}
 }
 \value{
 \code{message}

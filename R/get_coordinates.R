@@ -1,6 +1,6 @@
 #' get coordinates from a variety of different object classes
 #' 
-#' @param x \code{x} object which has coordinates. Argument expects \code{sf} of geometry type 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame}, or \code{matrix}
+#' @param x coordinates. \code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the locations coordinates
 #' 
 #' @author Joseph Lewis
 #' 
