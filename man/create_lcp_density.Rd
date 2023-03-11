@@ -9,7 +9,7 @@ create_lcp_density(x, lcps, rescale = FALSE)
 \arguments{
 \item{x}{\code{SpatRaster}}
 
-\item{lcps}{\code{sf}}
+\item{lcps}{\code{sf} or \code{spatVector}}
 
 \item{rescale}{\code{logical}. if TRUE, values scaled to between 0 and 1. FALSE (default)}
 }
@@ -29,13 +29,11 @@ locs <- sf::st_sf(geometry = sf::st_sfc(
 sf::st_point(c(839769, 4199443)),
 sf::st_point(c(1038608, 4100024)),
 sf::st_point(c(907695, 4145478)),
-sf::st_point(c(1054446, 4232288)),
-sf::st_point(c(957989, 4208863)),
 crs = terra::crs(r)))
 
-lcps <- create_FETE_lcps(x = slope_cs, locations = locs, cost_distance = TRUE)
+lcps <- create_FETE_lcps(x = slope_cs, locations = locs)
 
-lcps_dens <- create_lcp_density(x = r, lcps = lcps, rescale = TRUE)
+lcps_dens <- create_lcp_density(x = r, lcps = lcps)
 }
 \author{
 Joseph Lewis

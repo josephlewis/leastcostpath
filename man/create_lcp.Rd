@@ -33,8 +33,7 @@ sf::st_point(c(1038608, 4100024)),
 sf::st_point(c(1017819, 4206255)),
 crs = terra::crs(r)))
 
-lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2:3,], 
-cost_distance = TRUE)
+lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2:3,])
 }
 \author{
 Joseph Lewis

@@ -28,8 +28,7 @@
 #' sf::st_point(c(1017819, 4206255)),
 #' crs = terra::crs(r)))
 #' 
-#' lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2:3,], 
-#' cost_distance = TRUE)
+#' lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2:3,])
 
 create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   
@@ -69,6 +68,10 @@ create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   if (cost_distance) {
     cost <- igraph::distances(graph = cm_graph, v = from_cell, to = to_cell, mode = "out")
     lcps <- transform(lcps, cost_distance = as.numeric(cost))
+  }
+  
+  if(inherits(origin, "SpatVector") & inherits(destination, "SpatVector")) { 
+    lcps <- terra::vect(lcps)
   }
   
   return(lcps)

@@ -146,9 +146,10 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
     
 }
 
+#' @noRd
 #' @export
 
-print.conductanceMatrix <- function(x) {
+print.conductanceMatrix <- function(x, ...) {
     cat("Class: ", class(x))
     if(!is.function(x$costFunction)) { cat("\ncost function: ", x$costFunction)}
     if(is.function(x$costFunction)) { cat("\ncost function: ", deparse(body(x$costFunction)[[2]]))}
@@ -164,9 +165,15 @@ print.conductanceMatrix <- function(x) {
     cat("\nextent:", x$extent, "(xmin, xmax, ymin, ymax)")
 }
 
+#' plot conductanceMatrix
+#' 
+#' plot conductanceMatrix for visualisation. Conductivity values are the mean conductivity for each cell
+#' 
+#' @param x \code{conductanceMatrix} 
+#' @param ... arguments passed to \code{terra::plot}
 #' @export
 
-plot.conductanceMatrix <- function(x) {
+plot.conductanceMatrix <- function(x, ...) {
     
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
     
@@ -182,6 +189,6 @@ plot.conductanceMatrix <- function(x) {
     
     cs_rast <- terra::setValues(cs_rast, vals)
     
-    terra::plot(cs_rast)
+    terra::plot(cs_rast, ...)
     
 }

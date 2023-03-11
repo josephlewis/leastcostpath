@@ -1,4 +1,4 @@
-# leastcostpath - version 2.0.6 <img src="https://josephlewis.github.io/leastcostpath.png" align="right"  width="20%" height="20%"/>
+# leastcostpath - version 2.0.7 <img src="https://josephlewis.github.io/leastcostpath.png" align="right"  width="20%" height="20%"/>
 
 <b>leastcostpath</b> from version 2.0.0 onwards is built without dependency on the R package gdistance and instead relies on <b>sf</b> and <b>terra</b>.
 
@@ -7,16 +7,6 @@
 *Functions currently in development:*
 
 *Functions recently added:*
-* update_values()
-* replace_values()
-* create_cs()
-* plot_cf()
-* rasterise()
-* add_local_stochasticity()
-* add_global_stochasticity()
-* calculate_slope_variance()
-* calculate_rmse()
-* crop_cs()
 
 Getting Started
 ---------------
@@ -38,6 +28,8 @@ Please submit issues and enhancement requests via github Issues
 
 Case Studies Using _leastcostpath_
 --------
+
+Martin, S. A., Peterman, W. E., Lipps, G. J., & Gibbs, H. L. (2023). Inferring population connectivity in eastern massasauga rattlesnakes (Sistrurus catenatus) using landscape genetics. Ecological Applications, 33(2). https://doi.org/10.1002/eap.2793
 
 Fabrício Machado, A., Miranda, F.R., 2022. The potential distribution of Cyclopes didactylus , a silky anteater, reveals a likely unknown population and urgent need for forest conservation in Northeast Brazil. J. Trop. Ecol. 38, 454–461. https://doi.org/10.1017/S0266467422000372
 
@@ -68,5 +60,5 @@ Citation
 
 Please cite as:
 
-    Lewis, J. (2022) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 2.0.6). 
+    Lewis, J. (2023) leastcostpath: Modelling Pathways and Movement Potential Within a Landscape (version 2.0.7). 
     Available at: https://github.com/josephlewis/leastcostpath

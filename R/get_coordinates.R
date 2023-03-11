@@ -21,7 +21,10 @@ get_coordinates <- function(x) {
   }
   else if (inherits(x, "matrix")) { 
     coords <- x
-    }
+  }
+  else if (inherits(x, "numeric")) { 
+    coords <- matrix(x, nrow = 1)
+  }
   
   return(coords)
   
