@@ -1,6 +1,6 @@
 #' Calculate Least-cost Path from Origin to Destinations
 #' 
-#' Calculates the Least-cost path from an origin location to one or more destination locations. Applies Dijkstra's algorithm as implemented in the igraph R package
+#' Calculates the Least-cost path from an origin location to one or more destination locations. Applies Dijkstra's algorithm as implemented in the igraph R package.
 #' 
 #' @param x \code{conductanceMatrix} 
 #' 
@@ -26,9 +26,10 @@
 #' sf::st_point(c(839769, 4199443)),
 #' sf::st_point(c(1038608, 4100024)),
 #' sf::st_point(c(1017819, 4206255)),
+#' sf::st_point(c(1017819, 4206255)),
 #' crs = terra::crs(r)))
 #' 
-#' lcp <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs[2:3,])
+#' lcps <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs)
 
 create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   
@@ -69,6 +70,12 @@ create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
     cost <- igraph::distances(graph = cm_graph, v = from_cell, to = to_cell, mode = "out")
     lcps <- transform(lcps, cost_distance = as.numeric(cost))
   }
+  
+  if(sum(to_cell %in% from_cell) != 0) { 
+    message(sum(to_cell %in% from_cell), " least-cost paths could not be calculated from origin to destination due to duplicate location")
+  }
+  
+  lcps <- lcps[!is.na(sf::st_is_valid(lcps)),]
   
   if(inherits(origin, "SpatVector") & inherits(destination, "SpatVector")) { 
     lcps <- terra::vect(lcps)

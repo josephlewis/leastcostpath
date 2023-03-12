@@ -28,10 +28,10 @@
 #' sf::st_point(c(839769, 4199443)),
 #' sf::st_point(c(1038608, 4100024)),
 #' sf::st_point(c(907695, 4145478)),
+#' sf::st_point(c(907695, 4145478)),
 #' crs = terra::crs(r)))
 #' 
-#' lcps1 <- create_FETE_lcps(x = slope_cs, locations = locs)
-#' 
+#' lcps <- create_FETE_lcps(x = slope_cs, locations = locs)
 
 create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
   
@@ -61,18 +61,25 @@ create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
   
   parallel::stopCluster(myCluster)
   
+  lcp_network <- lcp_network[!is.na(sf::st_is_valid(lcp_network)),]
+  
   empty_lcps <- sf::st_is_empty(lcp_network)
   
   lcp_network <- lcp_network[!empty_lcps,]
   lcp_network <- lcp_network[order(lcp_network$origin_ID),]
+  rownames(lcp_network) <- 1:nrow(lcp_network)
   
-  if(sum(empty_lcps) > 0) {
-    message((nlocs*nlocs-nlocs) - nrow(lcp_network), " lcps could not able to be calculated. Ensure that all locations are reachable by using check_locations()")
+  if((nlocs*nlocs-nlocs) - nrow(lcp_network) != 0) { 
+    message((nlocs*nlocs-nlocs) - nrow(lcp_network), " least-cost paths could not be calculated due to duplicate locations.")
+  }
+  
+  if(sum(empty_lcps) != 0) { 
+    message(sum(empty_lcps), " least-cost paths could not calculated due to being unreachable. If so, check via check_locations()")
   }
   
   if(loc_vect) { 
     lcp_network <- terra::vect(lcp_network)
-    }
+  }
   
   return(lcp_network)
   
