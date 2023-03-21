@@ -4,12 +4,14 @@
 \alias{create_accum_cost}
 \title{creates an accumulated cost surface}
 \usage{
-create_accum_cost(x, origin, rescale = FALSE)
+create_accum_cost(x, origins, FUN = mean, rescale = FALSE)
 }
 \arguments{
 \item{x}{\code{SpatRaster}}
 
-\item{origin}{\code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the origin coordinates. Only the first row of the supplied object is used as the origin.}
+\item{origins}{\code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the origins coordinates. If multiple origins are supplied then the multiple accumulated cost surfaces will be summarised using the FUN argument}
+
+\item{FUN}{\code{function} Apply a function to the cells of a SpatRaster. Default applied function is 'mean'. See terra::app() for more information}
 
 \item{rescale}{\code{logical}. if TRUE, values scaled to between 0 and 1. FALSE (default)}
 }
@@ -17,7 +19,7 @@ create_accum_cost(x, origin, rescale = FALSE)
 \code{SpatRaster}
 }
 \description{
-Creates an accumulated cost surfaces from an origin
+Creates an accumulated cost surfaces from one or more origins
 }
 \examples{
 
@@ -25,9 +27,13 @@ r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"
 
 slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 
-loc <- sf::st_sf(geometry = sf::st_sfc(sf::st_point(c(839769, 4199443)),crs = terra::crs(r)))
+locs <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
+sf::st_point(c(907695, 4145478)),
+crs = terra::crs(r)))
 
-cc <- create_accum_cost(x = slope_cs, origin = loc, rescale = TRUE)
+cc <- create_accum_cost(x = slope_cs, origins = locs, FUN = mean, rescale = FALSE)
 }
 \author{
 Joseph Lewis

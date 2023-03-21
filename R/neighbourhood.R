@@ -1,4 +1,12 @@
-#' @noRd
+#' neighbourhood matrix to represent adjacent cells
+#' 
+#' @param neighbours \code{numeric} or \code{matrix} Expected numeric values are 4, 8, 16, 32, or 48. A user-supplied matrix of 0 and 1s can be supplied. Here, 0 denotes non-adjaency and 1 denotes adjacency
+#' 
+#' @author Joseph Lewis
+#' 
+#' @return \code{matrix} neighbourhood matrix
+#' 
+#' @export
 
 neighbourhood <- function(neighbours) { 
   

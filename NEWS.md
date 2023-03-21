@@ -1,3 +1,7 @@
+# 2.0.8 (21/03/2023)
+* create_accum_cost now allows for one or more supplied origins. Multiple accumulated cost surfaces will be summarised using a supplied function
+* exported calculate_distance, get_coordinates, and neighbourhood functions
+
 # 2.0.7 (11/03/2023)
 * Fixed error when using terra spatVector objects in create_FETE_lcps and create_lcps
 * create_accum_cost and create_lcp_density can now take terra spatVector objects

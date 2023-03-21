@@ -1,3 +1,15 @@
+#' calculates distance between adjacent cells
+#' 
+#' @param x \code{conductanceMatrix} 
+#' 
+#' @param adj \code{matrix} of adjacent cells
+#' 
+#' @author Joseph Lewis
+#' 
+#' @return \code{matrix} euclidean distances between adjacent cells
+#' 
+#' @export
+ 
 calculate_distance <- function(x, adj) { 
   
   xy1 <- terra::xyFromCell(x, adj[, 1])
