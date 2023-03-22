@@ -2,6 +2,8 @@
 * create_accum_cost now allows for one or more supplied origins. Multiple accumulated cost surfaces will be summarised using a supplied function
 * exported calculate_distance, get_coordinates, and neighbourhood functions
 * Modified check_locations to stop if any locations are outside extent or not traversable. check_locations also added to functions that are suppplied locations, e.g. create_lcp
+* modified create_distance_cs to return conductanceMatrix values that correspond to the supplied spatRaster resolution
+* Added vignette
 
 # 2.0.7 (11/03/2023)
 * Fixed error when using terra spatVector objects in create_FETE_lcps and create_lcps
