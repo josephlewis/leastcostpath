@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_distance_cs.R
 \name{create_distance_cs}
 \alias{create_distance_cs}
-\title{Creates a distance-based cost surface}
+\title{Creates a distance-based conductance matrix}
 \usage{
 create_distance_cs(x, neighbours = 16, max_slope = NULL, exaggeration = FALSE)
 }
@@ -19,7 +19,7 @@ create_distance_cs(x, neighbours = 16, max_slope = NULL, exaggeration = FALSE)
 \code{conductanceMatrix} that numerically expresses the difficulty of moving across slope based on the provided cost function
 }
 \description{
-Creates a cost surface based on the distance between neighbouring cells. Distance corrected for if neighbours value is greater than 4.
+Creates a conductance matrix based on the distance between neighbouring cells. Distance corrected for if neighbours value is greater than 4.
 }
 \examples{
 

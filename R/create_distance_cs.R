@@ -1,6 +1,6 @@
-#' Creates a distance-based cost surface
+#' Creates a distance-based conductance matrix
 #' 
-#' Creates a cost surface based on the distance between neighbouring cells. Distance corrected for if neighbours value is greater than 4.
+#' Creates a conductance matrix based on the distance between neighbouring cells. Distance corrected for if neighbours value is greater than 4.
 #' 
 #' @param x \code{SpatRaster}. Digital Elevation Model (DEM)
 #'
@@ -45,10 +45,11 @@ create_distance_cs <- function(x, neighbours = 16, max_slope = NULL, exaggeratio
   
   ncells <- length(cells) + length(na_cells)
   
-  conductance <- rep(1, length(mathematical_slope))
+  conductance <- rep(max(terra::res(x)), length(mathematical_slope))
   
   if(sum(neighbours) > 4) { 
     conductance <- conductance/run
+    conductance <- conductance * max(terra::res(x))
   }
   
   if(!is.null(max_slope)) {
