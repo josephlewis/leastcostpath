@@ -33,6 +33,8 @@
 
 create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   
+  check_locations(x, rbind(origin, destination))
+  
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
   
   from_coords <- get_coordinates(origin)

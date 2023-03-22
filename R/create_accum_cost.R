@@ -31,9 +31,11 @@
 #' cc <- create_accum_cost(x = slope_cs, origins = locs, FUN = mean, rescale = FALSE)
 
 create_accum_cost <- function(x, origins, FUN = mean, rescale = FALSE) {
+
+  check_locations(x, origins)
   
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
-  
+
   from_coords <- get_coordinates(origins)
   from_cell <- terra::cellFromXY(cs_rast, from_coords)
   

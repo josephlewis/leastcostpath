@@ -36,7 +36,7 @@ slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
 slope_cs2 <- add_global_stochasticity(slope_cs, percent_quantile = 0.2)
 }
 \references{
-Pinto, N. and T.H. Keitt 2009. “Beyond the least-cost path: evaluating corridor redundancy using a graph-theoretic approach,” Landscape Ecol 24, 253–66.
+Pinto, N., & Keitt, T. H. (2009). Beyond the least-cost path: evaluating corridor redundancy using a graph-theoretic approach. Landscape Ecology, 24(2), 253-266. https://doi.org/10.1007/s10980-008-9303-y
 }
 \author{
 Joseph Lewis

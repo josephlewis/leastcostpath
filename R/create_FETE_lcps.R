@@ -35,6 +35,8 @@
 
 create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
   
+  check_locations(x, locations)
+  
   loc_vect <- inherits(locations, "SpatVector")
   
   myCluster <- parallel::makeCluster(ncores)
