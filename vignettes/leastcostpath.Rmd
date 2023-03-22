@@ -1,0 +1,462 @@
+<style type="text/css">
+div.main-container {
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: justify;
+}
+</style>
+
+---
+title: "leastcostpath"
+author: "Joseph Lewis"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    toc_depth: 3
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{leastcostpath}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# 1. Introducing leastcostpath
+
+The <i>leastcostpath</i> package makes the calculation of conductance surfaces fast and easy. Implementing multiple time- and energy-based cost functions, as well as allowing for user-supplied functions, the <i>leastcostpath</i> aims to be flexible.
+
+These conductance surfaces can be used to calculate least-cost paths, accumulated cost surfaces, amongst others.
+
+This documentation introduces the <i>leastcostpath</i> workflow, and shows you how to apply it to your data. 
+
+Three cases studies are also outlined:
+* Calculation of a potential route within the landscape (termed predictive)
+* Identification of natural corridors within the landscape
+* Explaination of factors governing the location of a known route (termed postdictive)
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 500, scipen = 999)
+set.seed(1992)
+```
+
+# 2. leastcostpath workflow
+
+```{r libraries, echo = TRUE, message= FALSE, warning= FALSE}
+library(sf) # loaded for visualisation purposes
+library(terra) # loaded for visualisation purposes
+library(leastcostpath)
+```
+
+To explore the leastcostpath workflow, we'll use the dataset \code{SICILY_1000m}. This dataset contains an aggregated digital elevation model (1000m) of Sicily. The original dataset (10m resolution) is available here: https://tinitaly.pi.ingv.it/
+
+The digital elevation model (DEM) represents the physical landscape, and forms the foundation for many least-cost path analyses
+
+```{r sicily, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
+
+r
+
+plot(r)
+```
+
+## Creating the ConductanceMatrix
+
+leastcostpath uses a bespoke \code{conductanceMatrix} class. Within this class, information about the supplied digital elevation model (or a spatRaster more generally) is recorded, as well as information specific to the creation of the conductanceMatrix
+
+The implemented cost functions include:
+"tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019", "sullivan"
+
+The choosing of which cost function to use is often driven by three considerations: (1) frequently used cost functions, e.g. Tobler's Hiking function (tobler or tobler offpath), (2) whether to use a time-, energy-, or vehicle- based cost function, or (3) cost functions generated from more data and thus deemed to be more representative, e.g. campbell 2019
+
+The implemented cost functions can be divided into:
+* Time-based cost functions: "tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', 'campbell', "campbell 2019", "sullivan", 'naismith'
+* Energy-based cost functions: "herzog", "llobera-sluckin", 'minetti'
+* Vehicle-based cost functions: "wheeled transport"
+
+```{r cm, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
+
+slope_cs
+
+plot(slope_cs)
+
+slope_cs_rast <- rasterise(slope_cs)
+```
+
+## Understanding the ConductanceMatrix
+
+In the conductanceMatrix, each cell in the original spatRaster is represented by a column. For example, cell 1 is column 1, cell 2 is column 2, etc. 
+
+Each column contains the conductance values for traversing _into_ that cell. For example, column 1, row 2 is accessed via [2,1]. This represents the conductance value from cell 2 into cell 1. If the cells are not traversable (i.e. non-adjacent/not connected), the value in the conductanceMatrix will be 0.
+
+Plotting the slope_cs above, we can see that cell 1 (top-left corner) is NA. As a result, this cell is deemed non-traversable within the conductanceMatrix.
+
+```{r cm1, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+slope_cs$conductanceMatrix[2,1]
+head(slope_cs$conductanceMatrix[,1])
+quantile(slope_cs$conductanceMatrix[,1])
+```
+
+Here, we know that cell 48260 is within the landscape of Sicily. Let's filter to only those that are non-zero (i.e. adjacent/connected).
+
+Given that we used a neighbourhood matrix of 4 when creating the conductanceMatrix, we can see that cell 48260 is connected to 4 different cell. 
+
+```{r cm2, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+slope_cs$conductanceMatrix[,48260][slope_cs$conductanceMatrix[,48260] != 0]
+```
+
+## Cropping the ConductanceMatrix
+
+If we want to crop the conductanceMatrix to a different extent, we can use the \code{crop_cs} function. For this, we need to supply an sf  or terra spatRater object.
+
+```{r cm3, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+ext <- sf::st_as_sfc(sf::st_bbox(rasterise(slope_cs)))
+ext <- sf::st_buffer(ext, dist = -75000)
+ext <- sf::st_as_sf(ext)
+
+slope_cs_cropped <- crop_cs(slope_cs, extent = ext)
+
+par(mfrow=c(1,2))
+
+plot(slope_cs, legend = FALSE, main = "before crop")
+plot(ext, add = T, border = "red")
+plot(slope_cs_cropped, legend = FALSE, main = "after crop")
+```
+
+## Modifying values in the ConductanceMatrix
+
+If we want to modify values in the ConductanceMatrix, we can use the \code{update_values} function. 
+
+Here, a function is applied to all conductanceMatrix values than coincide with the supplied sf. Recall that each cell in the spatRaster is represented by each column in the conductanceMatrix. As a result, cells that coincide with the sf object are identified, with these cells as columns used to modify the non-zero values.
+
+Below we modify each conductanceMatrix value that coincides with the sf object by different user-supplied functions
+
+```{r cm4, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs4 <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(960745, 4166836)),
+crs = terra::crs(r)))
+
+locs4 <- sf::st_buffer(x = locs4, dist = 25000)
+
+slope_cs_mod1 <- slope_cs2 <- update_values(x = slope_cs, sf = locs4, FUN = function(j) { j * 0.6})
+slope_cs_mod2 <- slope_cs2 <- update_values(x = slope_cs, sf = locs4, FUN = function(j) { j + 10})
+slope_cs_mod3 <- slope_cs2 <- update_values(x = slope_cs, sf = locs4, FUN = function(j) { replace(x = j, values = 0)})
+
+par(mfrow=c(2,2))
+
+plot(slope_cs, legend = FALSE, main = "before mod")
+plot(slope_cs_mod1, legend = FALSE, main = "multiply by 0.6")
+plot(slope_cs_mod2, legend = FALSE, main = "add 10")
+plot(slope_cs_mod3, legend = FALSE, main = "replace with 0")
+```
+
+A useful use-case for update_values is the incorporation of estimated speeds attainable when using different modes of transportation.
+
+For example, let us assume that a region of Sicily contains formalised roads. As a result, the estimated speed attainable along these roads is 10km/h (or 2.77778m/s, 10/3.6). We now modify the original \code{slope_cs} to accomodate these roads. Given that update_values allows for all sf objects, linear features can also be incorporated (i.e. not just limited to POLYGON)
+
+To make comparable to other time-based cost functions, we need to account for the resolution of the digital elevation model. We do this by dividing the estimated speed by the maximum resolution (assuming that the spatRaster cells are square)
+
+```{r cm5, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+slope_cs_mod4 <- slope_cs2 <- update_values(x = slope_cs, sf = locs4, FUN = function(j) { replace(x = j, values = (10/3.6)/max(terra::res(r)))})
+
+par(mfrow=c(1,2))
+
+plot(slope_cs, legend = FALSE, main = "before mod")
+plot(slope_cs_mod4, legend = FALSE, main = "Incorporating\nestimated speeds")
+```
+
+## Replacing values in the ConductanceMatrix using another ConductanceMatrix
+
+Rather than updating values using a function, sometimes we want to replace the conductanceMatrix values using another conductanceMatrix. For this, we can use \code{replace_values}.
+
+A simple use-case should demonstrate:
+
+* We have a time-based (tobler's hiking function) conductanceMatrix
+* We have an energy-based (herzog) conductanceMatrix
+
+For whatever reason driven by theory, we want to replace the time-based conductanceMatrix values with energy-based conductanceMatrix values for an area within Sicily. Do note that these two conductanceMatrix have different ranges of value and thus interpretation of conductance values / accumulated cost is made difficult.
+
+```{r cm6, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+slope_cs2 <- create_slope_cs(x = r, cost_function = "herzog", neighbours = 4)
+
+slope_cs_rep1 <- replace_values(x = slope_cs, y = slope_cs2, sf = locs4)
+slope_cs_rep2 <- replace_values(x = slope_cs2, y = slope_cs, sf = locs4)
+
+par(mfrow=c(2,2))
+
+plot(slope_cs, legend = FALSE, main = "time-based")
+plot(slope_cs2, legend = FALSE, main = "energy-based")
+plot(slope_cs_rep1, legend = FALSE, main = "replaced with energy")
+plot(slope_cs_rep2, legend = FALSE, main = "replaced with time")
+```
+
+## Forcing conductanceMatrix from anisotropic to isotropic
+
+With some cost functions being anisotropic, i.e. conductance of traversing downhill is different to traversing uphill, the conductance value of moving from cell A to cell B might not be the same as from cell B to cell A. When calculating a least-cost path this therefore means that the least-cost path from an origin to destination might not be same as from destination to origin.
+
+We can force the conductance value to be isotropic, i.e. conductance of traversing downhill is equal to traversing uphill, by taking the mean of the anisotropic conductanceMatrix values from Cell A to Cell B.
+
+```{r cm7, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+slope_cs$conductanceMatrix[48259,48260]
+slope_cs$conductanceMatrix[48260,48259]
+
+slope_cs_iso <- force_isotropy(x = slope_cs)
+
+slope_cs_iso$conductanceMatrix[48259,48260]
+slope_cs_iso$conductanceMatrix[48260,48259]
+
+mean(c(slope_cs$conductanceMatrix[48259,48260], slope_cs$conductanceMatrix[48260,48259]))
+
+par(mfrow=c(1,2))
+
+plot(slope_cs, legend = FALSE, main = "anisotropic")
+plot(slope_cs_iso, legend = FALSE, main = "isotropic")
+```
+
+## Creating a user-generated conductanceMatrix
+
+Rather than using a digital elevation model and applying a cost function via \code{create_slope_cs}, we can also create a conductanceMatrix from a user-supplied spatRaster object.
+
+\code{create_cs} assigns the spatRaster value of each cell to each adjacent element in each column within the conductanceMatrix.
+
+```{r cm8, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs_8 <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+crs = terra::crs(r)))
+
+dist_rast <- terra::distance(x = r, y = locs_8[1,])
+dist_rast[is.na(r)] <- NA
+
+slope_cs_user <- create_cs(x = dist_rast, neighbours = 4)
+
+par(mfrow=c(1,2))
+
+plot(dist_rast, legend = FALSE, main = "spatRaster")
+plot(slope_cs_user, legend = FALSE, main = "conductanceMatrix")
+
+dist_rast[48260]
+slope_cs_user$conductanceMatrix[,48260][slope_cs_user$conductanceMatrix[,48260] != 0]
+```
+
+## Creating a distance-based conductanceMatrix
+
+Rather than using a digital elevation model and applying a cost function via \code{create_slope_cs}, we can also create a distance-based conductanceMatrix.
+
+The \code{create_distance_cs} uses the supplied spatRaster to retrieve information about the extent, resolution, etc. No spatRaster values are used.
+
+Given a neighbours argument value, the distance conductance from one cell to all other adjacent cells is calculated. 
+* If neighbours argument is 4,  the distance conductance value from one cell to all other adjacent cells is equal to the maximum resolution of the supplied spatRaster.
+* If neighbours argument is greater than 4, the above values are divided by the distance between adjacent cells to take into account that diagonal distances are further than straight-line distances.
+
+```{r cm9, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+distance_cs_4 <- create_distance_cs(x = r, neighbours = 4)
+distance_cs_8 <- create_distance_cs(x = r, neighbours = 8)
+
+par(mfrow=c(1,2))
+
+plot(distance_cs_4, legend = FALSE, main = "4 neighbours")
+plot(distance_cs_8, legend = FALSE, main = "8 neighbours")
+
+distance_cs_4$conductanceMatrix[,48260][distance_cs_4$conductanceMatrix[,48260] != 0]
+distance_cs_8$conductanceMatrix[,48260][distance_cs_8$conductanceMatrix[,48260] != 0]
+```
+
+## Calculating a least-cost path
+
+```{r lcp1, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs_lcp1 <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
+sf::st_point(c(1017819, 4206255)),
+sf::st_point(c(1017819, 4206255)),
+crs = terra::crs(r)))
+
+lcps <- create_lcp(x = slope_cs, origin = locs_lcp1[1,], destination = locs_lcp1)
+
+plot(r)
+plot(locs_lcp1, add = T, pch = 16)
+plot(terra::vect(lcps), add = T)
+```
+
+## Propagating random error in the DEM to the least-cost path output
+
+```{r error1, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs_lcp2 <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
+sf::st_point(c(1017819, 4206255)),
+sf::st_point(c(1017819, 4206255)),
+crs = terra::crs(r)))
+
+lcps_error <- list()
+
+for(i in 1:10) {
+
+  r_error <- add_dem_error(x = r, rmse = 5, type = "u")
+  slope_cs_rand <- create_slope_cs(x = r_error, cost_function = "tobler", neighbours = 4)
+
+  lcps_error[[i]] <- create_lcp(x = slope_cs_rand, origin = locs_lcp2[1,], destination = locs_lcp2)
+}
+
+lcps_error <- do.call(rbind, lcps_error)
+
+plot(r)
+plot(locs_lcp2, add = T, pch = 16)
+plot(terra::vect(lcps_error), add = T, col = "red")
+```
+
+## Add global stochasticity in least-cost path output
+
+```{r stoc, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs_lcp3 <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
+sf::st_point(c(1017819, 4206255)),
+sf::st_point(c(1017819, 4206255)),
+crs = terra::crs(r)))
+
+lcps_stoch <- list()
+
+for(i in 1:10) {
+  
+  slope_cs2_stoch <- add_global_stochasticity(slope_cs, percent_quantile = 0.2)
+
+  lcps_stoch[[i]] <- create_lcp(x = slope_cs2_stoch, origin = locs_lcp3[1,], destination = locs_lcp3[2,])
+}
+
+lcps_stoch <- do.call(rbind, lcps_stoch)
+
+plot(r)
+plot(locs_lcp3[1:2,], add = T, pch = 16)
+plot(terra::vect(lcps_stoch), add = T, col = "red")
+```
+
+## Calculating a accumulated cost surfaces
+
+```{r accum, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs_accum_cost <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
+sf::st_point(c(1017819, 4206255)),
+sf::st_point(c(1017819, 4206255)),
+crs = terra::crs(r)))
+
+accum_cost <- create_accum_cost(x = slope_cs, origins = locs_accum_cost, FUN = mean, rescale = FALSE)
+
+plot(accum_cost)
+plot(locs_accum_cost, add = T, pch = 16)
+```
+
+## Calculating a cost corridor
+
+```{r cc, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs_cc <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
+crs = terra::crs(r)))
+
+cost_corridor <- create_cost_corridor(x = slope_cs, origin = locs_cc[1,], destination = locs_cc[2,], rescale = TRUE)
+
+par(mfrow=c(1,2))
+
+plot(cost_corridor)
+plot(locs_cc, add = T, pch = 16)
+
+plot(cost_corridor < 0.01, main = "Lowest 1% Cost")
+plot(locs_cc, add = T, pch = 16)
+```
+
+## Calculate From-Everywhere-to-Everywhere Least-cost paths
+
+```{r fete, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs_fete <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
+sf::st_point(c(907695, 4145478)),
+sf::st_point(c(1044758, 4215739)),
+crs = terra::crs(r)))
+
+lcps_fete <- create_FETE_lcps(x = slope_cs, locations = locs_fete)
+
+plot(r)
+plot(locs_fete, add = T, pch = 16)
+plot(lcps_fete, add = T, col = "red")
+```
+
+## Creating a least-cost path density surface
+
+```{r dens, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+lcps_dens <- create_lcp_density(r, lcps_fete)
+
+plot(lcps_dens)
+plot(locs_fete, add = T, pch = 16)
+```
+
+## Validate a least-cost path using the buffer method
+
+```{r val1, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs_val_buffer <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
+crs = terra::crs(r)))
+
+lcp_val_buffer1 <- create_lcp(x = slope_cs, origin = locs_val_buffer[1,], destination = locs_val_buffer[2,])
+lcp_val_buffer2 <- create_lcp(x = slope_cs, origin = locs_val_buffer[2,], destination = locs_val_buffer[1,])
+
+plot(r)
+plot(locs_val_buffer[1:2,], add = T, pch = 16)
+plot(terra::vect(lcp_val_buffer1), add = T, col = "red")
+plot(terra::vect(lcp_val_buffer2), add = T, col = "blue")
+
+buffer_validation(lcp = lcp_val_buffer1, comparison = lcp_val_buffer2, dist = c(1000, 3000, 5000, 10000))
+```
+
+## Validate a least-cost path using the path deviation index method
+
+```{r val2, echo = TRUE,  fig.height = 6, fig.width = 6, warning = FALSE}
+locs_val_pdi <- sf::st_sf(geometry = sf::st_sfc(
+sf::st_point(c(839769, 4199443)),
+sf::st_point(c(1038608, 4100024)),
+crs = terra::crs(r)))
+
+lcp_val_pdi1 <- create_lcp(x = slope_cs, origin = locs_val_pdi[1,], destination = locs_val_pdi[2,])
+lcp_val_pdi2 <- create_lcp(x = slope_cs, origin = locs_val_pdi[2,], destination = locs_val_pdi[1,])
+
+lcp_diff <- PDI_validation(lcp = lcp_val_pdi1, comparison = lcp_val_pdi2)
+
+lcp_diff
+
+plot(r)
+plot(lcp_diff, add = T, col = "black")
+plot(locs_val_pdi[1:2,], add = T, pch = 16)
+plot(terra::vect(lcp_val_pdi1), add = T, col = "red")
+plot(terra::vect(lcp_val_pdi2), add = T, col = "blue")
+```
+
+# 3. Calculate a potential route within the landscape (prediction)
+
+# 4. Identify natural corridor within the landscape
+
+# 5. Explain the factors governing the location of a known route
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
