@@ -7,7 +7,7 @@
 calculate_distance(x, adj)
 }
 \arguments{
-\item{x}{\code{conductanceMatrix}}
+\item{x}{\code{spatRaster}}
 
 \item{adj}{\code{matrix} of adjacent cells}
 }

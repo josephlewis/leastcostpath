@@ -11,15 +11,15 @@
 #' @export
  
 calculate_distance <- function(x, adj) { 
+
+  xy1 <- data.frame(terra::xyFromCell(x, adj[, 1]))
+  xy2 <- data.frame(terra::xyFromCell(x, adj[, 2]))
   
-  xy1 <- terra::xyFromCell(x, adj[, 1])
-  xy2 <- terra::xyFromCell(x,adj[, 2])
+  xy1 <- sf::st_as_sf(xy1, coords = c("x", "y"), crs = slope_cs$crs)
+  xy2 <- sf::st_as_sf(xy2, coords = c("x", "y"), crs = slope_cs$crs)
   
-  xy3 <- (xy1[,1] - xy2[,1])^2
-  xy4 <- (xy1[,2] - xy2[,2])^2
-  
-  dist <- sqrt(xy3 + xy4)
-  
+  dist <- as.vector(sf::st_distance(x = xy1, xy2, by_element = TRUE))
+
   return(dist)
   
 }
