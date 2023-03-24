@@ -50,7 +50,4 @@ check_locations <- function(x, locations) {
   if(sum(!connectivity_list) > 0) { 
     stop(sum(!connectivity_list), " location(s) are not traversable from at least one adjacent cell")
   }
-  
-  message("All locations are traversable from at least one adjacent cell")
-  
 }
