@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_distance.R
 \name{calculate_distance}
 \alias{calculate_distance}
-\title{calculates distance between adjacent cells}
+\title{calculate distance between adjacent cells}
 \usage{
 calculate_distance(x, adj)
 }
@@ -15,7 +15,10 @@ calculate_distance(x, adj)
 \code{matrix} euclidean distances between adjacent cells
 }
 \description{
-calculates distance between adjacent cells
+calculate distance between adjacent cells
+}
+\details{
+calculate_distance function allows for both projected and geographic coordinate systems. If the coordinate system is geographic (e.g. wgs84) the distance is calculated using the sf::st_distance function else distance calculated using Pythagorean theorem
 }
 \author{
 Joseph Lewis
