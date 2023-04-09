@@ -1,4 +1,4 @@
-# leastcostpath - version 2.0.8 <img src="https://josephlewis.github.io/leastcostpath.png" align="right"  width="20%" height="20%"/>
+# leastcostpath - version 2.0.9 <img src="https://josephlewis.github.io/leastcostpath.png" align="right"  width="20%" height="20%"/>
 
 <b>leastcostpath</b> from version 2.0.0 onwards is built without dependency on the R package gdistance and instead relies on <b>sf</b> and <b>terra</b>.
 
