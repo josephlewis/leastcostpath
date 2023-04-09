@@ -65,12 +65,11 @@ create_distance_cs <- function(x, neighbours = 16, max_slope = NULL, exaggeratio
              "costFunction" = "distance",
              "maxSlope" = ifelse(!is.null(max_slope), paste0(max_slope*100, "%"), NA), 
              "exaggeration" = exaggeration,
-             "criticalSlope" = NA,
-             "percentile" = NA,
+             "criticalSlope" = NA,             "extent" = as.vector(terra::ext(x)), 
              "neighbours" = sum(neighbours, na.rm = TRUE), 
              "nrow" = terra::nrow(x), 
              "ncol" = terra::ncol(x), 
-             "extent" = terra::ext(x), 
+             "extent" = as.vector(terra::ext(x)),
              "crs" = terra::crs(x, proj = TRUE))
   
   class(cs) <- "conductanceMatrix"
