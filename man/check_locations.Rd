@@ -18,7 +18,7 @@ check_locations(x, locations)
 checks that locations can be reached when calculating least-cost paths
 }
 \details{
-Using the supplied conductanceMatrix, the function checks whether:
+Using the supplied conductanceMatrix and locations, the function checks whether:
 (1) the supplied locations are traversable from at least one adjacent cell
 (2) the supplied locations are within the extent of the supplied conductanceMatrix
 }
@@ -32,8 +32,6 @@ locs <- sf::st_sf(geometry = sf::st_sfc(
 sf::st_point(c(861534, 4173726)),
 sf::st_point(c(897360, 4155813)),
 sf::st_point(c(928364, 4138588)),
-sf::st_point(c(862223, 4128943)),
-sf::st_point(c(1119209, 4143411)),
 crs = terra::crs(r)))
 
 check_locations(x = slope_cs, locations = locs)

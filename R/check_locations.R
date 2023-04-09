@@ -8,7 +8,7 @@
 #' 
 #' @details 
 #' 
-#' Using the supplied conductanceMatrix, the function checks whether:
+#' Using the supplied conductanceMatrix and locations, the function checks whether:
 #' (1) the supplied locations are traversable from at least one adjacent cell
 #' (2) the supplied locations are within the extent of the supplied conductanceMatrix
 #' 
@@ -28,8 +28,6 @@
 #' sf::st_point(c(861534, 4173726)),
 #' sf::st_point(c(897360, 4155813)),
 #' sf::st_point(c(928364, 4138588)),
-#' sf::st_point(c(862223, 4128943)),
-#' sf::st_point(c(1119209, 4143411)),
 #' crs = terra::crs(r)))
 #' 
 #' check_locations(x = slope_cs, locations = locs)
@@ -40,17 +38,16 @@ check_locations <- function(x, locations) {
   
   coords <- get_coordinates(locations)
   cells <- terra::cellFromXY(cs_rast, coords)
-  cells <- cbind(cells[!is.nan(cells)])
-  cells_na <- which(is.na(cells))
+  cells <- cbind(cells)
   
-  connectivity_list <- apply(X = cells[-cells_na,, drop = FALSE], MARGIN = 1, FUN = function(j) { !all(x$conductanceMatrix[,j] == 0)})
+  if(sum(is.na(cells)) > 0) { 
+    stop(sum(is.na(cells)), " location(s) are outside the extent of the conductanceMatrix")
+  }
+  
+  connectivity_list <- apply(X = cells, MARGIN = 1, FUN = function(j) { !all(x$conductanceMatrix[,j] == 0)})
   connected <- sum(connectivity_list)
   
-  #### NA IN CELLS IS WHERE IT'S OUTSIDE THE AREA.. I CAN USE THIS TO DO THE OUTSIDE EXTENT. JUST NEED TO ONLY DO NON-NA ABOVE CHECKS IN CELLS AND CONNECTIVITY_LIST
-  
-  message(nrow(locations), " locations were supplied")
-  message(connected, " location(s) are traversable from at least one adjacent cell")
-  message(sum(!connectivity_list), " location(s) are not traversable from at least one adjacent cell")
-  message(sum(is.na(cells)), " location(s) are outside the extent of the conductanceMatrix")
-
+  if(sum(!connectivity_list) > 0) { 
+    stop(sum(!connectivity_list), " location(s) are not traversable from at least one adjacent cell")
+  }
 }

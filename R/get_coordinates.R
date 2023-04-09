@@ -4,9 +4,9 @@
 #' 
 #' @author Joseph Lewis
 #' 
-#' @return \code{matrix} matrix of coordinates 
+#' @return \code{matrix} matrix of coordinates
 #' 
-#' @noRd
+#' @export
 
 get_coordinates <- function(x) { 
   

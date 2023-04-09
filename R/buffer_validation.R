@@ -43,16 +43,19 @@ buffer_validation <- function(lcp, comparison, dist) {
     comparison <- sf::st_as_sf(comparison)
   }
   
-  val_table <- foreach::foreach(dist_no = 1:length(dist), .combine = "rbind") %do% { 
+  value_table <- list()
+  
+  for (dist_no in 1:length(dist))  {
     
     compar_buffer <- sf::st_buffer(x = comparison, dist = dist[dist_no])
     lcp_intersect <-  suppressWarnings(sf::st_intersection(x = compar_buffer, y = lcp))
     similarity <- (sf::st_length(lcp_intersect) / sf::st_length(lcp)) * 100
     
-    similarity_df <- data.frame(ID = dist_no, dist = dist[dist_no], similarity = as.numeric(similarity))
+    value_table[[dist_no]] <- data.frame(ID = dist_no, dist = dist[dist_no], similarity = as.numeric(similarity))
     
-    return(similarity_df)
   }
   
-  return(val_table)
+  value_table <- do.call(rbind, value_table)
+  
+  return(value_table)
 }

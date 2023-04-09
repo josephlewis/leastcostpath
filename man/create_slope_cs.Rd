@@ -10,7 +10,6 @@ create_slope_cs(
   neighbours = 16,
   crit_slope = 12,
   max_slope = NULL,
-  percentile = 0.5,
   exaggeration = FALSE
 )
 }
@@ -25,20 +24,18 @@ create_slope_cs(
 
 \item{max_slope}{\code{numeric} value. Maximum percentage slope that is traversable. Slope values that are greater than the specified max_slope are given a conductivity value of 0. If cost_function argument is 'campbell 2019' or 'campbell' then max_slope is fixed at 30 degrees slope to reflect the maximum slope that the cost function is parametised to. NULL (default)}
 
-\item{percentile}{\code{numeric} value. Travel rate percentile only used in 'campbell 2019' cost_function. Expected numeric values are 0.01, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 0.99. 0.5 (default)}
-
 \item{exaggeration}{\code{logical}. if TRUE, positive slope values (up-hill movement) multiplied by 1.99 and negative slope values (down-hill movement) multiplied by 2.31}
 }
 \value{
 \code{conductanceMatrix} that numerically expresses the difficulty of moving across slope based on the provided cost function
 }
 \description{
-Creates a cost surface based on the difficulty of moving up and down slope. This function provides multiple isotropic and anisotropic cost functions that estimate the 'cost' of human movement when traversing a landscape
+Creates a cost surface based on the difficulty of moving up and down slope. This function implements multiple isotropic and anisotropic cost functions that estimate the 'cost' of human movement when traversing a landscape
  
-The supplied 'spatRaster' object must have a projected CRS
+The supplied 'spatRaster' object can have a projected or geographic coordinate system
 }
 \details{
-The following cost functions have been implemented however users may also supply their own cost functions (see examples):
+The following cost functions have been implemented however users may also supply their own cost function (see examples):
 
 "tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019", "sullivan"
 }
@@ -47,6 +44,7 @@ The following cost functions have been implemented however users may also supply
 r <- terra::rast(system.file("extdata/SICILY_1000m.tif", package="leastcostpath"))
 
 slope_cs <- create_slope_cs(x = r, cost_function = "tobler", neighbours = 4)
+slope_cs <- create_slope_cs(x = r, cost_function = "campbell 2019 50", neighbours = 4)
 slope_cs2 <- create_slope_cs(x = r, 
 cost_function = function(x) {(6 * exp(-3.5 * abs(x + 0.05))) / 3.6}, neighbours = 4)
 

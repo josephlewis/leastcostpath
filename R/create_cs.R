@@ -76,10 +76,9 @@ create_cs <- function(x, neighbours = 16, dem = NULL, max_slope = NULL, exaggera
              "maxSlope" = ifelse(!is.null(max_slope), paste0(max_slope*100, "%"), NA), 
              exaggeration = exaggeration, 
              criticalSlope = NA,
-             percentile = NA, 
              neighbours = sum(neighbours, na.rm = TRUE), nrow = terra::nrow(x), ncol = terra::ncol(x), 
              "resolution" = terra::res(x), 
-             extent = x@ptr$extent$vector, 
+             "extent" = as.vector(terra::ext(x)),  
              crs = terra::crs(x, proj = TRUE))
   
   class(cs) <- "conductanceMatrix"

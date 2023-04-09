@@ -33,6 +33,9 @@
 
 create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   
+  check_locations(x, origin)
+  check_locations(x, destination)
+  
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
   
   from_coords <- get_coordinates(origin)
@@ -45,7 +48,7 @@ create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   
   igraph::E(cm_graph)$weight <- (1/igraph::E(cm_graph)$weight)
   
-  lcp_graph <- igraph::shortest_paths(cm_graph, from = from_cell, to = to_cell, mode = "out")
+  lcp_graph <- igraph::shortest_paths(cm_graph, from = from_cell, to = to_cell, mode = "out", algorithm = "dijkstra")
   
   lcps <- lapply(lcp_graph$vpath, FUN = function(i) { 
     
@@ -65,14 +68,16 @@ create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   
   lcps$fromCell <- from_cell
   lcps$toCell <- to_cell
-  
+  lcps$cost <- NA
+
   if (cost_distance) {
-    cost <- igraph::distances(graph = cm_graph, v = from_cell, to = to_cell, mode = "out")
-    lcps <- transform(lcps, cost_distance = as.numeric(cost))
+    for(i in 1:length(to_cell)) { 
+    lcps$cost[i] <- igraph::distances(graph = cm_graph, v = from_cell, to = to_cell[i], mode = "out", algorithm = "dijkstra")
+    }
   }
   
   if(sum(to_cell %in% from_cell) != 0) { 
-    message(sum(to_cell %in% from_cell), " least-cost paths could not be calculated from origin to destination due to duplicate location")
+    message(sum(to_cell %in% from_cell), " least-cost paths could not be calculated from origin to destination as these share the same location")
   }
   
   lcps <- lcps[!is.na(sf::st_is_valid(lcps)),]
