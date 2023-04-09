@@ -1,3 +1,9 @@
+# 2.0.9 (09/04/2023)
+* removed percentile argument in create_slope_cs and replaced with their own cost_function, e.g. "campbell 2019 50"
+* Modified how extent is retrieved from a terra SpatRaster. This is now done using terra::ext()
+* calculate_distance uses Pythagorean theorem when coordinate system is projected and sf::st_distance when geographic
+* removed plot_cf()
+
 # 2.0.8 (24/03/2023)
 * create_accum_cost now allows for one or more supplied origins. Multiple accumulated cost surfaces will be summarised using a supplied function
 * exported calculate_distance, get_coordinates, and neighbourhood functions
