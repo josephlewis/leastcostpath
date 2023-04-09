@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_global_stochasticity.R
 \name{add_global_stochasticity}
 \alias{add_global_stochasticity}
-\title{Adds global stochasticity to a conductanceMatrix}
+\title{Add global stochasticity to a conductanceMatrix}
 \usage{
 add_global_stochasticity(x, percent_quantile = 1)
 }
@@ -12,18 +12,18 @@ add_global_stochasticity(x, percent_quantile = 1)
 \item{percent_quantile}{\code{numeric} value between 0 and 1. See details for more information}
 }
 \description{
-Adds stochasticity to a conductanceMatrix based on a global value to ensure that the neighbourhood adjacency is random. This method is based on 'Multiple shortest paths (MSPs)' as proposed by Pinto and Keitt (2009)
+Add stochasticity to a conductanceMatrix based on a global value. This method is based on 'Multiple shortest paths (MSPs)' as proposed by Pinto and Keitt (2009)
 }
 \details{
-The add_stochasticity to a conductanceMatrix is based on the method proposed by Pinto and Keitt (2009). Rather than using a static neighbourhood (for example as supplied in the neighbours function in the create_slope_cs), the neighbourhood is redefined such that the adjacency is non-deterministic and is instead determined randomly based on the threshold value.
+The add_global_stochasticity to a conductanceMatrix is based on the method proposed by Pinto and Keitt (2009). Rather than using a static neighbourhood (for example as supplied in the neighbours function in the create_slope_cs), the neighbourhood is redefined such that the adjacency is non-deterministic and is instead determined randomly based on the threshold value.
 
 The algorithm proceeds as follows:
 
 1. With a percent_quantile supplied, draw a random value between the minimum value in the conductanceMatrix and the supplied percent quantile
 
-2. Replace values in conductanceMatrix below this random value with 0. This ensures that the conductance between the neighbours are 0, and thus deemed non-adjacent.
+2. Replace values in conductanceMatrix below this random value with 0. This ensures that the conductance between the neighbours are 0, and thus deemed non-adjacent
 
-Supplying a percent_quantile of 0 is equivalent to incorporating no stochasticity into the conductanceMatrix. That is, if the supplied percent_quantile is 0, then no values are below this value and thus no values will be replaced with 0 (see step 2). This therefore does not change the neigbourhood adjacency.
+Supplying a percent_quantile of 0 is equivalent to incorporating no stochasticity into the conductanceMatrix. That is, if the supplied percent_quantile is 0, then no values are below this value and thus no values will be replaced with 0 (see step 2). This therefore does not change the neigbourhood adjacency
 
 The closer the percent_quantile is to 0, the less stochasticity is incorporated. For example, a percent_quantile value of 0.2 will result in the threshold being a random value between the minimum value in the conductanceMatrix and the 0.2 percent quantile of the values in the conductanceMatrix. All values in the conductanceMatrix below the random value will be replaced with 0 (i.e. the neighbours are no longer adjacent). In contrast, a percent_quantile value of 0.8 will result in the threshold being a random value between the minimum value in the conductanceMatrix and the 0.8 percent quantile of the values in the conductanceMatrix. In this case, there is greater probability that the random value will result in an increased number of values in the conductanceMatrix being replaced with 0.
 }
