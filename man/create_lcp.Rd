@@ -4,7 +4,13 @@
 \alias{create_lcp}
 \title{Calculate Least-cost Path from Origin to Destinations}
 \usage{
-create_lcp(x, origin, destination, cost_distance = FALSE)
+create_lcp(
+  x,
+  origin,
+  destination,
+  cost_distance = FALSE,
+  check_locations = FALSE
+)
 }
 \arguments{
 \item{x}{\code{conductanceMatrix}}
@@ -14,6 +20,8 @@ create_lcp(x, origin, destination, cost_distance = FALSE)
 \item{destination}{\code{sf} 'POINT' or 'MULTIPOINT', \code{SpatVector}, \code{data.frame} or \code{matrix} containing the destination coordinates. If the object contains multiple coordinates then least-cost paths will be calculated from the origin to all destinations}
 
 \item{cost_distance}{\code{logical} if TRUE computes total accumulated cost from origin to the destinations. FALSE (default)}
+
+\item{check_locations}{\code{logical} if TRUE checks if origin and destination are traversable by the least-cost path. FALSE (default)}
 }
 \value{
 \code{sf}  Least-cost path from origin and destinations based on the supplied \code{conductanceMatrix}

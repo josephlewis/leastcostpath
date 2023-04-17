@@ -10,6 +10,8 @@
 #' 
 #' @param cost_distance \code{logical} if TRUE computes total accumulated cost from origin to the destinations. FALSE (default)
 #' 
+#' @param check_locations \code{logical} if TRUE checks if origin and destination are traversable by the least-cost path. FALSE (default)
+#' 
 #' @author Joseph Lewis
 #' 
 #' @return \code{sf}  Least-cost path from origin and destinations based on the supplied \code{conductanceMatrix} 
@@ -31,10 +33,12 @@
 #' 
 #' lcps <- create_lcp(x = slope_cs, origin = locs[1,], destination = locs)
 
-create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
+create_lcp <- function(x, origin, destination, cost_distance = FALSE, check_locations = FALSE) {
   
-  check_locations(x, origin)
-  check_locations(x, destination)
+  if(check_locations) { 
+    check_locations(x, origin)
+    check_locations(x, destination)
+  }
   
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
   
