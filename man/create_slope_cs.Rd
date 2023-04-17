@@ -35,9 +35,11 @@ Creates a cost surface based on the difficulty of moving up and down slope. This
 The supplied 'spatRaster' object can have a projected or geographic coordinate system
 }
 \details{
-The following cost functions have been implemented however users may also supply their own cost function (see examples):
+The following cost functions have been implemented however users may also supply their own cost function (see Examples):
 
-"tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', "wheeled transport", "herzog", "llobera-sluckin", 'naismith', 'minetti', 'campbell', "campbell 2019", "sullivan"
+"tobler", "tobler offpath", "davey", 'rees', "irmischer-clarke male", "irmischer-clarke offpath male", "irmischer-clarke female", "irmischer-clarke offpath female", "modified tobler", 'garmy', 'kondo-saino', "wheeled transport", "herzog", "llobera-sluckin", "naismith", "minetti", "campbell","campbell 2019 1","campbell 2019 5" ,"campbell 2019 10","campbell 2019 15","campbell 2019 20","campbell 2019 25","campbell 2019 30","campbell 2019 35","campbell 2019 40","campbell 2019 45","campbell 2019 50","campbell 2019 55","campbell 2019 60","campbell 2019 65","campbell 2019 70","campbell 2019 75","campbell 2019 80","campbell 2019 85","campbell 2019 90","campbell 2019 95","campbell 2019 99", "sullivan 167","sullivan 5", "sullivan 833"
+
+Multiple travel rate percentiles implemented for campbell 2019 and sullivan, e.g. "campbell 2019 50" is the 50th percentile
 }
 \examples{
 

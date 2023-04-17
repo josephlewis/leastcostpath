@@ -1,3 +1,6 @@
+# 2.0.10 (17/04/2023)
+* create_lcp now only creates cost column if cost_distance argument is TRUE
+
 # 2.0.9 (09/04/2023)
 * removed percentile argument in create_slope_cs and replaced with their own cost_function, e.g. "campbell 2019 50"
 * Modified how extent is retrieved from a terra SpatRaster. This is now done using terra::ext()

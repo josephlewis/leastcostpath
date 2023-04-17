@@ -68,9 +68,9 @@ create_lcp <- function(x, origin, destination, cost_distance = FALSE) {
   
   lcps$fromCell <- from_cell
   lcps$toCell <- to_cell
-  lcps$cost <- NA
 
   if (cost_distance) {
+    lcps$cost <- NA
     for(i in 1:length(to_cell)) { 
     lcps$cost[i] <- igraph::distances(graph = cm_graph, v = from_cell, to = to_cell[i], mode = "out", algorithm = "dijkstra")
     }

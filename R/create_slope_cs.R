@@ -108,7 +108,7 @@ create_slope_cs <- function(x, cost_function = "tobler", neighbours = 16, crit_s
   conductance <- speed/run
   
   if(!is.function(cost_function)) {
-    if(cost_function %in% c("campbell 2019", "campbell")) { 
+    if(cost_function %in% c("campbell","campbell 2019 1","campbell 2019 5" ,"campbell 2019 10","campbell 2019 15","campbell 2019 20","campbell 2019 25","campbell 2019 30","campbell 2019 35","campbell 2019 40","campbell 2019 45","campbell 2019 50","campbell 2019 55","campbell 2019 60","campbell 2019 65","campbell 2019 70","campbell 2019 75","campbell 2019 80","campbell 2019 85","campbell 2019 90","campbell 2019 95","campbell 2019 99")) { 
       # convert 30 degrees slope to percentage slope
       max_slope <- tan(30*pi/180)*100
     }
