@@ -45,12 +45,7 @@ create_distance_cs <- function(x, neighbours = 16, max_slope = NULL, exaggeratio
   
   ncells <- length(cells) + length(na_cells)
   
-  conductance <- rep(max(terra::res(x)), length(mathematical_slope))
-  
-  if(sum(neighbours) > 4) { 
-    conductance <- conductance/run
-    conductance <- conductance * max(terra::res(x))
-  }
+  conductance <- run
   
   if(!is.null(max_slope)) {
     max_slope <- max_slope/100
@@ -77,4 +72,3 @@ create_distance_cs <- function(x, neighbours = 16, max_slope = NULL, exaggeratio
   return(cs)
   
 }
-
