@@ -45,7 +45,7 @@ library(terra) # loaded for visualisation purposes
 library(leastcostpath)
 ```
 
-To explore the leastcostpath workflow, we'll use the dataset \code{SICILY_1000m}. This dataset contains an aggregated digital elevation model (1000m) of Sicily. The original dataset (10m resolution) is available here: https://tinitaly.pi.ingv.it/
+To explore the leastcostpath workflow, we'll use the dataset \code{SICILY_1000m}. This dataset contains an aggregated digital elevation model (1000m) of Sicily. The original dataset (10m resolution) is available here: [Tinitaly](https://tinitaly.pi.ingv.it/)
 
 The digital elevation model (DEM) represents the physical landscape, and forms the foundation for many least-cost path analyses
 
