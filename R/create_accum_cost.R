@@ -10,6 +10,8 @@
 #' 
 #' @param rescale \code{logical}. if TRUE, values scaled to between 0 and 1. FALSE (default)
 #' 
+#' @param check_locations \code{logical} if TRUE checks if origins are traversable. FALSE (default)
+#' 
 #' @return \code{SpatRaster}
 #' 
 #' @author Joseph Lewis
@@ -30,9 +32,11 @@
 #' 
 #' cc <- create_accum_cost(x = slope_cs, origins = locs, FUN = mean, rescale = FALSE)
 
-create_accum_cost <- function(x, origins, FUN = mean, rescale = FALSE) {
+create_accum_cost <- function(x, origins, FUN = mean, rescale = FALSE, check_locations = FALSE) {
 
-  check_locations(x, origins)
+  if(check_locations) { 
+    check_locations(x, origins)
+  }
   
   cs_rast <- terra::rast(nrow = x$nrow, ncol = x$ncol, xmin = x$extent[1], xmax = x$extent[2], ymin = x$extent[3], ymax = x$extent[4],crs = x$crs)
 

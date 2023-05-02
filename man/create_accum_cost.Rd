@@ -4,7 +4,13 @@
 \alias{create_accum_cost}
 \title{creates an accumulated cost surface}
 \usage{
-create_accum_cost(x, origins, FUN = mean, rescale = FALSE)
+create_accum_cost(
+  x,
+  origins,
+  FUN = mean,
+  rescale = FALSE,
+  check_locations = FALSE
+)
 }
 \arguments{
 \item{x}{\code{SpatRaster}}
@@ -14,6 +20,8 @@ create_accum_cost(x, origins, FUN = mean, rescale = FALSE)
 \item{FUN}{\code{function} Apply a function to the cells of a SpatRaster. Default applied function is 'mean'. See terra::app() for more information}
 
 \item{rescale}{\code{logical}. if TRUE, values scaled to between 0 and 1. FALSE (default)}
+
+\item{check_locations}{\code{logical} if TRUE checks if origins are traversable. FALSE (default)}
 }
 \value{
 \code{SpatRaster}
