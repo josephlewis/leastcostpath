@@ -1,3 +1,7 @@
+# 2.0.11 (02/05/2023)
+* modified create_distance_cs to use calculated _run_ distance when assigning distance between cells
+* added check_locations argument to create_accum_cost
+
 # 2.0.10 (17/04/2023)
 * create_lcp now only creates cost column if cost_distance argument is TRUE
 
