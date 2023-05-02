@@ -1,7 +1,7 @@
 Package: leastcostpath
 Title: Modelling Pathways and Movement Potential Within a Landscape
-Version: 2.0.10
-Date: 2023-04-17
+Version: 2.0.11
+Date: 2023-05-02
 Authors@R: person("Joseph", "Lewis", email = "josephlewis1992@gmail.com", role = c("aut", "cre"))
 Maintainer: Joseph Lewis <josephlewis1992@gmail.com>
 URL: Available at: https://CRAN.R-project.org/package=leastcostpath

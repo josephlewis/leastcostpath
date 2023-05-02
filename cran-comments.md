@@ -7,7 +7,7 @@ Running under: Windows 10 x64 (build 19041)
   - R version 4.0.3 (2020-10-10)
   - R Under development (unstable) (2021-02-10 r79988)
 
-## R CMD check results - 2021-02-10
+## R CMD check results - 2023-05-02
 There were no ERRORs, WARNINGs.
 
 0 errors | 0 warnings | 1 notes
