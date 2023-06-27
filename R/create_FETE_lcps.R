@@ -33,7 +33,7 @@
 #' 
 #' lcps <- create_FETE_lcps(x = slope_cs, locations = locs)
 
-create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
+create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1, truncate = FALSE, distance = 0) {
   
   check_locations(x, locations)
   
@@ -48,41 +48,88 @@ create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
     locations <- sf::st_as_sf(locations)
   }
   
-  lcp_network <- foreach::foreach(i = 1:nlocs, .errorhandling = "remove", .combine = "rbind", .packages = c("sf", "terra")) %dopar% {
+  if(truncate==T){
+    distance = distance
+    distmat=drop_units(st_distance(st_as_sf(locations)))
+    distmat[lower.tri(distmat)] <- 0 
+    comps=which(distmat<distance&distmat!=0,arr.ind=T)
     
-    lcp <- create_lcp(x = x,
-                      origin = locations[i,, drop = FALSE],
-                      destination = locations[-i,, drop = FALSE],
-                      cost_distance = cost_distance)
+    lcp_network <- foreach::foreach(i = 1:nrow(comps), .errorhandling = "remove", .combine = "rbind", .packages = c("sf", "terra")) %dopar% {
+      
+      lcp <- create_lcp(x = x,
+                                       origin = locations[comps[i,1],, drop = FALSE],
+                                       destination = locations[comps[i,2],, drop = FALSE],
+                                       cost_distance = cost_distance)
+      
+      lcp$origin_ID <- comps[i,1]
+      lcp$destination_ID <- comps[i,2]
+      
+      return(lcp)
+    }
+    parallel::stopCluster(myCluster)
     
-    lcp$origin_ID <- i
-    lcp$destination_ID <- (1:nlocs)[-i]
+    lcp_network <- lcp_network[!is.na(sf::st_is_valid(lcp_network)),]
     
-    return(lcp)
+    empty_lcps <- sf::st_is_empty(lcp_network)
+    
+    lcp_network <- lcp_network[!empty_lcps,]
+    lcp_network <- lcp_network[order(lcp_network$origin_ID),]
+    rownames(lcp_network) <- 1:nrow(lcp_network)
+    
+    if((nlocs*nlocs-nlocs) - nrow(lcp_network) != 0) { 
+      message((nlocs*nlocs-nlocs) - nrow(lcp_network), " least-cost paths could not be calculated due to duplicate locations.")
+    }
+    
+    if(sum(empty_lcps) != 0) { 
+      message(sum(empty_lcps), " least-cost paths could not calculated due to being unreachable. If so, check via check_locations()")
+    }
+    
+    if(loc_vect) { 
+      lcp_network <- terra::vect(lcp_network)
+    }
+    
+    return(lcp_network)
+    
   }
   
-  parallel::stopCluster(myCluster)
-  
-  lcp_network <- lcp_network[!is.na(sf::st_is_valid(lcp_network)),]
-  
-  empty_lcps <- sf::st_is_empty(lcp_network)
-  
-  lcp_network <- lcp_network[!empty_lcps,]
-  lcp_network <- lcp_network[order(lcp_network$origin_ID),]
-  rownames(lcp_network) <- 1:nrow(lcp_network)
-  
-  if((nlocs*nlocs-nlocs) - nrow(lcp_network) != 0) { 
-    message((nlocs*nlocs-nlocs) - nrow(lcp_network), " least-cost paths could not be calculated due to duplicate locations.")
+  if(truncate==F){
+    lcp_network <- foreach::foreach(i = 1:nlocs, .errorhandling = "remove", .combine = "rbind", .packages = c("sf", "terra")) %dopar% {
+      
+      lcp <- create_lcp(x = x,
+                                       origin = locations[i,, drop = FALSE],
+                                       destination = locations[-i,, drop = FALSE],
+                                       cost_distance = cost_distance)
+      
+      lcp$origin_ID <- i
+      lcp$destination_ID <- (1:nlocs)[-i]
+      
+      return(lcp)
+    }
+    
+    
+    parallel::stopCluster(myCluster)
+    
+    lcp_network <- lcp_network[!is.na(sf::st_is_valid(lcp_network)),]
+    
+    empty_lcps <- sf::st_is_empty(lcp_network)
+    
+    lcp_network <- lcp_network[!empty_lcps,]
+    lcp_network <- lcp_network[order(lcp_network$origin_ID),]
+    rownames(lcp_network) <- 1:nrow(lcp_network)
+    
+    if((nlocs*nlocs-nlocs) - nrow(lcp_network) != 0) { 
+      message((nlocs*nlocs-nlocs) - nrow(lcp_network), " least-cost paths could not be calculated due to duplicate locations.")
+    }
+    
+    if(sum(empty_lcps) != 0) { 
+      message(sum(empty_lcps), " least-cost paths could not calculated due to being unreachable. If so, check via check_locations()")
+    }
+    
+    if(loc_vect) { 
+      lcp_network <- terra::vect(lcp_network)
+    }
+    
+    return(lcp_network)
+    
   }
-  
-  if(sum(empty_lcps) != 0) { 
-    message(sum(empty_lcps), " least-cost paths could not calculated due to being unreachable. If so, check via check_locations()")
-  }
-  
-  if(loc_vect) { 
-    lcp_network <- terra::vect(lcp_network)
-  }
-  
-  return(lcp_network)
-  
 }
