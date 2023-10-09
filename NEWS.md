@@ -1,3 +1,6 @@
+# 2.0.12 (09/10/2023)
+* Fixed the updating of extent when using crop_cs
+
 # 2.0.11 (02/05/2023)
 * modified create_distance_cs to use calculated _run_ distance when assigning distance between cells
 * added check_locations argument to create_accum_cost

@@ -27,7 +27,7 @@ ext <- sf::st_as_sfc(sf::st_bbox(rasterise(slope_cs)))
 ext <- sf::st_buffer(ext, dist = -75000)
 ext <- sf::st_as_sf(ext)
 
-slope_cs_croped <- crop_cs(slope_cs, extent = ext)
+slope_cs_cropped <- crop_cs(slope_cs, extent = ext)
 }
 \author{
 Joseph Lewis

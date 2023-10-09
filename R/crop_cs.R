@@ -22,7 +22,7 @@
 #' ext <- sf::st_buffer(ext, dist = -75000)
 #' ext <- sf::st_as_sf(ext)
 #' 
-#' slope_cs_croped <- crop_cs(slope_cs, extent = ext)
+#' slope_cs_cropped <- crop_cs(slope_cs, extent = ext)
 
 crop_cs <- function(x, extent) { 
   
@@ -35,7 +35,7 @@ crop_cs <- function(x, extent) {
   
   x$nrow <- terra::nrow(cm_cropped)
   x$ncol <- terra::ncol(cm_cropped)
-  x$extent <- cm_cropped@ptr$extent$vector
+  x$extent <- as.numeric(as.vector(terra::ext(cm_cropped)))
   
   return(x)
   
