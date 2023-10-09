@@ -29,6 +29,8 @@ Please submit issues and enhancement requests via github Issues
 Case Studies Using _leastcostpath_
 --------
 
+**Lewis**, J. (2023). Explaining Known Past Routes, Underdetermination, and the Use of Multiple Cost Functions. Journal of Archaeological Method and Theory. https://doi.org/10.1007/s10816-023-09621-w
+
 Martin, S. A., Peterman, W. E., Lipps, G. J., & Gibbs, H. L. (2023). Inferring population connectivity in eastern massasauga rattlesnakes (Sistrurus catenatus) using landscape genetics. Ecological Applications, 33(2). https://doi.org/10.1002/eap.2793
 
 Fabrício Machado, A., Miranda, F.R., 2022. The potential distribution of Cyclopes didactylus , a silky anteater, reveals a likely unknown population and urgent need for forest conservation in Northeast Brazil. J. Trop. Ecol. 38, 454–461. https://doi.org/10.1017/S0266467422000372
@@ -41,7 +43,7 @@ Fjellström, M., Seitsonen, O., Wallén, H., 2022. Mobility in Early Reindeer He
 
 Field, S., Glowacki, D.M., Gettler, L.T., 2022. The Importance of Energetics in Archaeological Least Cost Analysis. J Archaeol Method Theory. https://doi.org/10.1007/s10816-022-09564-8
 
-Lewis, J., 2021. Probabilistic Modelling for Incorporating Uncertainty in Least Cost Path Results: a Postdictive Roman Road Case Study. Journal of Archaeological Method and Theory. https://doi.org/10.1007/s10816-021-09522-w
+**Lewis**, J., 2021. Probabilistic Modelling for Incorporating Uncertainty in Least Cost Path Results: a Postdictive Roman Road Case Study. Journal of Archaeological Method and Theory. https://doi.org/10.1007/s10816-021-09522-w
 
 Ludwig, B., 2020. Reconstructing the Ancient Route Network in Pergamon’s Surroundings. Land 9, 241. https://doi.org/10.3390/land9080241
 
