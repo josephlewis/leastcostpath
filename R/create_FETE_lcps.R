@@ -86,3 +86,5 @@ create_FETE_lcps <- function(x, locations, cost_distance = FALSE, ncores = 1) {
   return(lcp_network)
   
 }
+
+utils::globalVariables("i")
