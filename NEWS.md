@@ -1,3 +1,6 @@
+# 2.0.13 (09/06/2025)
+* Fixed bad parts in URL field of DESCRIPTION file for CRAN
+
 # 2.0.12 (09/10/2023)
 * Fixed the updating of extent when using crop_cs
 
